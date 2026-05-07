@@ -40,7 +40,6 @@ namespace planner_2d {
         double PathDist();
 
     private:
-        // 纯正欧氏距离启发式 + 1.001 微偏置
         inline double Heuristic(int x, int y) const { 
             double dx = static_cast<double>(std::abs(x - m_Target.x));
             double dy = static_cast<double>(std::abs(y - m_Target.y));

@@ -1,5 +1,6 @@
 #include "planner_2d/replanner.hpp"
 #include <cmath>
+#include <queue>
 #include <spdlog/spdlog.h>
 
 namespace planner_2d {
@@ -53,9 +54,14 @@ namespace planner_2d {
 
     bool replanner::InitPoint(const double& source_x_, const double& source_y_, const double& target_x_, const double& target_y_){
         m_GetRes = false;
-        m_SourcePoint.x() = source_x_; m_SourcePoint.y() = source_y_; m_TargetPoint.x() = target_x_; m_TargetPoint.y() = target_y_;
+
+        Eigen::Vector2d valid_target = ClosestFreeGoal(Eigen::Vector2d(target_x_, target_y_));
+
+        m_SourcePoint.x() = source_x_; m_SourcePoint.y() = source_y_; 
+        m_TargetPoint = valid_target;
+
         int sx = static_cast<int>((source_x_ - m_OriginX) / m_ResX), sy = static_cast<int>((source_y_ - m_OriginY) / m_ResY);
-        int tx = static_cast<int>((target_x_ - m_OriginX) / m_ResX), ty = static_cast<int>((target_y_ - m_OriginY) / m_ResY);
+        int tx = static_cast<int>((valid_target.x() - m_OriginX) / m_ResX), ty = static_cast<int>((valid_target.y() - m_OriginY) / m_ResY);
         if (!m_jps.InitPoint(sx, sy, tx, ty)) return false;
         if (!m_jps.SetPath()) return false;
 
@@ -250,14 +256,17 @@ namespace planner_2d {
 
     bool replanner::UpdateGoal(const Eigen::Vector2d& p_, const Eigen::Vector2d& new_goal_, const Eigen::Vector2d& new_vel_) {
         m_GetRes = false;
-        double dist_sq = (new_goal_ - m_TargetPoint).squaredNorm();
+        
+        Eigen::Vector2d valid_goal = ClosestFreeGoal(new_goal_);
+
+        double dist_sq = (valid_goal - m_TargetPoint).squaredNorm();
         auto temp_tra = m_lbfgs.GetMincoTrajectory();
         int num_pts = temp_tra.GetNumPoints();
         
-        Eigen::Vector2d grid_new_target((new_goal_.x() - m_OriginX) / m_ResX, (new_goal_.y() - m_OriginY) / m_ResY);
+        Eigen::Vector2d grid_new_target((valid_goal.x() - m_OriginX) / m_ResX, (valid_goal.y() - m_OriginY) / m_ResY);
 
         if (dist_sq > min_wholereplan) {
-            InitPoint(p_.x(), p_.y(), new_goal_.x(), new_goal_.y());
+            InitPoint(p_.x(), p_.y(), valid_goal.x(), valid_goal.y());
         } else {
             ProjectionResult close_pos = m_Project.FindClosestPoint(p_);
             int robot_idx = std::max(0, close_pos.seg_idx);
@@ -274,13 +283,13 @@ namespace planner_2d {
             m_ReplanAstar.SetStartGoal(sx, sy, gx, gy);
             
             if (m_ReplanAstar.FindPath() && (m_ReplanAstar.GetPath().size() * m_ResX) < min_wholereplan * 3.0) {
-                PraticalReplanGoal(splice_pos, splice_vel, new_goal_, new_vel_, m_ReplanAstar.GetPath(), splice_idx);
+                PraticalReplanGoal(splice_pos, splice_vel, valid_goal, new_vel_, m_ReplanAstar.GetPath(), splice_idx);
             } else {
-                InitPoint(p_.x(), p_.y(), new_goal_.x(), new_goal_.y());
+                InitPoint(p_.x(), p_.y(), valid_goal.x(), valid_goal.y());
             }
         }
         
-        m_TargetPoint = new_goal_;
+        m_TargetPoint = valid_goal;
 
         ProjectionResult final_close = m_Project.FindClosestPoint(p_);
         if (final_close.seg_idx >= 0) {
@@ -340,6 +349,52 @@ namespace planner_2d {
         m_lbfgs.SetCustomTrajectory(spliced_pts, spliced_times);
         SetTrajectory();
         return true;
+    }
+
+    Eigen::Vector2d replanner::ClosestFreeGoal(const Eigen::Vector2d& target_) const {
+        // 转换物理坐标为网格坐标
+        int gx = static_cast<int>((target_.x() - m_OriginX) / m_ResX);
+        int gy = static_cast<int>((target_.y() - m_OriginY) / m_ResY);
+
+        if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+        if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+        if (m_jps.IsFreeGrip(gx, gy)) {
+            return target_;
+        }
+
+        std::queue<std::pair<int, int>> q;
+        std::vector<bool> visited(m_MapLenX * m_MapWeightY, false);
+
+        q.push({gx, gy});
+        visited[gy * m_MapLenX + gx] = true;
+
+        const int dx[8] = {1, -1, 0, 0, 1, 1, -1, -1};
+        const int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+
+        while (!q.empty()) {
+            auto [cx, cy] = q.front();
+            q.pop();
+
+            if (m_jps.IsFreeGrip(cx, cy)) {
+                return Eigen::Vector2d(m_OriginX + cx * m_ResX, m_OriginY + cy * m_ResY);
+            }
+
+            for (int i = 0; i < 8; ++i) {
+                int nx = cx + dx[i];
+                int ny = cy + dy[i];
+
+                if (nx >= 0 && nx < m_MapLenX && ny >= 0 && ny < m_MapWeightY) {
+                    int idx = ny * m_MapLenX + nx;
+                    if (!visited[idx]) {
+                        visited[idx] = true;
+                        q.push({nx, ny});
+                    }
+                }
+            }
+        }
+        
+        // 如果异常（全地图均不可达等）， fallback 返回原始目标点防止崩溃
+        return target_;
     }
 
 } // namespace planner_2d

@@ -40,6 +40,8 @@ namespace planner_2d {
         bool PraticalReplanGoal(const Eigen::Vector2d& p_, const Eigen::Vector2d& v_, const Eigen::Vector2d& tp_, const Eigen::Vector2d& tv_,
                                 const std::vector<Eigen::Vector2d>& grid_path_, int splice_idx);
 
+        Eigen::Vector2d ClosestFreeGoal(const Eigen::Vector2d& target_) const;
+
         const minco& GetTrajectory() const { return m_lbfgs.GetMincoTrajectory(); }
         std::vector<Eigen::Vector2d> GetJpsGridPath() const { return m_jps.GetEigenPath(); }
         std::vector<Eigen::Vector2d> GetPhase1PhysPoints() const { return m_lbfgs.GetPhase1Points(); }

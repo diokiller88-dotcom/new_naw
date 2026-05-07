@@ -170,7 +170,7 @@ bool LoadOccupancyTxt(const std::string& filename, std::vector<int>& occ, int& w
 bool LoadESDFRawTxt(const std::string& filename, std::vector<double>& esdf_raw, int& w, int& h) { std::ifstream ifs(filename); if (!ifs.is_open()) return false; ifs >> w >> h; if (w <= 0 || h <= 0) return false; esdf_raw.resize(w * h); for (int i = 0; i < w * h; ++i) { if (!(ifs >> esdf_raw[i])) return false; } return true; }
 bool LoadMapInfo(const std::string& filename, int& w, int& h, double& res_x, double& res_y, double& origin_x, double& origin_y) { std::ifstream ifs(filename); if (!ifs.is_open()) return false; if (ifs >> w >> h >> res_x >> res_y) { if (!(ifs >> origin_x >> origin_y)) { origin_x = 0.0; origin_y = 0.0; } return true; } return false; }
 
-// 主窗口交互渲染逻辑 (移除 JPS 和 Phase1)
+// 主窗口交互渲染逻辑
 void RenderVisualization(replanner& sys_replanner) {
     cv::Mat display = g_base_vis_img.clone();
 
