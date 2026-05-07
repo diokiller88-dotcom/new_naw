@@ -18,8 +18,8 @@ find_package(OpenCV REQUIRED)
 find_package(custom_msgs REQUIRED) 
 find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-# [新增] 查找 visualization_msgs 依赖
 find_package(visualization_msgs REQUIRED)
+find_package(message_filters REQUIRED) # [新增] message_filters 依赖
 
 include_directories(
   include/
@@ -44,12 +44,13 @@ target_link_libraries(planner_node
   ${OpenCV_LIBS}
 )
 
-# [修改] 确保所有消息包都包含在内
+# 确保所有消息包和 filters 都包含在内
 ament_target_dependencies(planner_node
   custom_msgs 
   nav_msgs 
   geometry_msgs 
   visualization_msgs
+  message_filters # [新增] message_filters 依赖
 )
 
 add_executable(planner_test
@@ -61,6 +62,7 @@ add_executable(planner_test
   src/tra_project.cpp
   src/replanner.cpp
 )
+
 target_link_libraries(planner_test
   rclcpp::rclcpp
   fmt::fmt
