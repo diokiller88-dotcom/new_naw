@@ -1,6 +1,0 @@
-Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/custom_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/custom_msgs
-Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/custom_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/custom_msgs
-Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/custom_msgs -- -j32 -l32
-Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/custom_msgs -- -j32 -l32
-Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/custom_msgs
-Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/custom_msgs

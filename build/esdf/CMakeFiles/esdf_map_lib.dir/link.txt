@@ -1,2 +1,0 @@
-/usr/bin/ar qc libesdf_map_lib.a CMakeFiles/esdf_map_lib.dir/src/esdf_map.cpp.o CMakeFiles/esdf_map_lib.dir/src/feasible_map.cpp.o CMakeFiles/esdf_map_lib.dir/src/sliding_map.cpp.o
-/usr/bin/ranlib libesdf_map_lib.a

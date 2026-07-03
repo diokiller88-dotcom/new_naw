@@ -1,9 +1,0 @@
-/home/zxcx/new_naw/build/controller/CMakeFiles/uninstall.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/controller_uninstall.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/test.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/edit_cache.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/rebuild_cache.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/list_install_components.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/install.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/install/local.dir
-/home/zxcx/new_naw/build/controller/CMakeFiles/install/strip.dir

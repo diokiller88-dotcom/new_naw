@@ -1,6 +1,0 @@
-Invoking command in '/home/zxcx/new_naw/build/controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/controller -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/controller
-Invoked command in '/home/zxcx/new_naw/build/controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/controller -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/controller
-Invoking command in '/home/zxcx/new_naw/build/controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/controller -- -j32 -l32
-Invoked command in '/home/zxcx/new_naw/build/controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/controller -- -j32 -l32
-Invoking command in '/home/zxcx/new_naw/build/controller': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/controller
-Invoked command in '/home/zxcx/new_naw/build/controller' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/controller

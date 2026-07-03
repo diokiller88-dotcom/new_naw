@@ -1,6 +1,0 @@
-Invoking command in '/home/zxcx/new_naw/build/point_lio': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/point_lio -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/point_lio
-Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/point_lio -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/point_lio
-Invoking command in '/home/zxcx/new_naw/build/point_lio': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
-Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
-Invoking command in '/home/zxcx/new_naw/build/point_lio': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio
-Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio
