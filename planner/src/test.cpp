@@ -111,6 +111,112 @@ Eigen::Vector2d g_current_vel(0.0, 0.0);
 
 std::string g_window_name = "Demo: [L/R Click]=Update, 'M'=Toggle Mode, 'J'=Init Plan";
 
+namespace {
+constexpr double kNarrowRegionEsdfVis = 0.9;
+constexpr double kTrajSampleDt = 0.05;
+const char* kOptWindowName = "Optimization Stages (Blue=JPS, Green=Ph1, Purple=Ph2)";
+
+cv::Point GridToPixel(int gx, int gy) {
+    return cv::Point(gx, g_map_h - 1 - gy);
+}
+
+cv::Point PhysToPixel(const Eigen::Vector2d& pt) {
+    return cv::Point(
+        static_cast<int>((pt.x() - g_origin_x) / g_res_x),
+        g_map_h - 1 - static_cast<int>((pt.y() - g_origin_y) / g_res_y));
+}
+
+void BlendPixel(cv::Vec3b& pixel, const cv::Vec3b& overlay, double alpha) {
+    alpha = std::clamp(alpha, 0.0, 1.0);
+    for (int c = 0; c < 3; ++c) {
+        pixel[c] = static_cast<uchar>(pixel[c] * (1.0 - alpha) + overlay[c] * alpha);
+    }
+}
+
+cv::Mat BuildBaseVisualization(const replanner& sys_replanner, bool show_pending_edits) {
+    cv::Mat display = g_base_vis_img.clone();
+    const auto& planner_occ = sys_replanner.GetGlobalOccupancy();
+    const auto& planner_esdf = sys_replanner.GetGlobalEsdf();
+
+    const bool has_occ = planner_occ.size() == static_cast<size_t>(g_map_w * g_map_h);
+    const bool has_esdf = planner_esdf.size() == static_cast<size_t>(g_map_w * g_map_h);
+    const bool has_pending_edits = show_pending_edits && g_edit_occ.size() == planner_occ.size();
+
+    for (int y = 0; y < g_map_h; ++y) {
+        const int py = g_map_h - 1 - y;
+        for (int x = 0; x < g_map_w; ++x) {
+            const int idx = y * g_map_w + x;
+            cv::Vec3b& pixel = display.at<cv::Vec3b>(py, x);
+
+            if (has_occ && planner_occ[idx] == 1) {
+                pixel = cv::Vec3b(0, 0, 0);
+            } else if (has_esdf && planner_esdf[idx] > 1e-6 && planner_esdf[idx] < kNarrowRegionEsdfVis) {
+                BlendPixel(pixel, cv::Vec3b(0, 191, 255), 0.35);
+            }
+
+            if (has_pending_edits && g_edit_occ[idx] != planner_occ[idx]) {
+                pixel = (g_edit_occ[idx] == 1) ? cv::Vec3b(0, 0, 255) : cv::Vec3b(0, 255, 0);
+            }
+        }
+    }
+    return display;
+}
+
+void DrawTrajectory(cv::Mat& canvas, const minco& traj, const cv::Scalar& color, int thickness) {
+    Eigen::VectorXd times = traj.GetTimes();
+    std::vector<cv::Point> points;
+    for (int i = 0; i < times.size(); ++i) {
+        const double T = times(i);
+        for (double t = 0.0; t <= T + 1e-4; t += kTrajSampleDt) {
+            points.emplace_back(PhysToPixel(traj.GetPosition(i, t)));
+        }
+    }
+    for (size_t i = 1; i < points.size(); ++i) {
+        cv::line(canvas, points[i - 1], points[i], color, thickness);
+    }
+}
+
+void ShowOptimizationStages(const replanner& sys_replanner, const cv::Point& start_px,
+                            const cv::Point& goal_px, const std::string& title_prefix) {
+    cv::Mat debug_img = BuildBaseVisualization(sys_replanner, false);
+
+    const auto jps_path = sys_replanner.GetJpsGridPath();
+    for (size_t i = 1; i < jps_path.size(); ++i) {
+        cv::line(debug_img,
+                 GridToPixel(static_cast<int>(jps_path[i - 1].x()), static_cast<int>(jps_path[i - 1].y())),
+                 GridToPixel(static_cast<int>(jps_path[i].x()), static_cast<int>(jps_path[i].y())),
+                 cv::Scalar(255, 0, 0), 2);
+    }
+
+    const auto phase1_path = sys_replanner.GetPhase1PhysPoints();
+    for (size_t i = 1; i < phase1_path.size(); ++i) {
+        cv::line(debug_img, PhysToPixel(phase1_path[i - 1]), PhysToPixel(phase1_path[i]), cv::Scalar(0, 255, 0), 2);
+    }
+
+    DrawTrajectory(debug_img, sys_replanner.GetTrajectory(), cv::Scalar(255, 0, 255), 2);
+
+    cv::circle(debug_img, start_px, 6, cv::Scalar(0, 255, 0), -1);
+    cv::circle(debug_img, goal_px, 6, cv::Scalar(0, 165, 255), -1);
+
+    cv::putText(debug_img,
+                cv::format("%s | planner %.2f ms", title_prefix.c_str(), sys_replanner.GetLastPlanDurationMs()),
+                cv::Point(12, 28), cv::FONT_HERSHEY_SIMPLEX, 0.65, cv::Scalar(255, 255, 255), 2);
+    cv::putText(debug_img, "Blue:JPS  Green:Phase1  Purple:Phase2  Amber:Narrow",
+                cv::Point(12, 54), cv::FONT_HERSHEY_SIMPLEX, 0.55, cv::Scalar(230, 230, 230), 1);
+
+    cv::namedWindow(kOptWindowName, cv::WINDOW_NORMAL);
+    cv::resizeWindow(kOptWindowName, 1000, 1000);
+    cv::imshow(kOptWindowName, debug_img);
+}
+
+void MaybeShowGlobalStages(const replanner& sys_replanner, const std::string& title_prefix) {
+    if (!sys_replanner.WasLastPlanTriggered() || sys_replanner.GetLastPlanType() != "global" || g_points.size() < 2) {
+        return;
+    }
+    ShowOptimizationStages(sys_replanner, PhysToPixel(g_current_robot_pos), g_points[1], title_prefix);
+}
+}  // namespace
+
 void mouseCallback(int event, int x, int y, int flags, void* userdata) {
     (void)userdata;
     int map_x = x;
@@ -172,17 +278,7 @@ bool LoadMapInfo(const std::string& filename, int& w, int& h, double& res_x, dou
 
 // 主窗口交互渲染逻辑
 void RenderVisualization(replanner& sys_replanner) {
-    cv::Mat display = g_base_vis_img.clone();
-
-    if (!g_edit_occ.empty()) {
-        for (int y = 0; y < g_map_h; ++y) {
-            for (int x = 0; x < g_map_w; ++x) {
-                if (g_edit_occ[y * g_map_w + x] == 1) {
-                    display.at<cv::Vec3b>(g_map_h - 1 - y, x) = cv::Vec3b(0, 0, 255); 
-                }
-            }
-        }
-    }
+    cv::Mat display = BuildBaseVisualization(sys_replanner, true);
 
     if (g_initial_planned) {
         int cx = static_cast<int>((g_current_robot_pos.x() - g_origin_x) / g_res_x);
@@ -266,6 +362,9 @@ void RenderVisualization(replanner& sys_replanner) {
             // 终点颜色为橙色 (BGR: 0, 165, 255)
             cv::circle(display, g_points[1], 6, cv::Scalar(0, 165, 255), -1);
         }
+
+        cv::putText(display, "Amber=narrow  Red=added occ  Green=cleared occ",
+                    cv::Point(12, 24), cv::FONT_HERSHEY_SIMPLEX, 0.55, cv::Scalar(255, 255, 255), 2);
     } else {
         for (size_t i = 0; i < g_points.size(); ++i) {
             cv::circle(display, g_points[i], 6, (i == 0) ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 165, 255), -1);
@@ -342,46 +441,21 @@ int main(int argc, char** argv) {
             double gx_phys = g_origin_x + g_points[1].x * g_res_x; 
             double gy_phys = g_origin_y + (g_map_h - 1 - g_points[1].y) * g_res_y;
             
+            auto t_global_plan = std::chrono::high_resolution_clock::now();
             if (sys_replanner.InitPoint(sx_phys, sy_phys, gx_phys, gy_phys)) {
+                double outer_ms = std::chrono::duration<double, std::milli>(
+                    std::chrono::high_resolution_clock::now() - t_global_plan).count();
+                if (sys_replanner.WasLastPlanTriggered()) {
+                    RCLCPP_INFO(logger, "Initial planning mode: %s, planner time: %.2f ms, jps time: %.2f ms, outer time: %.2f ms",
+                                sys_replanner.GetLastPlanType().c_str(), sys_replanner.GetLastPlanDurationMs(),
+                                sys_replanner.GetLastJpsDurationMs(), outer_ms);
+                } else {
+                    RCLCPP_INFO(logger, "Initial planning mode: unknown, outer time: %.2f ms", outer_ms);
+                }
                 g_initial_planned = true;
                 g_current_robot_pos << sx_phys, sy_phys;
                 
-                // === [第一次规划时弹出单独的 Debug 三线图窗口] ===
-                cv::Mat debug_img = g_base_vis_img.clone();
-                auto jps_path = sys_replanner.GetJpsGridPath();
-                for (size_t i = 1; i < jps_path.size(); ++i) {
-                    cv::Point pt1(jps_path[i-1].x(), g_map_h - 1 - jps_path[i-1].y());
-                    cv::Point pt2(jps_path[i].x(), g_map_h - 1 - jps_path[i].y());
-                    cv::line(debug_img, pt1, pt2, cv::Scalar(255, 0, 0), 2); 
-                }
-                auto phase1_path = sys_replanner.GetPhase1PhysPoints();
-                for (size_t i = 1; i < phase1_path.size(); ++i) {
-                    cv::Point pt1((phase1_path[i-1].x() - g_origin_x) / g_res_x, g_map_h - 1 - (phase1_path[i-1].y() - g_origin_y) / g_res_y);
-                    cv::Point pt2((phase1_path[i].x() - g_origin_x) / g_res_x, g_map_h - 1 - (phase1_path[i].y() - g_origin_y) / g_res_y);
-                    cv::line(debug_img, pt1, pt2, cv::Scalar(0, 255, 0), 2); 
-                }
-                auto traj = sys_replanner.GetTrajectory();
-                Eigen::VectorXd times = traj.GetTimes();
-                double current_t = 0.0;
-                std::vector<cv::Point> debug_pts;
-                for (int i = 0; i < times.size(); ++i) {
-                    double T = times(i);
-                    for (double t = 0; t <= T + 1e-4; t += 0.05) { 
-                        Eigen::Vector2d pos = traj.GetPosition(i, t);
-                        int gx = static_cast<int>((pos.x() - g_origin_x) / g_res_x);
-                        int gy = g_map_h - 1 - static_cast<int>((pos.y() - g_origin_y) / g_res_y);
-                        debug_pts.emplace_back(gx, gy);
-                    }
-                    current_t += T;
-                }
-                for (size_t i = 1; i < debug_pts.size(); ++i) cv::line(debug_img, debug_pts[i-1], debug_pts[i], cv::Scalar(255, 0, 255), 2); 
-                
-                cv::circle(debug_img, g_points[0], 6, cv::Scalar(0, 255, 0), -1); 
-                cv::circle(debug_img, g_points[1], 6, cv::Scalar(0, 165, 255), -1); 
-                
-                cv::namedWindow("Optimization Stages (Blue=JPS, Green=Ph1, Purple=Ph2)", cv::WINDOW_NORMAL);
-                cv::resizeWindow("Optimization Stages (Blue=JPS, Green=Ph1, Purple=Ph2)", 1000, 1000);
-                cv::imshow("Optimization Stages (Blue=JPS, Green=Ph1, Purple=Ph2)", debug_img);
+                ShowOptimizationStages(sys_replanner, g_points[0], g_points[1], "Initial global plan");
 
                 g_request_render = true; 
             } else {
@@ -432,7 +506,19 @@ int main(int argc, char** argv) {
                 g_new_goal_click = false;
             }
             double ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_replan).count();
-            RCLCPP_INFO(logger, "Interactive Replanning Time: %.2f ms", ms);
+            if (sys_replanner.WasLastPlanTriggered()) {
+                if (sys_replanner.GetLastPlanType() == "global") {
+                    RCLCPP_INFO(logger, "Interactive replanning mode: %s, planner time: %.2f ms, jps time: %.2f ms, outer time: %.2f ms",
+                                sys_replanner.GetLastPlanType().c_str(), sys_replanner.GetLastPlanDurationMs(),
+                                sys_replanner.GetLastJpsDurationMs(), ms);
+                } else {
+                    RCLCPP_INFO(logger, "Interactive replanning mode: %s, planner time: %.2f ms, outer time: %.2f ms",
+                                sys_replanner.GetLastPlanType().c_str(), sys_replanner.GetLastPlanDurationMs(), ms);
+                }
+            } else {
+                RCLCPP_INFO(logger, "Interactive replanning mode: tracking-only, outer time: %.2f ms", ms);
+            }
+            MaybeShowGlobalStages(sys_replanner, "Interactive global replan");
             g_request_render = true;
         }
 
@@ -474,7 +560,19 @@ int main(int argc, char** argv) {
             sys_replanner.Update(g_current_robot_pos, g_current_vel, local_occ, local_esdf, lw, lh, local_ox, local_oy);
             
             double ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
-            RCLCPP_INFO(logger, "Local Map Injection & Replanning Time: %.2f ms", ms);
+            if (sys_replanner.WasLastPlanTriggered()) {
+                if (sys_replanner.GetLastPlanType() == "global") {
+                    RCLCPP_INFO(logger, "Local map replanning mode: %s, planner time: %.2f ms, jps time: %.2f ms, outer time: %.2f ms",
+                                sys_replanner.GetLastPlanType().c_str(), sys_replanner.GetLastPlanDurationMs(),
+                                sys_replanner.GetLastJpsDurationMs(), ms);
+                } else {
+                    RCLCPP_INFO(logger, "Local map replanning mode: %s, planner time: %.2f ms, outer time: %.2f ms",
+                                sys_replanner.GetLastPlanType().c_str(), sys_replanner.GetLastPlanDurationMs(), ms);
+                }
+            } else {
+                RCLCPP_INFO(logger, "Local map replanning mode: tracking-only, outer time: %.2f ms", ms);
+            }
+            MaybeShowGlobalStages(sys_replanner, "Map-triggered global replan");
             
             g_force_replan_from_edit = false;
             g_request_render = true;

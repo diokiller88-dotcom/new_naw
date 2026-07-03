@@ -1,0 +1,78 @@
+In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:83:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+   83 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+      |                                                      ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:68:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+   68 |         uint16_t m_SearchEpoch;
+      |                  ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+    8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     ^~~
+In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:83:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+   83 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+      |                                                      ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:68:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+   68 |         uint16_t m_SearchEpoch;
+      |                  ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+    8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     ^~~
+/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function ‘int planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)’:
+/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19: warning: unused variable ‘node’ [-Wunused-variable]
+   33 |         AABBNode& node = m_TreeNodes.back();
+      |                   ^~~~
+/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function ‘int planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)’:
+/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19: warning: unused variable ‘node’ [-Wunused-variable]
+   33 |         AABBNode& node = m_TreeNodes.back();
+      |                   ^~~~
+/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function ‘void planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const’:
+/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42: warning: unused parameter ‘a0’ [-Wunused-parameter]
+  171 |     void project::GetCubicExtrema(double a0, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {
+      |                                   ~~~~~~~^~
+/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function ‘void planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const’:
+/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42: warning: unused parameter ‘a0’ [-Wunused-parameter]
+  171 |     void project::GetCubicExtrema(double a0, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {
+      |                                   ~~~~~~~^~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:144:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  144 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:217:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  217 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:144:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  144 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:217:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  217 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:386:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  386 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:386:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  386 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:387:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  387 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:387:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  387 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:386:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  386 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:386:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  386 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:387:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  387 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:387:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  387 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~

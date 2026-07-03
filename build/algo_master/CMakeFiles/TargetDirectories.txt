@@ -1,0 +1,10 @@
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/uninstall.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/algo_master_uninstall.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/algo_master.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/test.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/edit_cache.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/rebuild_cache.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/list_install_components.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/install.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/install/local.dir
+/home/zxcx/new_naw/build/algo_master/CMakeFiles/install/strip.dir

@@ -1,0 +1,32 @@
+[0.009s] Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[0.055s] Consolidate compiler generated dependencies of target planner_node
+[0.056s] Consolidate compiler generated dependencies of target planner_test
+[0.066s] [  6%] Building CXX object CMakeFiles/planner_node.dir/src/jps.cpp.o
+[0.068s] [ 12%] Building CXX object CMakeFiles/planner_test.dir/src/jps.cpp.o
+[1.080s] [ 18%] Linking CXX executable planner_node
+[1.080s] [ 25%] Linking CXX executable planner_test
+[1.289s] [ 62%] Built target planner_node
+[1.318s] [100%] Built target planner_test
+[1.327s] Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[1.334s] Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner
+[1.338s] -- Install configuration: "Release"
+[1.338s] -- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_node
+[1.342s] -- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_node" to ""
+[1.342s] -- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_test
+[1.343s] -- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_test" to ""
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/package_run_dependencies/planner
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/parent_prefix_path/planner
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.sh
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.dsv
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.sh
+[1.343s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.dsv
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.bash
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.sh
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.zsh
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.dsv
+[1.344s] -- Installing: /home/zxcx/new_naw/install/planner/share/planner/package.dsv
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/packages/planner
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig.cmake
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig-version.cmake
+[1.344s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/package.xml
+[1.345s] Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner

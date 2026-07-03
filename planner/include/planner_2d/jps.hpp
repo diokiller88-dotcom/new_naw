@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <cmath>
+#include <array>
 #include <Eigen/Dense>
 #include <cstdint> 
 
@@ -10,6 +11,7 @@ namespace planner_2d {
 
     constexpr double jps_esdf_safe_distance = 0.15; 
     constexpr double jps_f_tolerance        = 1e-6; 
+    constexpr double jps_diag_cost          = 1.4142135623730951;
 
     struct Jump_Point {
         int x; int y; int pointIdx; double f;               
@@ -24,6 +26,8 @@ namespace planner_2d {
 
         bool InitMap(const std::vector<int>& map_, const int& len_, const int& weight_);
         bool InitMapWithESDF(const std::vector<int>& grip_map_, const std::vector<double>& esdf_map_, const int& len_, const int& weight_);
+        bool UpdateMapPatchWithESDF(const std::vector<int>& grip_map_, const std::vector<double>& esdf_map_,
+                                    int local_w, int local_h, int start_x, int start_y);
         bool InitPoint(const int& source_x_, const int& source_y_, const int& target_x_, const int& target_y_);
 
         inline bool IsFreeGrip(const int& x_, const int& y_) const {
@@ -40,20 +44,34 @@ namespace planner_2d {
         double PathDist();
 
     private:
+        struct SearchDirection {
+            int dx;
+            int dy;
+        };
+
         inline double Heuristic(int x, int y) const { 
-            double dx = static_cast<double>(std::abs(x - m_Target.x));
-            double dy = static_cast<double>(std::abs(y - m_Target.y));
-            return 1.001 * std::sqrt(dx * dx + dy * dy); 
+            int dx = std::abs(x - m_Target.x);
+            int dy = std::abs(y - m_Target.y);
+            int diag = std::min(dx, dy);
+            int straight = std::max(dx, dy) - diag;
+            return 1.001 * (jps_diag_cost * static_cast<double>(diag) + static_cast<double>(straight));
         }
         
         inline double FastDist(int x1, int y1, int x2, int y2) const {
-            double dx = static_cast<double>(x1 - x2);
-            double dy = static_cast<double>(y1 - y2);
-            return std::sqrt(dx * dx + dy * dy);
+            int dx = std::abs(x1 - x2);
+            int dy = std::abs(y1 - y2);
+            int diag = std::min(dx, dy);
+            int straight = std::max(dx, dy) - diag;
+            return jps_diag_cost * static_cast<double>(diag) + static_cast<double>(straight);
         }
 
-        bool StepInLine(int& x_, int& y_, const int& direction_) const;  
-        int  StepInDiagonal(int& x_, int& y_, int& another_x_, int& another_y_, const int& direction_) const;  
+        bool HasForcedNeighborStraight(int x_, int y_, int dx_, int dy_) const;
+        bool HasForcedNeighborDiagonal(int x_, int y_, int dx_, int dy_) const;
+        int CollectSuccessorDirections(int x_, int y_, int parent_idx_, std::array<SearchDirection, 8>& dirs_) const;
+        int DirectionToCacheSlot(int dx_, int dy_) const;
+        bool JumpStraight(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_);
+        bool JumpDiagonal(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_);
+        bool Jump(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_);
 
         inline double GetG(int idx) const { return (m_EpochMap[idx] == m_SearchEpoch) ? m_ValueMap[idx] : 1e9; }
         inline void SetG(int idx, double g, int parent) {
@@ -71,6 +89,8 @@ namespace planner_2d {
         std::vector<int>    m_Path;
         std::vector<double> m_ValueMap;    
         std::vector<int>    m_ParentMap;   
+        std::array<std::vector<int>, 4> m_StraightJumpResult;
+        std::array<std::vector<uint16_t>, 4> m_StraightJumpEpoch;
 
         Jump_Point m_Source;
         Jump_Point m_Target;

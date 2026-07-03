@@ -4,8 +4,13 @@
 #include <spdlog/spdlog.h>
 
 namespace planner_2d {
+    namespace {
+        inline int Sign(int value) {
+            return (value > 0) - (value < 0);
+        }
+    }
 
-    jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+    jps::jps() : m_SearchEpoch(0), m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false) {}
 
     bool jps::InitMap(const std::vector<int>& map_, const int& len_, const int& weight_) {
         m_IsInitMap = false; m_IsInitESDFMap = false;
@@ -16,6 +21,10 @@ namespace planner_2d {
         if (m_FastMap.size() != static_cast<size_t>(size)) {
             m_FastMap.resize(size); m_EpochMap.assign(size, 0); m_ClosedEpoch.assign(size, 0);
             m_ValueMap.resize(size); m_ParentMap.resize(size); m_SearchEpoch = 0;
+            for (int i = 0; i < 4; ++i) {
+                m_StraightJumpResult[i].assign(size, -1);
+                m_StraightJumpEpoch[i].assign(size, 0);
+            }
         }
         std::fill(m_FastMap.begin(), m_FastMap.end(), 1);
         for (int i = 0; i < size; ++i) { if (m_GripMap[i] != 0) m_FastMap[i] = 0; }
@@ -33,12 +42,38 @@ namespace planner_2d {
         if (m_FastMap.size() != static_cast<size_t>(size)) {
             m_FastMap.resize(size); m_EpochMap.assign(size, 0); m_ClosedEpoch.assign(size, 0);
             m_ValueMap.resize(size); m_ParentMap.resize(size); m_SearchEpoch = 0;
+            for (int i = 0; i < 4; ++i) {
+                m_StraightJumpResult[i].assign(size, -1);
+                m_StraightJumpEpoch[i].assign(size, 0);
+            }
         }
         std::fill(m_FastMap.begin(), m_FastMap.end(), 1);
         for (int i = 0; i < size; ++i) {
             if (m_GripMap[i] != 0 || m_ESDFMap[i] < jps_esdf_safe_distance) m_FastMap[i] = 0;
         }
         m_IsInitMap = true; m_IsInitESDFMap = true; m_IsInitPoint = false;
+        return true;
+    }
+
+    bool jps::UpdateMapPatchWithESDF(const std::vector<int>& grip_map_, const std::vector<double>& esdf_map_,
+                                     int local_w, int local_h, int start_x, int start_y) {
+        if (!m_IsInitMap || !m_IsInitESDFMap) return false;
+        if (grip_map_.empty() || esdf_map_.empty() || local_w <= 0 || local_h <= 0) return false;
+        if (static_cast<int>(grip_map_.size()) != local_w * local_h) return false;
+        if (static_cast<int>(esdf_map_.size()) != local_w * local_h) return false;
+
+        for (int y = 0; y < local_h; ++y) {
+            for (int x = 0; x < local_w; ++x) {
+                int gx = start_x + x;
+                int gy = start_y + y;
+                if (gx < 0 || gx >= m_MapLenX || gy < 0 || gy >= m_MapWeightY) continue;
+                int global_idx = gy * m_MapLenX + gx;
+                int local_idx = y * local_w + x;
+                m_GripMap[global_idx] = grip_map_[local_idx];
+                m_ESDFMap[global_idx] = esdf_map_[local_idx];
+                m_FastMap[global_idx] = (m_GripMap[global_idx] == 0 && m_ESDFMap[global_idx] >= jps_esdf_safe_distance) ? 1 : 0;
+            }
+        }
         return true;
     }
 
@@ -59,6 +94,9 @@ namespace planner_2d {
         if (m_SearchEpoch >= 65000) {
             std::fill(m_EpochMap.begin(), m_EpochMap.end(), 0);
             std::fill(m_ClosedEpoch.begin(), m_ClosedEpoch.end(), 0);
+            for (int i = 0; i < 4; ++i) {
+                std::fill(m_StraightJumpEpoch[i].begin(), m_StraightJumpEpoch[i].end(), 0);
+            }
             m_SearchEpoch = 1;
         }
 
@@ -86,83 +124,169 @@ namespace planner_2d {
             for (int i = 0; i < temp_dx; ++i) {
                 temp_x0 += ux; e += 2 * temp_dy;
                 if (e >= 0) { temp_y0 += uy; e -= 2 * temp_dx; }
-                if (temp_x0 == tx_ && temp_y0 == ty_) return true;
                 if (temp_x0 < 0 || temp_x0 >= m_MapLenX || temp_y0 < 0 || temp_y0 >= m_MapWeightY) return false;
                 if (pMap[temp_y0 * m_MapLenX + temp_x0] == 0) return false;
+                if (temp_x0 == tx_ && temp_y0 == ty_) return true;
             }
         } else {
             int e = -temp_dy;
             for (int i = 0; i < temp_dy; ++i) {
                 temp_y0 += uy; e += 2 * temp_dx;
                 if (e >= 0) { temp_x0 += ux; e -= 2 * temp_dy; }
-                if (temp_x0 == tx_ && temp_y0 == ty_) return true;
                 if (temp_x0 < 0 || temp_x0 >= m_MapLenX || temp_y0 < 0 || temp_y0 >= m_MapWeightY) return false;
                 if (pMap[temp_y0 * m_MapLenX + temp_x0] == 0) return false;
+                if (temp_x0 == tx_ && temp_y0 == ty_) return true;
             }
         }
         return true;
     }
 
-    bool jps::StepInLine(int& x_, int& y_, const int& direction_) const {
-        int ux = 0, uy = 0, step_idx = 0;
-        if (direction_ == 0) { ux = 1; step_idx = 1; }
-        else if (direction_ == 1) { uy = 1; step_idx = m_MapLenX; }
-        else if (direction_ == 2) { ux = -1; step_idx = -1; }
-        else if (direction_ == 3) { uy = -1; step_idx = -m_MapLenX; }
-        else return false;
-
-        int cur_x = x_ + ux, cur_y = y_ + uy;
-        if (cur_x < 0 || cur_x >= m_MapLenX || cur_y < 0 || cur_y >= m_MapWeightY) return false;
-
-        const uint8_t* pMap = m_FastMap.data();
-        int idx = cur_y * m_MapLenX + cur_x;
-        const int map_len = m_MapLenX;
-        
-        if (ux != 0) { 
-            while (cur_x >= 0 && cur_x < map_len) {
-                if (pMap[idx] == 0) return false;
-                if (cur_x == m_Target.x && cur_y == m_Target.y) { x_ = cur_x; y_ = cur_y; return true; }
-                if (cur_y > 0 && pMap[idx - map_len] == 0 && pMap[idx - map_len + ux] == 1) { x_ = cur_x; y_ = cur_y; return true; }
-                if (cur_y + 1 < m_MapWeightY && pMap[idx + map_len] == 0 && pMap[idx + map_len + ux] == 1) { x_ = cur_x; y_ = cur_y; return true; }
-                cur_x += ux; idx += step_idx; 
-            }
-        } else { 
-            while (cur_y >= 0 && cur_y < m_MapWeightY) {
-                if (pMap[idx] == 0) return false;
-                if (cur_x == m_Target.x && cur_y == m_Target.y) { x_ = cur_x; y_ = cur_y; return true; }
-                if (cur_x > 0 && pMap[idx - 1] == 0 && pMap[idx - 1 + uy * map_len] == 1) { x_ = cur_x; y_ = cur_y; return true; }
-                if (cur_x + 1 < map_len && pMap[idx + 1] == 0 && pMap[idx + 1 + uy * map_len] == 1) { x_ = cur_x; y_ = cur_y; return true; }
-                cur_y += uy; idx += step_idx; 
-            }
+    bool jps::HasForcedNeighborStraight(int x_, int y_, int dx_, int dy_) const {
+        if (dx_ != 0) {
+            return (IsFreeGrip(x_, y_ + 1) == false && IsFreeGrip(x_ + dx_, y_ + 1)) ||
+                   (IsFreeGrip(x_, y_ - 1) == false && IsFreeGrip(x_ + dx_, y_ - 1));
+        }
+        if (dy_ != 0) {
+            return (IsFreeGrip(x_ + 1, y_) == false && IsFreeGrip(x_ + 1, y_ + dy_)) ||
+                   (IsFreeGrip(x_ - 1, y_) == false && IsFreeGrip(x_ - 1, y_ + dy_));
         }
         return false;
     }
 
-    int jps::StepInDiagonal(int& x_, int& y_, int&, int&, const int& direction_) const {
-        int ux = 0, uy = 0, dir_horiz = 0, dir_vert = 0;
-        if (direction_ == 0) { ux = 1; uy = 1; dir_horiz = 0; dir_vert = 1; }
-        else if (direction_ == 1) { ux = 1; uy = -1; dir_horiz = 0; dir_vert = 3; }
-        else if (direction_ == 2) { ux = -1; uy = -1; dir_horiz = 2; dir_vert = 3; }
-        else if (direction_ == 3) { ux = -1; uy = 1; dir_horiz = 2; dir_vert = 1; }
-        else return -1;
+    bool jps::HasForcedNeighborDiagonal(int x_, int y_, int dx_, int dy_) const {
+        return (IsFreeGrip(x_ - dx_, y_) == false && IsFreeGrip(x_ - dx_, y_ + dy_)) ||
+               (IsFreeGrip(x_, y_ - dy_) == false && IsFreeGrip(x_ + dx_, y_ - dy_));
+    }
 
-        int cur_x = x_ + ux, cur_y = y_ + uy;
-        if (cur_x < 0 || cur_x >= m_MapLenX || cur_y < 0 || cur_y >= m_MapWeightY) return -1;
+    int jps::DirectionToCacheSlot(int dx_, int dy_) const {
+        if (dx_ == 1 && dy_ == 0) return 0;
+        if (dx_ == 0 && dy_ == 1) return 1;
+        if (dx_ == -1 && dy_ == 0) return 2;
+        if (dx_ == 0 && dy_ == -1) return 3;
+        return -1;
+    }
 
-        const uint8_t* pMap = m_FastMap.data();
-        int step_idx = uy * m_MapLenX + ux;
-        int idx = cur_y * m_MapLenX + cur_x;
+    int jps::CollectSuccessorDirections(int x_, int y_, int parent_idx_, std::array<SearchDirection, 8>& dirs_) const {
+        int count = 0;
+        if (parent_idx_ < 0) {
+            dirs_[count++] = { 1, 0 };
+            dirs_[count++] = { 0, 1 };
+            dirs_[count++] = { -1, 0 };
+            dirs_[count++] = { 0, -1 };
+            dirs_[count++] = { 1, 1 };
+            dirs_[count++] = { 1, -1 };
+            dirs_[count++] = { -1, -1 };
+            dirs_[count++] = { -1, 1 };
+            return count;
+        }
+
+        int px = parent_idx_ % m_MapLenX;
+        int py = parent_idx_ / m_MapLenX;
+        int dx = Sign(x_ - px);
+        int dy = Sign(y_ - py);
+
+        if (dx != 0 && dy != 0) {
+            dirs_[count++] = { dx, dy };
+            dirs_[count++] = { dx, 0 };
+            dirs_[count++] = { 0, dy };
+
+            if (!IsFreeGrip(x_ - dx, y_) && IsFreeGrip(x_ - dx, y_ + dy)) dirs_[count++] = { -dx, dy };
+            if (!IsFreeGrip(x_, y_ - dy) && IsFreeGrip(x_ + dx, y_ - dy)) dirs_[count++] = { dx, -dy };
+            return count;
+        }
+
+        if (dx != 0) {
+            dirs_[count++] = { dx, 0 };
+            if (!IsFreeGrip(x_, y_ + 1) && IsFreeGrip(x_ + dx, y_ + 1)) dirs_[count++] = { dx, 1 };
+            if (!IsFreeGrip(x_, y_ - 1) && IsFreeGrip(x_ + dx, y_ - 1)) dirs_[count++] = { dx, -1 };
+            return count;
+        }
+
+        if (dy != 0) {
+            dirs_[count++] = { 0, dy };
+            if (!IsFreeGrip(x_ + 1, y_) && IsFreeGrip(x_ + 1, y_ + dy)) dirs_[count++] = { 1, dy };
+            if (!IsFreeGrip(x_ - 1, y_) && IsFreeGrip(x_ - 1, y_ + dy)) dirs_[count++] = { -1, dy };
+            return count;
+        }
+
+        dirs_[count++] = { 1, 0 };
+        dirs_[count++] = { 0, 1 };
+        dirs_[count++] = { -1, 0 };
+        dirs_[count++] = { 0, -1 };
+        return count;
+    }
+
+    bool jps::JumpStraight(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_) {
+        int slot = DirectionToCacheSlot(dx_, dy_);
+        int start_idx = start_y_ * m_MapLenX + start_x_;
+        if (slot >= 0 && m_StraightJumpEpoch[slot][start_idx] == m_SearchEpoch) {
+            int cached = m_StraightJumpResult[slot][start_idx];
+            if (cached < 0) return false;
+            out_x_ = cached % m_MapLenX;
+            out_y_ = cached / m_MapLenX;
+            return true;
+        }
+
+        int cur_x = start_x_ + dx_;
+        int cur_y = start_y_ + dy_;
+        bool found = false;
+        int result_idx = -1;
 
         while (cur_x >= 0 && cur_x < m_MapLenX && cur_y >= 0 && cur_y < m_MapWeightY) {
-            if (pMap[idx] == 0) return -1; 
-            if (cur_x == m_Target.x && cur_y == m_Target.y) { x_ = cur_x; y_ = cur_y; return 1; }
-            int tx = cur_x, ty = cur_y;
-            if (StepInLine(tx, ty, dir_horiz)) { x_ = cur_x; y_ = cur_y; return 1; }
-            tx = cur_x; ty = cur_y;
-            if (StepInLine(tx, ty, dir_vert)) { x_ = cur_x; y_ = cur_y; return 1; }
-            cur_x += ux; cur_y += uy; idx += step_idx;
+            if (!IsFreeGrip(cur_x, cur_y)) break;
+            if ((cur_x == m_Target.x && cur_y == m_Target.y) || HasForcedNeighborStraight(cur_x, cur_y, dx_, dy_)) {
+                out_x_ = cur_x;
+                out_y_ = cur_y;
+                found = true;
+                result_idx = cur_y * m_MapLenX + cur_x;
+                break;
+            }
+            cur_x += dx_;
+            cur_y += dy_;
         }
-        return -1;
+
+        if (slot >= 0) {
+            m_StraightJumpEpoch[slot][start_idx] = m_SearchEpoch;
+            m_StraightJumpResult[slot][start_idx] = result_idx;
+        }
+        return found;
+    }
+
+    bool jps::JumpDiagonal(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_) {
+        int cur_x = start_x_ + dx_;
+        int cur_y = start_y_ + dy_;
+
+        while (cur_x >= 0 && cur_x < m_MapLenX && cur_y >= 0 && cur_y < m_MapWeightY) {
+            if (!IsFreeGrip(cur_x, cur_y)) return false;
+            if (cur_x == m_Target.x && cur_y == m_Target.y) {
+                out_x_ = cur_x;
+                out_y_ = cur_y;
+                return true;
+            }
+
+            if (HasForcedNeighborDiagonal(cur_x, cur_y, dx_, dy_)) {
+                out_x_ = cur_x;
+                out_y_ = cur_y;
+                return true;
+            }
+
+            int tx = 0, ty = 0;
+            if (JumpStraight(cur_x, cur_y, dx_, 0, tx, ty) || JumpStraight(cur_x, cur_y, 0, dy_, tx, ty)) {
+                out_x_ = cur_x;
+                out_y_ = cur_y;
+                return true;
+            }
+
+            cur_x += dx_;
+            cur_y += dy_;
+        }
+        return false;
+    }
+
+    bool jps::Jump(int start_x_, int start_y_, int dx_, int dy_, int& out_x_, int& out_y_) {
+        if (dx_ == 0 && dy_ == 0) return false;
+        if (dx_ == 0 || dy_ == 0) return JumpStraight(start_x_, start_y_, dx_, dy_, out_x_, out_y_);
+        return JumpDiagonal(start_x_, start_y_, dx_, dy_, out_x_, out_y_);
     }
 
     bool jps::SetPath() {
@@ -205,40 +329,23 @@ namespace planner_2d {
                 return true;
             }
 
-            for (int dir = 0; dir < 4; ++dir) {
-                int x = current.x, y = current.y;
-                if (StepInLine(x, y, dir)) {
-                    int child_idx = y * m_MapLenX + x;
-                    if (pClosedEpoch[child_idx] == curEpoch) continue;
+            std::array<SearchDirection, 8> dirs;
+            int dir_count = CollectSuccessorDirections(current.x, current.y, pParentMap[current.pointIdx], dirs);
+            for (int i = 0; i < dir_count; ++i) {
+                int x = 0, y = 0;
+                if (!Jump(current.x, current.y, dirs[i].dx, dirs[i].dy, x, y)) continue;
 
-                    double new_g = current_g + FastDist(x, y, current.x, current.y);
-                    double old_g = (pEpochMap[child_idx] == curEpoch) ? pValueMap[child_idx] : 1e9;
-
-                    if (new_g < old_g) {
-                        pValueMap[child_idx] = new_g;
-                        pParentMap[child_idx] = current.pointIdx;
-                        pEpochMap[child_idx] = curEpoch;
-                        m_Queue.push(Jump_Point(x, y, child_idx, new_g + Heuristic(x, y)));
-                    }
-                }
-            }
-
-            for (int dir = 0; dir < 4; ++dir) {
-                int x = current.x, y = current.y, another_x = 0, another_y = 0;
-                int state = StepInDiagonal(x, y, another_x, another_y, dir);
-                if (state == -1) continue;
-
-                int diag_idx = y * m_MapLenX + x;
-                if (pClosedEpoch[diag_idx] == curEpoch) continue;
+                int child_idx = y * m_MapLenX + x;
+                if (pClosedEpoch[child_idx] == curEpoch) continue;
 
                 double new_g = current_g + FastDist(x, y, current.x, current.y);
-                double old_g = (pEpochMap[diag_idx] == curEpoch) ? pValueMap[diag_idx] : 1e9;
+                double old_g = (pEpochMap[child_idx] == curEpoch) ? pValueMap[child_idx] : 1e9;
 
                 if (new_g < old_g) {
-                    pValueMap[diag_idx] = new_g;
-                    pParentMap[diag_idx] = current.pointIdx;
-                    pEpochMap[diag_idx] = curEpoch;
-                    m_Queue.push(Jump_Point(x, y, diag_idx, new_g + Heuristic(x, y)));
+                    pValueMap[child_idx] = new_g;
+                    pParentMap[child_idx] = current.pointIdx;
+                    pEpochMap[child_idx] = curEpoch;
+                    m_Queue.push(Jump_Point(x, y, child_idx, new_g + Heuristic(x, y)));
                 }
             }
         }

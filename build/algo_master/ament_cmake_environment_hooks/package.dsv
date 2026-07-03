@@ -1,0 +1,4 @@
+source;share/algo_master/local_setup.bash
+source;share/algo_master/local_setup.dsv
+source;share/algo_master/local_setup.sh
+source;share/algo_master/local_setup.zsh

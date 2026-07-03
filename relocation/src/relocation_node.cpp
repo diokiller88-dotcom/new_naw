@@ -471,7 +471,7 @@ private:
                 if (loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec)) {
                     is_relocated_ = true;
                     trigger_reloc_ = false; 
-                    initial_gimbal_yaw_ = std::atan2(R_prec(1,0),R_prec(0,0));
+                    initial_gimbal_yaw_ = chassis_msg->gimbal_yaw;
                     
                     T_map_body.linear() = R_prec;
                     T_map_body.translation() = T_prec;
@@ -483,7 +483,7 @@ private:
 
                     RCLCPP_INFO(this->get_logger(), "重定位成功! Map系下位姿: X:%.2f, Y:%.2f", T_prec.x(), T_prec.y());
 
-                    PublishVehicleState(T_map_body, chassis_msg->speed, last_marker_yaw_, chassis_msg->header.stamp);
+                    PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                     PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
                     PublishMatchedCloud2D(cloud_body_filtered, T_map_body, chassis_msg->header.stamp);
                 } else {
@@ -505,7 +505,7 @@ private:
                 last_marker_x_ = T_guess.x();
                 last_marker_y_ = T_guess.y();
                 last_marker_yaw_ = std::atan2(R_guess(1, 0), R_guess(0, 0));
-                PublishVehicleState(T_map_body, chassis_msg->speed, last_marker_yaw_, chassis_msg->header.stamp);
+                PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                 PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
                 PublishMatchedCloud2D(cloud_body_filtered, T_map_body, chassis_msg->header.stamp);
             } else {

@@ -29,6 +29,28 @@ bool a_star::InitMapWithESDF(const std::vector<int>& occupancy, const std::vecto
     return true;
 }
 
+bool a_star::UpdateMapPatchWithESDF(const std::vector<int>& occupancy,
+                                    const std::vector<double>& esdf,
+                                    int local_w, int local_h, int start_x, int start_y) {
+    if (m_occupancy.empty() || !m_use_esdf) return false;
+    if (occupancy.empty() || esdf.empty() || local_w <= 0 || local_h <= 0) return false;
+    if (static_cast<int>(occupancy.size()) != local_w * local_h) return false;
+    if (static_cast<int>(esdf.size()) != local_w * local_h) return false;
+
+    for (int y = 0; y < local_h; ++y) {
+        for (int x = 0; x < local_w; ++x) {
+            int gx = start_x + x;
+            int gy = start_y + y;
+            if (gx < 0 || gx >= m_width || gy < 0 || gy >= m_height) continue;
+            int global_idx = gy * m_width + gx;
+            int local_idx = y * local_w + x;
+            m_occupancy[global_idx] = occupancy[local_idx];
+            m_esdf[global_idx] = esdf[local_idx];
+        }
+    }
+    return true;
+}
+
 bool a_star::SetStartGoal(int sx, int sy, int gx, int gy) {
     if (sx < 0 || sx >= m_width || sy < 0 || sy >= m_height || gx < 0 || gx >= m_width || gy < 0 || gy >= m_height) return false;
     if (!IsFree(sx, sy)) return false;
@@ -100,6 +122,9 @@ bool a_star::FindPath() {
         int cx = c_idx % m_width, cy = c_idx / m_width;
         for (int d = 0; d < 8; ++d) {
             int nx = cx + dx[d], ny = cy + dy[d];
+            if (dx[d] != 0 && dy[d] != 0) {
+                if (!IsFree(cx + dx[d], cy) || !IsFree(cx, cy + dy[d])) continue;
+            }
             if (!IsFree(nx, ny)) continue;
             int n_idx = get_idx(nx, ny);
             if (m_closed[n_idx]) continue;

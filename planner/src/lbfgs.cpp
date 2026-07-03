@@ -16,6 +16,25 @@ namespace planner_2d {
         return true;
     }
 
+    bool LBFGS::UpdateMapPatch(const std::vector<float>& local_cost_map, int local_w, int local_h,
+                               double local_origin_x, double local_origin_y) {
+        if (m_CostMap.empty() || local_cost_map.empty() || local_w <= 0 || local_h <= 0) return false;
+        if (static_cast<int>(local_cost_map.size()) != local_w * local_h) return false;
+
+        int start_x = static_cast<int>(std::round((local_origin_x - m_OriginX) * m_InvResX));
+        int start_y = static_cast<int>(std::round((local_origin_y - m_OriginY) * m_InvResY));
+
+        for (int y = 0; y < local_h; ++y) {
+            for (int x = 0; x < local_w; ++x) {
+                int gx = start_x + x;
+                int gy = start_y + y;
+                if (gx < 0 || gx >= m_MapWidth || gy < 0 || gy >= m_MapHeight) continue;
+                m_CostMap[gy * m_MapWidth + gx] = local_cost_map[y * local_w + x];
+            }
+        }
+        return true;
+    }
+
     bool LBFGS::InitXState(const std::vector<Eigen::Vector2d>& points, const std::vector<double>& /*init_times*/, double total_time) {
         if (points.size() < 2) return false;
         m_StartPoint = points.front(); m_EndPoint = points.back();
@@ -181,6 +200,46 @@ namespace planner_2d {
         return false; 
     }
 
+    float LBFGS::QueryCost(const Eigen::Vector2d& point) const {
+        if (m_CostMap.empty()) return 0.0f;
+        int gx = static_cast<int>(std::round((point.x() - m_OriginX) * m_InvResX));
+        int gy = static_cast<int>(std::round((point.y() - m_OriginY) * m_InvResY));
+        if (gx < 0 || gx >= m_MapWidth || gy < 0 || gy >= m_MapHeight) return lbfgs_fatal_cost;
+        return m_CostMap[gy * m_MapWidth + gx];
+    }
+
+    double LBFGS::QueryAdaptiveSampleDist(const Eigen::Vector2d& point) const {
+        float cost = QueryCost(point);
+        if (cost >= lbfgs_fatal_cost) return 0.25;
+        double normalized = std::clamp(static_cast<double>(cost) / 2.5, 0.0, 1.0);
+        return 1.15 - 0.8 * normalized;
+    }
+
+    void LBFGS::BuildAdaptiveSamples(const std::vector<Eigen::Vector2d>& source_path, std::vector<Eigen::Vector2d>& dense_pts) {
+        dense_pts.clear();
+        if (source_path.empty()) return;
+
+        dense_pts.push_back(source_path.front());
+        for (size_t i = 0; i + 1 < source_path.size(); ++i) {
+            const Eigen::Vector2d& p_start = source_path[i];
+            const Eigen::Vector2d& p_end = source_path[i + 1];
+            double dist = (p_end - p_start).norm();
+            if (dist <= 1e-6) {
+                if ((dense_pts.back() - p_end).norm() > 1e-6) dense_pts.push_back(p_end);
+                continue;
+            }
+
+            Eigen::Vector2d mid = 0.5 * (p_start + p_end);
+            double sample_dist = std::min({QueryAdaptiveSampleDist(p_start), QueryAdaptiveSampleDist(mid), QueryAdaptiveSampleDist(p_end)});
+            int num_samples = std::max(1, static_cast<int>(std::round(dist / sample_dist)));
+
+            for (int j = 1; j < num_samples; ++j) {
+                dense_pts.push_back(p_start + (p_end - p_start) * (static_cast<double>(j) / num_samples));
+            }
+            if ((dense_pts.back() - p_end).norm() > 1e-6) dense_pts.push_back(p_end);
+        }
+    }
+
     bool LBFGS::Optimize() {
         if (m_NumInteriorPoints == 0) {
             m_Minco.Init({m_StartPoint, m_EndPoint});
@@ -211,16 +270,9 @@ namespace planner_2d {
         }
 
         m_OptimizePhase = 2;
-        std::vector<Eigen::Vector2d> dense_pts;
-        for (size_t i = 0; i < m_Phase1Points.size() - 1; ++i) {
-            Eigen::Vector2d p_start = m_Phase1Points[i], p_end = m_Phase1Points[i+1];
-            double dist = (p_end - p_start).norm();
-            int num_samples = std::max(1, static_cast<int>(std::round(dist / lbfgs_sample_dist)));
-            for (int j = 0; j < num_samples; ++j) {
-                dense_pts.push_back(p_start + (p_end - p_start) * (static_cast<double>(j) / num_samples));
-            }
-        }
-        if ((dense_pts.back() - m_EndPoint).norm() > 1e-3) dense_pts.push_back(m_EndPoint);
+        BuildAdaptiveSamples(m_Phase1Points, m_DensePointCache);
+        std::vector<Eigen::Vector2d>& dense_pts = m_DensePointCache;
+        if (dense_pts.empty()) dense_pts = {m_StartPoint, m_EndPoint};
 
         m_Phase2InitPoints = dense_pts;
         m_StartPoint = dense_pts.front(); m_EndPoint = dense_pts.back();
@@ -240,9 +292,14 @@ namespace planner_2d {
         m_Minco.Init(final_pts); m_Times.resize(final_pts.size() - 1);
         double total_dist = 0; std::vector<double> dists(final_pts.size() - 1);
         for (size_t i = 0; i < final_pts.size() - 1; ++i) { dists[i] = (final_pts[i + 1] - final_pts[i]).norm(); total_dist += dists[i]; }
-        for (size_t i = 0; i < final_pts.size() - 1; ++i) {
-            m_Times[i] = m_TotalTime * (dists[i] / total_dist);
-            if (m_Times[i] < lbfgs_min_minco_time) m_Times[i] = lbfgs_min_minco_time; 
+        if (total_dist <= 1e-6) {
+            double even_time = std::max(m_TotalTime / static_cast<double>(final_pts.size() - 1), lbfgs_min_minco_time);
+            for (size_t i = 0; i < final_pts.size() - 1; ++i) m_Times[i] = even_time;
+        } else {
+            for (size_t i = 0; i < final_pts.size() - 1; ++i) {
+                m_Times[i] = m_TotalTime * (dists[i] / total_dist);
+                if (m_Times[i] < lbfgs_min_minco_time) m_Times[i] = lbfgs_min_minco_time; 
+            }
         }
         if (!m_Minco.SetPath(m_Times)) return false;
         m_IsOptimized = true; return true;
@@ -431,17 +488,9 @@ namespace planner_2d {
         
         m_Phase1Points = local_path;
         m_OptimizePhase = 2;
-        std::vector<Eigen::Vector2d> dense_pts;
-
-        for (size_t i = 0; i < m_Phase1Points.size() - 1; ++i) {
-            Eigen::Vector2d p_start = m_Phase1Points[i], p_end = m_Phase1Points[i+1];
-            double dist = (p_end - p_start).norm();
-            int num_samples = std::max(1, static_cast<int>(std::round(dist / lbfgs_sample_dist)));
-            for (int j = 0; j < num_samples; ++j) {
-                dense_pts.push_back(p_start + (p_end - p_start) * (static_cast<double>(j) / num_samples));
-            }
-        }
-        if ((dense_pts.back() - m_EndPoint).norm() > 1e-3) dense_pts.push_back(m_EndPoint);
+        BuildAdaptiveSamples(m_Phase1Points, m_DensePointCache);
+        std::vector<Eigen::Vector2d>& dense_pts = m_DensePointCache;
+        if (dense_pts.empty()) dense_pts = {m_StartPoint, m_EndPoint};
 
         m_Phase2InitPoints = dense_pts;
         m_StartPoint = dense_pts.front(); m_EndPoint = dense_pts.back();
@@ -466,9 +515,14 @@ namespace planner_2d {
         m_Minco.Init(final_pts); m_Times.resize(final_pts.size() - 1);
         double total_dist = 0; std::vector<double> dists(final_pts.size() - 1);
         for (size_t i = 0; i < final_pts.size() - 1; ++i) { dists[i] = (final_pts[i + 1] - final_pts[i]).norm(); total_dist += dists[i]; }
-        for (size_t i = 0; i < final_pts.size() - 1; ++i) {
-            m_Times[i] = m_TotalTime * (dists[i] / total_dist);
-            if (m_Times[i] < lbfgs_min_minco_time) m_Times[i] = lbfgs_min_minco_time; 
+        if (total_dist <= 1e-6) {
+            double even_time = std::max(m_TotalTime / static_cast<double>(final_pts.size() - 1), lbfgs_min_minco_time);
+            for (size_t i = 0; i < final_pts.size() - 1; ++i) m_Times[i] = even_time;
+        } else {
+            for (size_t i = 0; i < final_pts.size() - 1; ++i) {
+                m_Times[i] = m_TotalTime * (dists[i] / total_dist);
+                if (m_Times[i] < lbfgs_min_minco_time) m_Times[i] = lbfgs_min_minco_time; 
+            }
         }
 
         if (!m_Minco.SetPath(m_Times)) return false;

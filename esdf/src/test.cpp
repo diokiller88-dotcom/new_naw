@@ -82,7 +82,7 @@ void onMouseEditMap(int event, int x, int y, int flags, void* userdata) {
 
 
 int main(int argc, char** argv) {
-    std::string pcd_path = "/home/hyl/new_nav/esdf/PCD/1.pcd";
+    std::string pcd_path = "./esdf/PCD/1.pcd";
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     if (pcl::io::loadPCDFile<pcl::PointXYZ>(pcd_path, *cloud) == -1) {
         std::cerr << "Failed to load PCD file!" << std::endl;

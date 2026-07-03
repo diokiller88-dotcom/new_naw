@@ -1,0 +1,24 @@
+[ 50%] Built target esdf_map_lib
+[35m[1mConsolidate compiler generated dependencies of target esdf_test[0m
+[ 75%] Built target esdf_node
+[ 87%] [32mBuilding CXX object CMakeFiles/esdf_test.dir/src/test.cpp.o[0m
+[100%] [32m[1mLinking CXX executable esdf_test[0m
+[100%] Built target esdf_test
+-- Install configuration: "Release"
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/lib/esdf/esdf_node
+-- Installing: /home/zxcx/new_naw/install/esdf/lib/esdf/esdf_test
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/package_run_dependencies/esdf
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/parent_prefix_path/esdf
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/ament_prefix_path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.bash
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.sh
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.zsh
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.dsv
+-- Installing: /home/zxcx/new_naw/install/esdf/share/esdf/package.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/packages/esdf
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/cmake/esdfConfig.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/cmake/esdfConfig-version.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/package.xml

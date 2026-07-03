@@ -23,6 +23,8 @@ namespace planner_2d {
     public:
         bool InitMap(const std::vector<float>& cost_map, int width, int height, 
                      double res_x, double res_y, double origin_x, double origin_y);
+        bool UpdateMapPatch(const std::vector<float>& local_cost_map, int local_w, int local_h,
+                            double local_origin_x, double local_origin_y);
         
         bool InitXState(const std::vector<Eigen::Vector2d>& points, const std::vector<double>& init_times = {}, double total_time = 10.0);
         bool Optimize();
@@ -45,6 +47,9 @@ namespace planner_2d {
         bool LineSearch(double& step, const Eigen::VectorXd& direction, const Eigen::VectorXd& grad, double cost, Eigen::VectorXd& x);
         bool CheckLineOfSight(const Eigen::Vector2d& p1, const Eigen::Vector2d& p2) const;
         bool RepairPathAStar(const Eigen::Vector2d& start_phys, const Eigen::Vector2d& goal_phys, std::vector<Eigen::Vector2d>& detour_path) const;
+        float QueryCost(const Eigen::Vector2d& point) const;
+        double QueryAdaptiveSampleDist(const Eigen::Vector2d& point) const;
+        void BuildAdaptiveSamples(const std::vector<Eigen::Vector2d>& source_path, std::vector<Eigen::Vector2d>& dense_pts);
 
         std::vector<float> m_CostMap;
         int m_MapWidth  = 0; int m_MapHeight = 0;
@@ -67,6 +72,7 @@ namespace planner_2d {
 
         std::vector<Eigen::Vector2d> m_Phase1Points;
         std::vector<Eigen::Vector2d> m_Phase2InitPoints; 
+        std::vector<Eigen::Vector2d> m_DensePointCache;
 
         double m_w1_obstacle = 200.0; 
         double m_w1_length   = 5.0;   

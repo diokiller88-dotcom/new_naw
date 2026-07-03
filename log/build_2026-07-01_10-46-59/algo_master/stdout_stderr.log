@@ -1,0 +1,19 @@
+[35m[1mConsolidate compiler generated dependencies of target algo_master[0m
+[100%] Built target algo_master
+-- Install configuration: "Release"
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/lib/algo_master/algo_master
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/package_run_dependencies/algo_master
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/parent_prefix_path/algo_master
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.bash
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.sh
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.zsh
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.dsv
+-- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/packages/algo_master
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig-version.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.xml

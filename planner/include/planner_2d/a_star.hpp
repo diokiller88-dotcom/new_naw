@@ -12,6 +12,9 @@ public:
     bool InitMapWithESDF(const std::vector<int>& occupancy,
                          const std::vector<double>& esdf,
                          int width, int height);
+    bool UpdateMapPatchWithESDF(const std::vector<int>& occupancy,
+                                const std::vector<double>& esdf,
+                                int local_w, int local_h, int start_x, int start_y);
     bool SetStartGoal(int sx, int sy, int gx, int gy);
     bool FindPath();
     std::vector<Eigen::Vector2d> GetPath() const { return m_path; }

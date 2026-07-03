@@ -1,0 +1,122 @@
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)
+-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+-- Using RMW implementation 'rmw_fastrtps_cpp' as default
+-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)
+-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)
+-- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)
+-- Found message_filters: 4.3.16 (/opt/ros/humble/share/message_filters/cmake)
+-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'copyright' to check source files copyright and LICENSE
+-- Added test 'cppcheck' to perform static code analysis on C / C++ code
+-- Configured cppcheck include dirs: /home/zxcx/new_naw/planner/include
+-- Configured cppcheck exclude dirs and/or files: 
+-- Added test 'cpplint' to check C / C++ code against the Google style
+-- Configured cpplint exclude dirs and/or files: 
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'uncrustify' to check C / C++ code style
+-- Configured uncrustify additional arguments: 
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/zxcx/new_naw/build/planner
+Consolidate compiler generated dependencies of target planner_test
+Consolidate compiler generated dependencies of target planner_node
+[  6%] Building CXX object CMakeFiles/planner_node.dir/src/jps.cpp.o
+[ 12%] Building CXX object CMakeFiles/planner_test.dir/src/test.cpp.o
+[ 25%] Building CXX object CMakeFiles/planner_test.dir/src/jps.cpp.o
+[ 25%] Building CXX object CMakeFiles/planner_node.dir/src/replanner.cpp.o
+[ 37%] Building CXX object CMakeFiles/planner_test.dir/src/replanner.cpp.o
+[ 37%] Building CXX object CMakeFiles/planner_node.dir/src/planner_node.cpp.o
+In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:81:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+   81 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+      |                                                      ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:66:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+   66 |         uint16_t m_SearchEpoch;
+      |                  ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+    8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     ^~~
+In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:81:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+   81 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+      |                                                      ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:66:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+   66 |         uint16_t m_SearchEpoch;
+      |                  ^~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+    8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     ^~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:163:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  163 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:242:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  242 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:416:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  416 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:416:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  416 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:417:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  417 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:417:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  417 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:163:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  163 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:242:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  242 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:416:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  416 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:416:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  416 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:417:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  417 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:417:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  417 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~
+[ 43%] Linking CXX executable planner_test
+[ 68%] Built target planner_test
+[ 75%] Linking CXX executable planner_node
+[100%] Built target planner_node
+-- Install configuration: "Release"
+-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_node
+-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_node" to ""
+-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_test
+-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_test" to ""
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/package_run_dependencies/planner
+-- Installing: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/parent_prefix_path/planner
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.sh
+-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.sh
+-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.bash
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.sh
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.zsh
+-- Installing: /home/zxcx/new_naw/install/planner/share/planner/local_setup.dsv
+-- Installing: /home/zxcx/new_naw/install/planner/share/planner/package.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/packages/planner
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig-version.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/package.xml

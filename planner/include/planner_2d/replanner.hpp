@@ -4,6 +4,7 @@
 #include "jps.hpp"
 #include "a_star.hpp"
 #include <Eigen/Dense>
+#include <string>
 #include <vector>
 
 namespace planner_2d {
@@ -51,10 +52,15 @@ namespace planner_2d {
         bool IsGetRes() const { return m_GetRes; }
 
         const std::vector<int>& GetGlobalOccupancy() const { return m_GlobalOccupancy; }
+        const std::vector<double>& GetGlobalEsdf() const { return m_GlobalEsdf; }
         std::vector<Eigen::Vector2d> GetDetourPath() const { return m_DetourPath; }
         Eigen::Vector2d GetProjectedPoint() const { return m_ProjectedPoint; }
         Eigen::Vector2d GetFrontPoint() const { return m_FrontPoint; }
         double GetFrontTime() const { return m_FrontTime; } 
+        const std::string& GetLastPlanType() const { return m_LastPlanType; }
+        double GetLastPlanDurationMs() const { return m_LastPlanDurationMs; }
+        double GetLastJpsDurationMs() const { return m_LastJpsDurationMs; }
+        bool WasLastPlanTriggered() const { return m_LastPlanTriggered; }
 
         double GetTrajStartTime(const Eigen::Vector2d& p_) const {
             ProjectionResult res = m_Project.FindClosestPoint(p_);
@@ -68,6 +74,14 @@ namespace planner_2d {
     private:
         void UpdateGlobalMap(const std::vector<int>& local_occ, const std::vector<double>& local_esdf,
                              int local_w, int local_h, double local_origin_x, double local_origin_y);
+        void RasterizeSegment(const Eigen::Vector2i& start_pt, const Eigen::Vector2i& end_pt);
+        void AppendAdaptiveSegmentSamples(int begin_idx, int end_idx, bool is_narrow, std::vector<Eigen::Vector2d>& phys_path);
+        void BuildSegmentedAdaptivePath(const std::vector<Eigen::Vector2d>& jps_grid_path, std::vector<Eigen::Vector2d>& phys_path);
+        bool IsNarrowGrid(int gx, int gy) const;
+        Eigen::Vector2d GridToPhys(const Eigen::Vector2i& grid_pt) const;
+        void AppendUniquePoint(std::vector<Eigen::Vector2d>& path, const Eigen::Vector2d& point) const;
+        void ResetPlanStats();
+        void SetPlanStats(const std::string& plan_type, double duration_ms);
 
         jps m_jps;
         a_star m_ReplanAstar;
@@ -89,6 +103,12 @@ namespace planner_2d {
         Eigen::Vector2d m_FrontPoint;
         double m_FrontTime = 0.0; 
         std::vector<Eigen::Vector2d> m_DetourPath;
+        std::vector<Eigen::Vector2i> m_GridSegmentCache;
+        std::vector<Eigen::Vector2d> m_AdaptivePathCache;
+        std::string m_LastPlanType = "none";
+        double m_LastPlanDurationMs = 0.0;
+        double m_LastJpsDurationMs = 0.0;
+        bool m_LastPlanTriggered = false;
         
         bool m_GetRes=false;
     };

@@ -1,0 +1,12 @@
+/home/zxcx/new_naw/build/relocation/CMakeFiles/uninstall.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/relocation_uninstall.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/relocation_core.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/test_node.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/relocation_node.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/test.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/edit_cache.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/rebuild_cache.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/list_install_components.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/install.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/install/local.dir
+/home/zxcx/new_naw/build/relocation/CMakeFiles/install/strip.dir

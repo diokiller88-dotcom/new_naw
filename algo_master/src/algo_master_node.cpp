@@ -94,13 +94,7 @@ private:
             send.m_FindPath   = true;
             send.m_IsTarget   = true;
 
-            NavRecvFromPLC current_recv;
-            { 
-                std::lock_guard<std::mutex> lock(mtx_); 
-                current_recv = last_recv_; 
-            }
-            float dist = std::hypot(current_recv.m_Targetx - msg->res_pose_x, 
-                                    current_recv.m_Targety - msg->res_pose_y);
+            float dist = std::hypot(msg->res_pose_x, msg->res_pose_y);
             send.m_IsClose = (dist < close_distance_threshold);
         } else {
             send.m_IsTarget = false;

@@ -1,0 +1,97 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-9e971c3743a8cb696fb2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "esdf",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "esdf_map_lib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-esdf_map_lib-Release-47ccd02d445a5f93ce18.json",
+					"name" : "esdf_map_lib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "esdf_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-esdf_node-Release-180145a57942ac9f0561.json",
+					"name" : "esdf_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "esdf_test::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-esdf_test-Release-051bd87a7f18034f66e3.json",
+					"name" : "esdf_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "esdf_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-esdf_uninstall-Release-f4b16fde0bd0df16928e.json",
+					"name" : "esdf_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-38b423925d2789b1aab7.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/zxcx/new_naw/build/esdf",
+		"source" : "/home/zxcx/new_naw/esdf"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,36 @@
+[0.022s] Invoking command in '/home/zxcx/new_naw/build/point_lio': CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/home/zxcx/new_naw/install/relocation:/home/zxcx/new_naw/install/point_lio:/home/zxcx/new_naw/install/planner:/home/zxcx/new_naw/install/esdf:/home/zxcx/new_naw/install/algo_master:/home/zxcx/new_naw/install/custom_msgs:/home/zxcx/new_naw/install/controller:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:/home/zxcx/new_naw/install/relocation/lib:/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
+[0.082s] [100%] Built target pointlio_mapping
+[0.090s] Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/home/zxcx/new_naw/install/relocation:/home/zxcx/new_naw/install/point_lio:/home/zxcx/new_naw/install/planner:/home/zxcx/new_naw/install/esdf:/home/zxcx/new_naw/install/algo_master:/home/zxcx/new_naw/install/custom_msgs:/home/zxcx/new_naw/install/controller:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:/home/zxcx/new_naw/install/relocation/lib:/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
+[0.091s] Invoking command in '/home/zxcx/new_naw/build/point_lio': CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/home/zxcx/new_naw/install/relocation:/home/zxcx/new_naw/install/point_lio:/home/zxcx/new_naw/install/planner:/home/zxcx/new_naw/install/esdf:/home/zxcx/new_naw/install/algo_master:/home/zxcx/new_naw/install/custom_msgs:/home/zxcx/new_naw/install/controller:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:/home/zxcx/new_naw/install/relocation/lib:/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio
+[0.096s] -- Install configuration: "Release"
+[0.096s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/lib/point_lio/pointlio_mapping
+[0.096s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config
+[0.096s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config/avia.yaml
+[0.096s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config/mid360.yaml
+[0.096s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config/horizon.yaml
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config/ouster64.yaml
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/config/velody16.yaml
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/launch
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/launch/point_lio.launch.py
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/launch/__pycache__
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/launch/__pycache__/point_lio.launch.cpython-310.pyc
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/rviz_cfg
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/rviz_cfg/loam_livox.rviz
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/rviz_cfg/.gitignore
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/ament_index/resource_index/package_run_dependencies/point_lio
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/ament_index/resource_index/parent_prefix_path/point_lio
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/environment/ament_prefix_path.sh
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/environment/ament_prefix_path.dsv
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/environment/path.sh
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/environment/path.dsv
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/local_setup.bash
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/local_setup.sh
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/local_setup.zsh
+[0.097s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/local_setup.dsv
+[0.098s] -- Installing: /home/zxcx/new_naw/install/point_lio/share/point_lio/package.dsv
+[0.098s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/ament_index/resource_index/packages/point_lio
+[0.098s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.098s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/cmake/point_lioConfig.cmake
+[0.098s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/cmake/point_lioConfig-version.cmake
+[0.098s] -- Up-to-date: /home/zxcx/new_naw/install/point_lio/share/point_lio/package.xml
+[0.100s] Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/home/zxcx/new_naw/install/relocation:/home/zxcx/new_naw/install/point_lio:/home/zxcx/new_naw/install/planner:/home/zxcx/new_naw/install/esdf:/home/zxcx/new_naw/install/algo_master:/home/zxcx/new_naw/install/custom_msgs:/home/zxcx/new_naw/install/controller:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:/home/zxcx/new_naw/install/relocation/lib:/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio

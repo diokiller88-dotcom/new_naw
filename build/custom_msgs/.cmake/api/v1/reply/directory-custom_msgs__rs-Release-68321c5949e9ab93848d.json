@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "custom_msgs__rs",
+		"source" : "/home/zxcx/new_naw/build/custom_msgs/custom_msgs__rs"
+	}
+}

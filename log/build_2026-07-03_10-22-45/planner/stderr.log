@@ -1,0 +1,40 @@
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:123:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  123 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:123:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  123 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:196:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  196 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp:196:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+  196 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:363:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:363:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:364:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:364:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+/home/zxcx/new_naw/planner/src/replanner.cpp:363:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:363:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:364:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         ^~
+/home/zxcx/new_naw/planner/src/replanner.cpp:364:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             ^~

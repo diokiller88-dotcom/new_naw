@@ -1,0 +1,102 @@
+[0.008s] Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[0.046s] Consolidate compiler generated dependencies of target planner_test
+[0.047s] Consolidate compiler generated dependencies of target planner_node
+[0.059s] [  6%] Building CXX object CMakeFiles/planner_node.dir/src/jps.cpp.o
+[0.059s] [ 18%] Building CXX object CMakeFiles/planner_test.dir/src/test.cpp.o
+[0.059s] [ 18%] Building CXX object CMakeFiles/planner_node.dir/src/a_star.cpp.o
+[0.059s] [ 25%] Building CXX object CMakeFiles/planner_node.dir/src/lbfgs.cpp.o
+[0.059s] [ 31%] Building CXX object CMakeFiles/planner_node.dir/src/replanner.cpp.o
+[0.060s] [ 37%] Building CXX object CMakeFiles/planner_test.dir/src/a_star.cpp.o
+[0.060s] [ 43%] Building CXX object CMakeFiles/planner_test.dir/src/jps.cpp.o
+[0.060s] [ 50%] Building CXX object CMakeFiles/planner_test.dir/src/lbfgs.cpp.o
+[0.060s] [ 62%] Building CXX object CMakeFiles/planner_node.dir/src/planner_node.cpp.o
+[0.061s] [ 62%] Building CXX object CMakeFiles/planner_test.dir/src/replanner.cpp.o
+[0.724s] In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+[0.724s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+[0.725s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:81:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+[0.725s]    81 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+[0.725s]       |                                                      ^~~~~~~~~~~~~
+[0.725s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:66:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+[0.725s]    66 |         uint16_t m_SearchEpoch;
+[0.725s]       |                  ^~~~~~~~~~~~~
+[0.725s] /home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+[0.725s]     8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+[0.725s]       |     ^~~
+[0.740s] In file included from /home/zxcx/new_naw/planner/src/jps.cpp:1:
+[0.740s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp: In constructor ‘planner_2d::jps::jps()’:
+[0.740s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:81:54: warning: ‘planner_2d::jps::m_IsInitPoint’ will be initialized after [-Wreorder]
+[0.740s]    81 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool m_IsInitPoint;
+[0.740s]       |                                                      ^~~~~~~~~~~~~
+[0.740s] /home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:66:18: warning:   ‘uint16_t planner_2d::jps::m_SearchEpoch’ [-Wreorder]
+[0.740s]    66 |         uint16_t m_SearchEpoch;
+[0.740s]       |                  ^~~~~~~~~~~~~
+[0.740s] /home/zxcx/new_naw/planner/src/jps.cpp:8:5: warning:   when initialized here [-Wreorder]
+[0.740s]     8 |     jps::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+[0.740s]       |     ^~~
+[0.911s] /home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+[0.911s] /home/zxcx/new_naw/planner/src/replanner.cpp:130:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+[0.911s]   130 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+[0.911s]       |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.912s] /home/zxcx/new_naw/planner/src/replanner.cpp:203:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+[0.912s]   203 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+[0.912s]       |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.916s] /home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+[0.916s] /home/zxcx/new_naw/planner/src/replanner.cpp:372:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+[0.916s]   372 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+[0.916s]       |         ^~
+[0.916s] /home/zxcx/new_naw/planner/src/replanner.cpp:372:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+[0.916s]   372 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+[0.917s]       |                             ^~
+[0.917s] /home/zxcx/new_naw/planner/src/replanner.cpp:373:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+[0.917s]   373 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+[0.917s]       |         ^~
+[0.917s] /home/zxcx/new_naw/planner/src/replanner.cpp:373:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+[0.917s]   373 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+[0.917s]       |                             ^~
+[0.923s] /home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)’:
+[0.923s] /home/zxcx/new_naw/planner/src/replanner.cpp:130:33: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+[0.923s]   130 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {
+[0.923s]       |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.924s] /home/zxcx/new_naw/planner/src/replanner.cpp:203:61: warning: comparison of integer expressions of different signedness: ‘int’ and ‘size_t’ {aka ‘long unsigned int’} [-Wsign-compare]
+[0.924s]   203 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {
+[0.924s]       |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0.928s] /home/zxcx/new_naw/planner/src/replanner.cpp: In member function ‘Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const’:
+[0.928s] /home/zxcx/new_naw/planner/src/replanner.cpp:372:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+[0.928s]   372 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+[0.928s]       |         ^~
+[0.928s] /home/zxcx/new_naw/planner/src/replanner.cpp:372:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+[0.928s]   372 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+[0.928s]       |                             ^~
+[0.928s] /home/zxcx/new_naw/planner/src/replanner.cpp:373:9: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+[0.928s]   373 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+[0.928s]       |         ^~
+[0.928s] /home/zxcx/new_naw/planner/src/replanner.cpp:373:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+[0.928s]   373 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+[0.929s]       |                             ^~
+[3.858s] [ 68%] Linking CXX executable planner_test
+[4.096s] [ 81%] Built target planner_test
+[16.585s] [ 87%] Linking CXX executable planner_node
+[16.781s] [100%] Built target planner_node
+[16.789s] Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[16.795s] Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner
+[16.801s] -- Install configuration: "Release"
+[16.801s] -- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_node
+[16.803s] -- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_node" to ""
+[16.803s] -- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_test
+[16.804s] -- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_test" to ""
+[16.804s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/package_run_dependencies/planner
+[16.804s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/parent_prefix_path/planner
+[16.804s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.sh
+[16.804s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.dsv
+[16.804s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.sh
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.dsv
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.bash
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.sh
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.zsh
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.dsv
+[16.805s] -- Installing: /home/zxcx/new_naw/install/planner/share/planner/package.dsv
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/packages/planner
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig.cmake
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig-version.cmake
+[16.805s] -- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/package.xml
+[30.014s] Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner

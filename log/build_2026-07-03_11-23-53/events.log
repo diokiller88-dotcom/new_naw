@@ -1,0 +1,738 @@
+[0.000000] (-) TimerEvent: {}
+[0.000215] (-) JobUnselected: {'identifier': 'algo_master'}
+[0.000239] (-) JobUnselected: {'identifier': 'controller'}
+[0.000254] (-) JobUnselected: {'identifier': 'custom_msgs'}
+[0.000266] (-) JobUnselected: {'identifier': 'esdf'}
+[0.000280] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000293] (-) JobUnselected: {'identifier': 'point_lio'}
+[0.000305] (-) JobUnselected: {'identifier': 'relocation'}
+[0.000322] (planner) JobQueued: {'identifier': 'planner', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000717] (planner) JobStarted: {'identifier': 'planner'}
+[0.008253] (planner) JobProgress: {'identifier': 'planner', 'progress': 'cmake'}
+[0.008738] (planner) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/planner', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/planner'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[0.017920] (planner) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.092235] (planner) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.099723] (-) TimerEvent: {}
+[0.107830] (planner) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.109027] (planner) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.112254] (planner) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.117015] (planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.123155] (planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.139483] (planner) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.140109] (planner) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.199811] (-) TimerEvent: {}
+[0.206448] (planner) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[0.238224] (planner) StdoutLine: {'line': b'-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)\n'}
+[0.244420] (planner) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[0.259524] (planner) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[0.278671] (planner) StdoutLine: {'line': b'-- Found message_filters: 4.3.16 (/opt/ros/humble/share/message_filters/cmake)\n'}
+[0.280950] (planner) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[0.299907] (-) TimerEvent: {}
+[0.321836] (planner) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[0.322678] (planner) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[0.322795] (planner) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/zxcx/new_naw/planner/include\n'}
+[0.322836] (planner) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[0.323632] (planner) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[0.323672] (planner) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[0.324025] (planner) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[0.324929] (planner) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[0.324970] (planner) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[0.325149] (planner) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[0.325555] (planner) StdoutLine: {'line': b'-- Configuring done\n'}
+[0.338605] (planner) StdoutLine: {'line': b'-- Generating done\n'}
+[0.342354] (planner) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/planner\n'}
+[0.399993] (-) TimerEvent: {}
+[0.500136] (-) TimerEvent: {}
+[0.600302] (-) TimerEvent: {}
+[0.700447] (-) TimerEvent: {}
+[0.800567] (-) TimerEvent: {}
+[0.900680] (-) TimerEvent: {}
+[1.000818] (-) TimerEvent: {}
+[1.100960] (-) TimerEvent: {}
+[1.201147] (-) TimerEvent: {}
+[1.301310] (-) TimerEvent: {}
+[1.401473] (-) TimerEvent: {}
+[1.501638] (-) TimerEvent: {}
+[1.601771] (-) TimerEvent: {}
+[1.701878] (-) TimerEvent: {}
+[1.801981] (-) TimerEvent: {}
+[1.902084] (-) TimerEvent: {}
+[2.002201] (-) TimerEvent: {}
+[2.102319] (-) TimerEvent: {}
+[2.202432] (-) TimerEvent: {}
+[2.302568] (-) TimerEvent: {}
+[2.402694] (-) TimerEvent: {}
+[2.502796] (-) TimerEvent: {}
+[2.602915] (-) TimerEvent: {}
+[2.703028] (-) TimerEvent: {}
+[2.803135] (-) TimerEvent: {}
+[2.903240] (-) TimerEvent: {}
+[3.003348] (-) TimerEvent: {}
+[3.103455] (-) TimerEvent: {}
+[3.203564] (-) TimerEvent: {}
+[3.303665] (-) TimerEvent: {}
+[3.403835] (-) TimerEvent: {}
+[3.504006] (-) TimerEvent: {}
+[3.604143] (-) TimerEvent: {}
+[3.704268] (-) TimerEvent: {}
+[3.804397] (-) TimerEvent: {}
+[3.904533] (-) TimerEvent: {}
+[4.004659] (-) TimerEvent: {}
+[4.104844] (-) TimerEvent: {}
+[4.205022] (-) TimerEvent: {}
+[4.305173] (-) TimerEvent: {}
+[4.405330] (-) TimerEvent: {}
+[4.505463] (-) TimerEvent: {}
+[4.605631] (-) TimerEvent: {}
+[4.705813] (-) TimerEvent: {}
+[4.805959] (-) TimerEvent: {}
+[4.906076] (-) TimerEvent: {}
+[5.006189] (-) TimerEvent: {}
+[5.106309] (-) TimerEvent: {}
+[5.206434] (-) TimerEvent: {}
+[5.306557] (-) TimerEvent: {}
+[5.406679] (-) TimerEvent: {}
+[5.506787] (-) TimerEvent: {}
+[5.606902] (-) TimerEvent: {}
+[5.707025] (-) TimerEvent: {}
+[5.807149] (-) TimerEvent: {}
+[5.907311] (-) TimerEvent: {}
+[6.007508] (-) TimerEvent: {}
+[6.107646] (-) TimerEvent: {}
+[6.207775] (-) TimerEvent: {}
+[6.307893] (-) TimerEvent: {}
+[6.408027] (-) TimerEvent: {}
+[6.508139] (-) TimerEvent: {}
+[6.608254] (-) TimerEvent: {}
+[6.708387] (-) TimerEvent: {}
+[6.808526] (-) TimerEvent: {}
+[6.908681] (-) TimerEvent: {}
+[7.008816] (-) TimerEvent: {}
+[7.108981] (-) TimerEvent: {}
+[7.209167] (-) TimerEvent: {}
+[7.309353] (-) TimerEvent: {}
+[7.409522] (-) TimerEvent: {}
+[7.509717] (-) TimerEvent: {}
+[7.609885] (-) TimerEvent: {}
+[7.710029] (-) TimerEvent: {}
+[7.810163] (-) TimerEvent: {}
+[7.910290] (-) TimerEvent: {}
+[8.010430] (-) TimerEvent: {}
+[8.110566] (-) TimerEvent: {}
+[8.210687] (-) TimerEvent: {}
+[8.310824] (-) TimerEvent: {}
+[8.410966] (-) TimerEvent: {}
+[8.511119] (-) TimerEvent: {}
+[8.611275] (-) TimerEvent: {}
+[8.711417] (-) TimerEvent: {}
+[8.811588] (-) TimerEvent: {}
+[8.911760] (-) TimerEvent: {}
+[9.011896] (-) TimerEvent: {}
+[9.112040] (-) TimerEvent: {}
+[9.212212] (-) TimerEvent: {}
+[9.312388] (-) TimerEvent: {}
+[9.412518] (-) TimerEvent: {}
+[9.512655] (-) TimerEvent: {}
+[9.612786] (-) TimerEvent: {}
+[9.712965] (-) TimerEvent: {}
+[9.813139] (-) TimerEvent: {}
+[9.913264] (-) TimerEvent: {}
+[10.013377] (-) TimerEvent: {}
+[10.113506] (-) TimerEvent: {}
+[10.213648] (-) TimerEvent: {}
+[10.313836] (-) TimerEvent: {}
+[10.414062] (-) TimerEvent: {}
+[10.514284] (-) TimerEvent: {}
+[10.614453] (-) TimerEvent: {}
+[10.714641] (-) TimerEvent: {}
+[10.814819] (-) TimerEvent: {}
+[10.915010] (-) TimerEvent: {}
+[11.015158] (-) TimerEvent: {}
+[11.115325] (-) TimerEvent: {}
+[11.215507] (-) TimerEvent: {}
+[11.315684] (-) TimerEvent: {}
+[11.415850] (-) TimerEvent: {}
+[11.516020] (-) TimerEvent: {}
+[11.616170] (-) TimerEvent: {}
+[11.716346] (-) TimerEvent: {}
+[11.816526] (-) TimerEvent: {}
+[11.916714] (-) TimerEvent: {}
+[12.016907] (-) TimerEvent: {}
+[12.117097] (-) TimerEvent: {}
+[12.217281] (-) TimerEvent: {}
+[12.317451] (-) TimerEvent: {}
+[12.417595] (-) TimerEvent: {}
+[12.517740] (-) TimerEvent: {}
+[12.617884] (-) TimerEvent: {}
+[12.718037] (-) TimerEvent: {}
+[12.818162] (-) TimerEvent: {}
+[12.918324] (-) TimerEvent: {}
+[13.018474] (-) TimerEvent: {}
+[13.118604] (-) TimerEvent: {}
+[13.218718] (-) TimerEvent: {}
+[13.318824] (-) TimerEvent: {}
+[13.418977] (-) TimerEvent: {}
+[13.519155] (-) TimerEvent: {}
+[13.619318] (-) TimerEvent: {}
+[13.719452] (-) TimerEvent: {}
+[13.819571] (-) TimerEvent: {}
+[13.919693] (-) TimerEvent: {}
+[14.019822] (-) TimerEvent: {}
+[14.119951] (-) TimerEvent: {}
+[14.220065] (-) TimerEvent: {}
+[14.320136] (-) TimerEvent: {}
+[14.420256] (-) TimerEvent: {}
+[14.520368] (-) TimerEvent: {}
+[14.620499] (-) TimerEvent: {}
+[14.720630] (-) TimerEvent: {}
+[14.820762] (-) TimerEvent: {}
+[14.920884] (-) TimerEvent: {}
+[15.021000] (-) TimerEvent: {}
+[15.121180] (-) TimerEvent: {}
+[15.221329] (-) TimerEvent: {}
+[15.321443] (-) TimerEvent: {}
+[15.421599] (-) TimerEvent: {}
+[15.521762] (-) TimerEvent: {}
+[15.621903] (-) TimerEvent: {}
+[15.722058] (-) TimerEvent: {}
+[15.822239] (-) TimerEvent: {}
+[15.922405] (-) TimerEvent: {}
+[16.022564] (-) TimerEvent: {}
+[16.122700] (-) TimerEvent: {}
+[16.222824] (-) TimerEvent: {}
+[16.322977] (-) TimerEvent: {}
+[16.423133] (-) TimerEvent: {}
+[16.523255] (-) TimerEvent: {}
+[16.623362] (-) TimerEvent: {}
+[16.723475] (-) TimerEvent: {}
+[16.823589] (-) TimerEvent: {}
+[16.923738] (-) TimerEvent: {}
+[17.023886] (-) TimerEvent: {}
+[17.124006] (-) TimerEvent: {}
+[17.224163] (-) TimerEvent: {}
+[17.324337] (-) TimerEvent: {}
+[17.424490] (-) TimerEvent: {}
+[17.524630] (-) TimerEvent: {}
+[17.624792] (-) TimerEvent: {}
+[17.724996] (-) TimerEvent: {}
+[17.825170] (-) TimerEvent: {}
+[17.925313] (-) TimerEvent: {}
+[18.025431] (-) TimerEvent: {}
+[18.125614] (-) TimerEvent: {}
+[18.225778] (-) TimerEvent: {}
+[18.325947] (-) TimerEvent: {}
+[18.426172] (-) TimerEvent: {}
+[18.526322] (-) TimerEvent: {}
+[18.626457] (-) TimerEvent: {}
+[18.726577] (-) TimerEvent: {}
+[18.826729] (-) TimerEvent: {}
+[18.926931] (-) TimerEvent: {}
+[19.027156] (-) TimerEvent: {}
+[19.127321] (-) TimerEvent: {}
+[19.227458] (-) TimerEvent: {}
+[19.327577] (-) TimerEvent: {}
+[19.427689] (-) TimerEvent: {}
+[19.527811] (-) TimerEvent: {}
+[19.627968] (-) TimerEvent: {}
+[19.728162] (-) TimerEvent: {}
+[19.828345] (-) TimerEvent: {}
+[19.928548] (-) TimerEvent: {}
+[20.028716] (-) TimerEvent: {}
+[20.128865] (-) TimerEvent: {}
+[20.229032] (-) TimerEvent: {}
+[20.329230] (-) TimerEvent: {}
+[20.429426] (-) TimerEvent: {}
+[20.529607] (-) TimerEvent: {}
+[20.629779] (-) TimerEvent: {}
+[20.729959] (-) TimerEvent: {}
+[20.830146] (-) TimerEvent: {}
+[20.930316] (-) TimerEvent: {}
+[21.030484] (-) TimerEvent: {}
+[21.130654] (-) TimerEvent: {}
+[21.230837] (-) TimerEvent: {}
+[21.330988] (-) TimerEvent: {}
+[21.431166] (-) TimerEvent: {}
+[21.531359] (-) TimerEvent: {}
+[21.631535] (-) TimerEvent: {}
+[21.731690] (-) TimerEvent: {}
+[21.831833] (-) TimerEvent: {}
+[21.931997] (-) TimerEvent: {}
+[22.032156] (-) TimerEvent: {}
+[22.132315] (-) TimerEvent: {}
+[22.232498] (-) TimerEvent: {}
+[22.332683] (-) TimerEvent: {}
+[22.432857] (-) TimerEvent: {}
+[22.533014] (-) TimerEvent: {}
+[22.633152] (-) TimerEvent: {}
+[22.733282] (-) TimerEvent: {}
+[22.833424] (-) TimerEvent: {}
+[22.933599] (-) TimerEvent: {}
+[23.033737] (-) TimerEvent: {}
+[23.133848] (-) TimerEvent: {}
+[23.233956] (-) TimerEvent: {}
+[23.334077] (-) TimerEvent: {}
+[23.434258] (-) TimerEvent: {}
+[23.534415] (-) TimerEvent: {}
+[23.634595] (-) TimerEvent: {}
+[23.734761] (-) TimerEvent: {}
+[23.834873] (-) TimerEvent: {}
+[23.935040] (-) TimerEvent: {}
+[24.035253] (-) TimerEvent: {}
+[24.135462] (-) TimerEvent: {}
+[24.235673] (-) TimerEvent: {}
+[24.335868] (-) TimerEvent: {}
+[24.436014] (-) TimerEvent: {}
+[24.536155] (-) TimerEvent: {}
+[24.636312] (-) TimerEvent: {}
+[24.736462] (-) TimerEvent: {}
+[24.836617] (-) TimerEvent: {}
+[24.936751] (-) TimerEvent: {}
+[25.036891] (-) TimerEvent: {}
+[25.137044] (-) TimerEvent: {}
+[25.237199] (-) TimerEvent: {}
+[25.337371] (-) TimerEvent: {}
+[25.437529] (-) TimerEvent: {}
+[25.537647] (-) TimerEvent: {}
+[25.637760] (-) TimerEvent: {}
+[25.737888] (-) TimerEvent: {}
+[25.838032] (-) TimerEvent: {}
+[25.938160] (-) TimerEvent: {}
+[26.038332] (-) TimerEvent: {}
+[26.138496] (-) TimerEvent: {}
+[26.238650] (-) TimerEvent: {}
+[26.338806] (-) TimerEvent: {}
+[26.438989] (-) TimerEvent: {}
+[26.539173] (-) TimerEvent: {}
+[26.639350] (-) TimerEvent: {}
+[26.739527] (-) TimerEvent: {}
+[26.839653] (-) TimerEvent: {}
+[26.939811] (-) TimerEvent: {}
+[27.039989] (-) TimerEvent: {}
+[27.140157] (-) TimerEvent: {}
+[27.240301] (-) TimerEvent: {}
+[27.340458] (-) TimerEvent: {}
+[27.440629] (-) TimerEvent: {}
+[27.540805] (-) TimerEvent: {}
+[27.640982] (-) TimerEvent: {}
+[27.741159] (-) TimerEvent: {}
+[27.841329] (-) TimerEvent: {}
+[27.941484] (-) TimerEvent: {}
+[28.041619] (-) TimerEvent: {}
+[28.141733] (-) TimerEvent: {}
+[28.241835] (-) TimerEvent: {}
+[28.341973] (-) TimerEvent: {}
+[28.442180] (-) TimerEvent: {}
+[28.542367] (-) TimerEvent: {}
+[28.642520] (-) TimerEvent: {}
+[28.742655] (-) TimerEvent: {}
+[28.842778] (-) TimerEvent: {}
+[28.942909] (-) TimerEvent: {}
+[29.043036] (-) TimerEvent: {}
+[29.143148] (-) TimerEvent: {}
+[29.243302] (-) TimerEvent: {}
+[29.343479] (-) TimerEvent: {}
+[29.443646] (-) TimerEvent: {}
+[29.543842] (-) TimerEvent: {}
+[29.644020] (-) TimerEvent: {}
+[29.744178] (-) TimerEvent: {}
+[29.844320] (-) TimerEvent: {}
+[29.944460] (-) TimerEvent: {}
+[30.031849] (planner) CommandEnded: {'returncode': 0}
+[30.032287] (planner) JobProgress: {'identifier': 'planner', 'progress': 'build'}
+[30.032689] (planner) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/planner', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.044539] (-) TimerEvent: {}
+[30.078370] (planner) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target planner_node\n'}
+[30.079221] (planner) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target planner_test\n'}
+[30.090226] (planner) StdoutLine: {'line': b'[  6%] Building CXX object CMakeFiles/planner_node.dir/src/lbfgs.cpp.o\n'}
+[30.090562] (planner) StdoutLine: {'line': b'[ 18%] Building CXX object CMakeFiles/planner_node.dir/src/tra_project.cpp.o\n'}
+[30.090634] (planner) StdoutLine: {'line': b'[ 18%] Building CXX object CMakeFiles/planner_node.dir/src/replanner.cpp.o\n'}
+[30.091728] (planner) StdoutLine: {'line': b'[ 25%] Building CXX object CMakeFiles/planner_test.dir/src/test.cpp.o\n'}
+[30.091832] (planner) StdoutLine: {'line': b'[ 31%] Building CXX object CMakeFiles/planner_node.dir/src/planner_node.cpp.o\n'}
+[30.092677] (planner) StdoutLine: {'line': b'[ 37%] Building CXX object CMakeFiles/planner_test.dir/src/lbfgs.cpp.o\n'}
+[30.092895] (planner) StdoutLine: {'line': b'[ 43%] Building CXX object CMakeFiles/planner_test.dir/src/tra_project.cpp.o\n'}
+[30.093174] (planner) StdoutLine: {'line': b'[ 50%] Building CXX object CMakeFiles/planner_test.dir/src/replanner.cpp.o\n'}
+[30.144659] (-) TimerEvent: {}
+[30.244847] (-) TimerEvent: {}
+[30.345031] (-) TimerEvent: {}
+[30.445211] (-) TimerEvent: {}
+[30.545346] (-) TimerEvent: {}
+[30.645463] (-) TimerEvent: {}
+[30.745573] (-) TimerEvent: {}
+[30.788057] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function \xe2\x80\x98int planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)\xe2\x80\x99:\n'}
+[30.788242] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19: warning: unused variable \xe2\x80\x98node\xe2\x80\x99 [-Wunused-variable]\n'}
+[30.788292] (planner) StderrLine: {'line': b'   33 |         AABBNode& node = m_TreeNodes.back();\n'}
+[30.788331] (planner) StderrLine: {'line': b'      |                   ^~~~\n'}
+[30.799393] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function \xe2\x80\x98void planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const\xe2\x80\x99:\n'}
+[30.799506] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42: warning: unused parameter \xe2\x80\x98a0\xe2\x80\x99 [-Wunused-parameter]\n'}
+[30.799567] (planner) StderrLine: {'line': b'  171 |     void project::GetCubicExtrema(double a0, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {\n'}
+[30.799620] (planner) StderrLine: {'line': b'      |                                   ~~~~~~~^~\n'}
+[30.806023] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function \xe2\x80\x98int planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)\xe2\x80\x99:\n'}
+[30.806098] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19: warning: unused variable \xe2\x80\x98node\xe2\x80\x99 [-Wunused-variable]\n'}
+[30.806232] (planner) StderrLine: {'line': b'   33 |         AABBNode& node = m_TreeNodes.back();\n'}
+[30.806303] (planner) StderrLine: {'line': b'      |                   ^~~~\n'}
+[30.817835] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp: In member function \xe2\x80\x98void planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const\xe2\x80\x99:\n'}
+[30.817937] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42: warning: unused parameter \xe2\x80\x98a0\xe2\x80\x99 [-Wunused-parameter]\n'}
+[30.818012] (planner) StderrLine: {'line': b'  171 |     void project::GetCubicExtrema(double a0, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {\n'}
+[30.818063] (planner) StderrLine: {'line': b'      |                                   ~~~~~~~^~\n'}
+[30.845674] (-) TimerEvent: {}
+[30.942017] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)\xe2\x80\x99:\n'}
+[30.942207] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:253:33: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[30.942265] (planner) StderrLine: {'line': b'  253 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {\n'}
+[30.942312] (planner) StderrLine: {'line': b'      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[30.943578] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:332:61: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[30.943650] (planner) StderrLine: {'line': b'  332 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {\n'}
+[30.943692] (planner) StderrLine: {'line': b'      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[30.945771] (-) TimerEvent: {}
+[30.947775] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const\xe2\x80\x99:\n'}
+[30.947876] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:506:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[30.947937] (planner) StderrLine: {'line': b'  506 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[30.947989] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[30.948036] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:506:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[30.948084] (planner) StderrLine: {'line': b'  506 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[30.948145] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[30.948194] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:507:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[30.948249] (planner) StderrLine: {'line': b'  507 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[30.948296] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[30.948343] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:507:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[30.948388] (planner) StderrLine: {'line': b'  507 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[30.948430] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[30.960479] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)\xe2\x80\x99:\n'}
+[30.960555] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:253:33: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[30.960613] (planner) StderrLine: {'line': b'  253 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {\n'}
+[30.960652] (planner) StderrLine: {'line': b'      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[30.961960] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:332:61: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[30.962040] (planner) StderrLine: {'line': b'  332 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {\n'}
+[30.962083] (planner) StderrLine: {'line': b'      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[30.966031] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const\xe2\x80\x99:\n'}
+[30.966113] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:506:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[30.966160] (planner) StderrLine: {'line': b'  506 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[30.966198] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[30.966233] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:506:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[30.966265] (planner) StderrLine: {'line': b'  506 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[30.966297] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[30.966329] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:507:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[30.966363] (planner) StderrLine: {'line': b'  507 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[30.966402] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[30.966435] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:507:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[30.966467] (planner) StderrLine: {'line': b'  507 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[30.966499] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[31.045873] (-) TimerEvent: {}
+[31.146031] (-) TimerEvent: {}
+[31.246140] (-) TimerEvent: {}
+[31.346270] (-) TimerEvent: {}
+[31.446430] (-) TimerEvent: {}
+[31.546583] (-) TimerEvent: {}
+[31.646754] (-) TimerEvent: {}
+[31.746942] (-) TimerEvent: {}
+[31.847115] (-) TimerEvent: {}
+[31.947274] (-) TimerEvent: {}
+[32.047434] (-) TimerEvent: {}
+[32.147587] (-) TimerEvent: {}
+[32.247715] (-) TimerEvent: {}
+[32.347842] (-) TimerEvent: {}
+[32.448023] (-) TimerEvent: {}
+[32.548212] (-) TimerEvent: {}
+[32.648407] (-) TimerEvent: {}
+[32.748556] (-) TimerEvent: {}
+[32.848685] (-) TimerEvent: {}
+[32.948814] (-) TimerEvent: {}
+[33.048969] (-) TimerEvent: {}
+[33.149155] (-) TimerEvent: {}
+[33.249283] (-) TimerEvent: {}
+[33.349464] (-) TimerEvent: {}
+[33.449649] (-) TimerEvent: {}
+[33.549852] (-) TimerEvent: {}
+[33.650035] (-) TimerEvent: {}
+[33.750166] (-) TimerEvent: {}
+[33.850289] (-) TimerEvent: {}
+[33.950435] (-) TimerEvent: {}
+[34.025547] (planner) StdoutLine: {'line': b'[ 56%] Linking CXX executable planner_test\n'}
+[34.050545] (-) TimerEvent: {}
+[34.150728] (-) TimerEvent: {}
+[34.250927] (-) TimerEvent: {}
+[34.277165] (planner) StdoutLine: {'line': b'[ 75%] Built target planner_test\n'}
+[34.351029] (-) TimerEvent: {}
+[34.451166] (-) TimerEvent: {}
+[34.551335] (-) TimerEvent: {}
+[34.651509] (-) TimerEvent: {}
+[34.751690] (-) TimerEvent: {}
+[34.851863] (-) TimerEvent: {}
+[34.952026] (-) TimerEvent: {}
+[35.052162] (-) TimerEvent: {}
+[35.152320] (-) TimerEvent: {}
+[35.252485] (-) TimerEvent: {}
+[35.352651] (-) TimerEvent: {}
+[35.452816] (-) TimerEvent: {}
+[35.552981] (-) TimerEvent: {}
+[35.653153] (-) TimerEvent: {}
+[35.753313] (-) TimerEvent: {}
+[35.853472] (-) TimerEvent: {}
+[35.953623] (-) TimerEvent: {}
+[36.053762] (-) TimerEvent: {}
+[36.153926] (-) TimerEvent: {}
+[36.254129] (-) TimerEvent: {}
+[36.354303] (-) TimerEvent: {}
+[36.454487] (-) TimerEvent: {}
+[36.554664] (-) TimerEvent: {}
+[36.654836] (-) TimerEvent: {}
+[36.754995] (-) TimerEvent: {}
+[36.855130] (-) TimerEvent: {}
+[36.955283] (-) TimerEvent: {}
+[37.055411] (-) TimerEvent: {}
+[37.155531] (-) TimerEvent: {}
+[37.255654] (-) TimerEvent: {}
+[37.355785] (-) TimerEvent: {}
+[37.455932] (-) TimerEvent: {}
+[37.556095] (-) TimerEvent: {}
+[37.656259] (-) TimerEvent: {}
+[37.756377] (-) TimerEvent: {}
+[37.856503] (-) TimerEvent: {}
+[37.956654] (-) TimerEvent: {}
+[38.056807] (-) TimerEvent: {}
+[38.156934] (-) TimerEvent: {}
+[38.257049] (-) TimerEvent: {}
+[38.357137] (-) TimerEvent: {}
+[38.457263] (-) TimerEvent: {}
+[38.557399] (-) TimerEvent: {}
+[38.657566] (-) TimerEvent: {}
+[38.757735] (-) TimerEvent: {}
+[38.857897] (-) TimerEvent: {}
+[38.958068] (-) TimerEvent: {}
+[39.058266] (-) TimerEvent: {}
+[39.158457] (-) TimerEvent: {}
+[39.258625] (-) TimerEvent: {}
+[39.358770] (-) TimerEvent: {}
+[39.458920] (-) TimerEvent: {}
+[39.559084] (-) TimerEvent: {}
+[39.659263] (-) TimerEvent: {}
+[39.759419] (-) TimerEvent: {}
+[39.859609] (-) TimerEvent: {}
+[39.959825] (-) TimerEvent: {}
+[40.059995] (-) TimerEvent: {}
+[40.160138] (-) TimerEvent: {}
+[40.260291] (-) TimerEvent: {}
+[40.360454] (-) TimerEvent: {}
+[40.460624] (-) TimerEvent: {}
+[40.560795] (-) TimerEvent: {}
+[40.660957] (-) TimerEvent: {}
+[40.761135] (-) TimerEvent: {}
+[40.861354] (-) TimerEvent: {}
+[40.961528] (-) TimerEvent: {}
+[41.061705] (-) TimerEvent: {}
+[41.161877] (-) TimerEvent: {}
+[41.262052] (-) TimerEvent: {}
+[41.362251] (-) TimerEvent: {}
+[41.462459] (-) TimerEvent: {}
+[41.562693] (-) TimerEvent: {}
+[41.662874] (-) TimerEvent: {}
+[41.763051] (-) TimerEvent: {}
+[41.863268] (-) TimerEvent: {}
+[41.963452] (-) TimerEvent: {}
+[42.063640] (-) TimerEvent: {}
+[42.163820] (-) TimerEvent: {}
+[42.264002] (-) TimerEvent: {}
+[42.364195] (-) TimerEvent: {}
+[42.464367] (-) TimerEvent: {}
+[42.564550] (-) TimerEvent: {}
+[42.664760] (-) TimerEvent: {}
+[42.764943] (-) TimerEvent: {}
+[42.865143] (-) TimerEvent: {}
+[42.965321] (-) TimerEvent: {}
+[43.065517] (-) TimerEvent: {}
+[43.165694] (-) TimerEvent: {}
+[43.265902] (-) TimerEvent: {}
+[43.366120] (-) TimerEvent: {}
+[43.466290] (-) TimerEvent: {}
+[43.566485] (-) TimerEvent: {}
+[43.666658] (-) TimerEvent: {}
+[43.766825] (-) TimerEvent: {}
+[43.867013] (-) TimerEvent: {}
+[43.967203] (-) TimerEvent: {}
+[44.067384] (-) TimerEvent: {}
+[44.167526] (-) TimerEvent: {}
+[44.267656] (-) TimerEvent: {}
+[44.367791] (-) TimerEvent: {}
+[44.467955] (-) TimerEvent: {}
+[44.568136] (-) TimerEvent: {}
+[44.668301] (-) TimerEvent: {}
+[44.768458] (-) TimerEvent: {}
+[44.868626] (-) TimerEvent: {}
+[44.968819] (-) TimerEvent: {}
+[45.068996] (-) TimerEvent: {}
+[45.169161] (-) TimerEvent: {}
+[45.269340] (-) TimerEvent: {}
+[45.369533] (-) TimerEvent: {}
+[45.469716] (-) TimerEvent: {}
+[45.569889] (-) TimerEvent: {}
+[45.670074] (-) TimerEvent: {}
+[45.770252] (-) TimerEvent: {}
+[45.870435] (-) TimerEvent: {}
+[45.970620] (-) TimerEvent: {}
+[46.070804] (-) TimerEvent: {}
+[46.170993] (-) TimerEvent: {}
+[46.271175] (-) TimerEvent: {}
+[46.371340] (-) TimerEvent: {}
+[46.471533] (-) TimerEvent: {}
+[46.571728] (-) TimerEvent: {}
+[46.671905] (-) TimerEvent: {}
+[46.772086] (-) TimerEvent: {}
+[46.872303] (-) TimerEvent: {}
+[46.972493] (-) TimerEvent: {}
+[47.072682] (-) TimerEvent: {}
+[47.139937] (planner) StdoutLine: {'line': b'[ 81%] Linking CXX executable planner_node\n'}
+[47.172770] (-) TimerEvent: {}
+[47.272931] (-) TimerEvent: {}
+[47.339080] (planner) StdoutLine: {'line': b'[100%] Built target planner_node\n'}
+[47.347924] (planner) CommandEnded: {'returncode': 0}
+[47.348402] (planner) JobProgress: {'identifier': 'planner', 'progress': 'install'}
+[47.354525] (planner) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/planner'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[47.359523] (planner) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[47.359663] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_node\n'}
+[47.363220] (planner) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_node" to ""\n'}
+[47.363366] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_test\n'}
+[47.364037] (planner) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_test" to ""\n'}
+[47.364178] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/package_run_dependencies/planner\n'}
+[47.364244] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/parent_prefix_path/planner\n'}
+[47.364371] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.sh\n'}
+[47.364449] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.dsv\n'}
+[47.364521] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.sh\n'}
+[47.364661] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/path.dsv\n'}
+[47.364698] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.bash\n'}
+[47.364730] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.sh\n'}
+[47.364793] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.zsh\n'}
+[47.364824] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/local_setup.dsv\n'}
+[47.364901] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/package.dsv\n'}
+[47.364969] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/packages/planner\n'}
+[47.365001] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig.cmake\n'}
+[47.365033] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig-version.cmake\n'}
+[47.365061] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/package.xml\n'}
+[47.373001] (-) TimerEvent: {}
+[47.473147] (-) TimerEvent: {}
+[47.573270] (-) TimerEvent: {}
+[47.673436] (-) TimerEvent: {}
+[47.773635] (-) TimerEvent: {}
+[47.873827] (-) TimerEvent: {}
+[47.974005] (-) TimerEvent: {}
+[48.074179] (-) TimerEvent: {}
+[48.174356] (-) TimerEvent: {}
+[48.274534] (-) TimerEvent: {}
+[48.374697] (-) TimerEvent: {}
+[48.474884] (-) TimerEvent: {}
+[48.575069] (-) TimerEvent: {}
+[48.675253] (-) TimerEvent: {}
+[48.775468] (-) TimerEvent: {}
+[48.875663] (-) TimerEvent: {}
+[48.975829] (-) TimerEvent: {}
+[49.076031] (-) TimerEvent: {}
+[49.176209] (-) TimerEvent: {}
+[49.276396] (-) TimerEvent: {}
+[49.376599] (-) TimerEvent: {}
+[49.476779] (-) TimerEvent: {}
+[49.576941] (-) TimerEvent: {}
+[49.677093] (-) TimerEvent: {}
+[49.777244] (-) TimerEvent: {}
+[49.877424] (-) TimerEvent: {}
+[49.977604] (-) TimerEvent: {}
+[50.077748] (-) TimerEvent: {}
+[50.177885] (-) TimerEvent: {}
+[50.278029] (-) TimerEvent: {}
+[50.378201] (-) TimerEvent: {}
+[50.478349] (-) TimerEvent: {}
+[50.578488] (-) TimerEvent: {}
+[50.678628] (-) TimerEvent: {}
+[50.778767] (-) TimerEvent: {}
+[50.878897] (-) TimerEvent: {}
+[50.979025] (-) TimerEvent: {}
+[51.079153] (-) TimerEvent: {}
+[51.179320] (-) TimerEvent: {}
+[51.279482] (-) TimerEvent: {}
+[51.379610] (-) TimerEvent: {}
+[51.479743] (-) TimerEvent: {}
+[51.579878] (-) TimerEvent: {}
+[51.679990] (-) TimerEvent: {}
+[51.780179] (-) TimerEvent: {}
+[51.880369] (-) TimerEvent: {}
+[51.980538] (-) TimerEvent: {}
+[52.080694] (-) TimerEvent: {}
+[52.180863] (-) TimerEvent: {}
+[52.280988] (-) TimerEvent: {}
+[52.381114] (-) TimerEvent: {}
+[52.481219] (-) TimerEvent: {}
+[52.581313] (-) TimerEvent: {}
+[52.681436] (-) TimerEvent: {}
+[52.781627] (-) TimerEvent: {}
+[52.881805] (-) TimerEvent: {}
+[52.981972] (-) TimerEvent: {}
+[53.082110] (-) TimerEvent: {}
+[53.182225] (-) TimerEvent: {}
+[53.282368] (-) TimerEvent: {}
+[53.382529] (-) TimerEvent: {}
+[53.482675] (-) TimerEvent: {}
+[53.582802] (-) TimerEvent: {}
+[53.682942] (-) TimerEvent: {}
+[53.783093] (-) TimerEvent: {}
+[53.883288] (-) TimerEvent: {}
+[53.983487] (-) TimerEvent: {}
+[54.083674] (-) TimerEvent: {}
+[54.183806] (-) TimerEvent: {}
+[54.283914] (-) TimerEvent: {}
+[54.384013] (-) TimerEvent: {}
+[54.484168] (-) TimerEvent: {}
+[54.584295] (-) TimerEvent: {}
+[54.684432] (-) TimerEvent: {}
+[54.784585] (-) TimerEvent: {}
+[54.884740] (-) TimerEvent: {}
+[54.984895] (-) TimerEvent: {}
+[55.085047] (-) TimerEvent: {}
+[55.185220] (-) TimerEvent: {}
+[55.285372] (-) TimerEvent: {}
+[55.385498] (-) TimerEvent: {}
+[55.485634] (-) TimerEvent: {}
+[55.585763] (-) TimerEvent: {}
+[55.685908] (-) TimerEvent: {}
+[55.786081] (-) TimerEvent: {}
+[55.886265] (-) TimerEvent: {}
+[55.986404] (-) TimerEvent: {}
+[56.086544] (-) TimerEvent: {}
+[56.186679] (-) TimerEvent: {}
+[56.286809] (-) TimerEvent: {}
+[56.386928] (-) TimerEvent: {}
+[56.487041] (-) TimerEvent: {}
+[56.587139] (-) TimerEvent: {}
+[56.687242] (-) TimerEvent: {}
+[56.787384] (-) TimerEvent: {}
+[56.887548] (-) TimerEvent: {}
+[56.987682] (-) TimerEvent: {}
+[57.087822] (-) TimerEvent: {}
+[57.187964] (-) TimerEvent: {}
+[57.288178] (-) TimerEvent: {}
+[57.388336] (-) TimerEvent: {}
+[57.488468] (-) TimerEvent: {}
+[57.588614] (-) TimerEvent: {}
+[57.688771] (-) TimerEvent: {}
+[57.788923] (-) TimerEvent: {}
+[57.889070] (-) TimerEvent: {}
+[57.989245] (-) TimerEvent: {}
+[58.089408] (-) TimerEvent: {}
+[58.189556] (-) TimerEvent: {}
+[58.289691] (-) TimerEvent: {}
+[58.389827] (-) TimerEvent: {}
+[58.489983] (-) TimerEvent: {}
+[58.590151] (-) TimerEvent: {}
+[58.690303] (-) TimerEvent: {}
+[58.790462] (-) TimerEvent: {}
+[58.890631] (-) TimerEvent: {}
+[58.990801] (-) TimerEvent: {}
+[59.090972] (-) TimerEvent: {}
+[59.191147] (-) TimerEvent: {}
+[59.291297] (-) TimerEvent: {}
+[59.391465] (-) TimerEvent: {}
+[59.491631] (-) TimerEvent: {}
+[59.591793] (-) TimerEvent: {}
+[59.691965] (-) TimerEvent: {}
+[59.792144] (-) TimerEvent: {}
+[59.892305] (-) TimerEvent: {}
+[59.992489] (-) TimerEvent: {}
+[60.044582] (planner) CommandEnded: {'returncode': 0}
+[60.053529] (planner) JobEnded: {'identifier': 'planner', 'rc': 0}
+[60.053991] (-) EventReactorShutdown: {}

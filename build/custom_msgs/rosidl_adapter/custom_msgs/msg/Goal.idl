@@ -1,0 +1,17 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from custom_msgs/msg/Goal.msg
+// generated code does not contain a copyright notice
+
+
+module custom_msgs {
+  module msg {
+    struct Goal {
+      @verbatim (language="comment", text=
+        "该消息包无用" "\n"
+        "终点物理坐标 (米)")
+      double target_x;
+
+      double target_y;
+    };
+  };
+};

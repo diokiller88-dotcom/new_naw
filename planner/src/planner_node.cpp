@@ -73,6 +73,48 @@ public:
     }
 
 private:
+    void MaybePlan(bool has_local_map = false, const custom_msgs::msg::MapData::ConstSharedPtr& local_map_msg = nullptr,
+                   const builtin_interfaces::msg::Time* stamp = nullptr) {
+        if (!m_HasMap || !m_HasPose || !m_HasGoal) return;
+
+        if (!m_IsInitialPlanned) {
+            if (m_Replanner.InitPoint(m_CurPose.x(), m_CurPose.y(), m_TargetGoal.x(), m_TargetGoal.y())) {
+                m_IsInitialPlanned = true;
+                m_LastTargetGoal = m_TargetGoal;
+            } else {
+                return;
+            }
+        } else if ((m_TargetGoal - m_LastTargetGoal).norm() > 0.05) {
+            Eigen::Vector2d zero_velocity(0.0, 0.0);
+            if (!m_Replanner.UpdateGoal(m_CurPose, m_TargetGoal, zero_velocity)) return;
+            m_LastTargetGoal = m_TargetGoal;
+        } else if (has_local_map && local_map_msg) {
+            if (!m_Replanner.Update(m_CurPose, m_CurVel,
+                                    local_map_msg->occupancy_array, local_map_msg->esdf_array,
+                                    local_map_msg->width, local_map_msg->height,
+                                    local_map_msg->origin_x, local_map_msg->origin_y)) {
+                return;
+            }
+        } else {
+            if (!m_Replanner.Update(m_CurPose, m_CurVel)) return;
+        }
+
+        PublishTrajectory();
+        if (stamp) PublishResult(*stamp);
+        else PublishResult(this->now());
+
+        if (m_Replanner.WasLastPlanTriggered()) {
+            if (m_Replanner.GetLastPlanType() == "global") {
+                RCLCPP_INFO(this->get_logger(), "Replanning mode: %s, total time: %.2f ms, jps time: %.2f ms",
+                            m_Replanner.GetLastPlanType().c_str(), m_Replanner.GetLastPlanDurationMs(),
+                            m_Replanner.GetLastJpsDurationMs());
+            } else {
+                RCLCPP_INFO(this->get_logger(), "Replanning mode: %s, time: %.2f ms",
+                            m_Replanner.GetLastPlanType().c_str(), m_Replanner.GetLastPlanDurationMs());
+            }
+        }
+    }
+
     void PublishGoalMarkers() {
         visualization_msgs::msg::MarkerArray marker_array;
         builtin_interfaces::msg::Time stamp = this->now();
@@ -120,6 +162,7 @@ private:
                              msg->pose.pose.orientation.y, msg->pose.pose.orientation.z);
         m_CurYaw = std::atan2(2.0 * (q.w() * q.z() + q.x() * q.y()), 1.0 - 2.0 * (q.y() * q.y() + q.z() * q.z()));
         m_HasPose = true;
+        MaybePlan();
     }
 
     void LoadOfflineMap() {
@@ -151,6 +194,7 @@ private:
 
         if (m_Replanner.InitMapWithESDF(occupancy, esdf_dist, width, height, res_x, res_y, origin_x, origin_y)) {
             m_HasMap = true;
+            MaybePlan();
         }
     }
 
@@ -159,6 +203,7 @@ private:
         if (m_Replanner.InitMapWithESDF(msg->occupancy_array, msg->esdf_array, msg->width, msg->height, 
                                         msg->res_x, msg->res_y, msg->origin_x, msg->origin_y)) {
             m_HasMap = true;
+            MaybePlan();
         }
     }
 
@@ -170,6 +215,7 @@ private:
         if (msg->trigger_target) {
             m_TargetGoal = m_ChassisGoal;
             m_HasGoal = true;
+            MaybePlan();
         }
         PublishGoalMarkers();
     }
@@ -179,6 +225,7 @@ private:
         m_HasRVizGoal = true;
         m_TargetGoal = m_RVizGoal;
         m_HasGoal = true;
+        MaybePlan();
         PublishGoalMarkers();
     }
 
@@ -191,28 +238,7 @@ private:
         m_CurYaw = state_msg->yaw;
         m_HasPose = true;
 
-        if (!m_HasMap || !m_HasGoal) return;
-
-        if (!m_IsInitialPlanned) {
-            if (m_Replanner.InitPoint(m_CurPose.x(), m_CurPose.y(), m_TargetGoal.x(), m_TargetGoal.y())) {
-                m_IsInitialPlanned = true;
-                m_LastTargetGoal = m_TargetGoal;
-            } else { return; }
-        } else {
-            if ((m_TargetGoal - m_LastTargetGoal).norm() > 0.05) {
-                Eigen::Vector2d zero_velocity(0.0, 0.0);
-                m_Replanner.UpdateGoal(m_CurPose, m_TargetGoal, zero_velocity);
-                m_LastTargetGoal = m_TargetGoal;
-            } else {
-                m_Replanner.Update(m_CurPose, m_CurVel, 
-                                   local_map_msg->occupancy_array, local_map_msg->esdf_array, 
-                                   local_map_msg->width, local_map_msg->height, 
-                                   local_map_msg->origin_x, local_map_msg->origin_y);
-            }
-        }
-
-        PublishTrajectory();
-        PublishResult(state_msg->header.stamp);
+        MaybePlan(true, local_map_msg, &state_msg->header.stamp);
     }
 
     void PublishResult(const builtin_interfaces::msg::Time& stamp) {

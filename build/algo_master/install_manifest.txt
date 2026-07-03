@@ -1,0 +1,16 @@
+/home/zxcx/new_naw/install/algo_master/lib/algo_master/algo_master
+/home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/package_run_dependencies/algo_master
+/home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/parent_prefix_path/algo_master
+/home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.sh
+/home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.dsv
+/home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.sh
+/home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.dsv
+/home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.bash
+/home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.sh
+/home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.zsh
+/home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.dsv
+/home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv
+/home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/packages/algo_master
+/home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig.cmake
+/home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig-version.cmake
+/home/zxcx/new_naw/install/algo_master/share/algo_master/package.xml

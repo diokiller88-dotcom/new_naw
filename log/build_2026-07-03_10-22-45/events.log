@@ -1,0 +1,1428 @@
+[0.000000] (-) TimerEvent: {}
+[0.000100] (-) JobUnselected: {'identifier': 'controller'}
+[0.000120] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000135] (-) JobUnselected: {'identifier': 'point_lio'}
+[0.000152] (custom_msgs) JobQueued: {'identifier': 'custom_msgs', 'dependencies': OrderedDict()}
+[0.000167] (algo_master) JobQueued: {'identifier': 'algo_master', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000185] (esdf) JobQueued: {'identifier': 'esdf', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000198] (planner) JobQueued: {'identifier': 'planner', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000213] (relocation) JobQueued: {'identifier': 'relocation', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000226] (custom_msgs) JobStarted: {'identifier': 'custom_msgs'}
+[0.005694] (custom_msgs) JobProgress: {'identifier': 'custom_msgs', 'progress': 'cmake'}
+[0.006093] (custom_msgs) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/custom_msgs', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/custom_msgs'], 'cwd': '/home/zxcx/new_naw/build/custom_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/custom_msgs'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.034123] (custom_msgs) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.099607] (-) TimerEvent: {}
+[0.108602] (custom_msgs) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.1 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[0.109884] (custom_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.112100] (custom_msgs) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.133208] (custom_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.151610] (custom_msgs) StdoutLine: {'line': b'-- Found std_msgs: 4.9.1 (/opt/ros/humble/share/std_msgs/cmake)\n'}
+[0.199699] (-) TimerEvent: {}
+[0.299823] (-) TimerEvent: {}
+[0.323784] (custom_msgs) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[0.399917] (-) TimerEvent: {}
+[0.446412] (custom_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.500002] (-) TimerEvent: {}
+[0.600125] (-) TimerEvent: {}
+[0.607661] (custom_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.620708] (custom_msgs) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[0.634380] (custom_msgs) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[0.634454] (custom_msgs) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[0.634497] (custom_msgs) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[0.694165] (custom_msgs) StdoutLine: {'line': b'-- Configuring done\n'}
+[0.700224] (-) TimerEvent: {}
+[0.722052] (custom_msgs) StdoutLine: {'line': b'-- Generating done\n'}
+[0.729448] (custom_msgs) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/custom_msgs\n'}
+[0.800359] (-) TimerEvent: {}
+[0.900501] (-) TimerEvent: {}
+[1.000648] (-) TimerEvent: {}
+[1.100795] (-) TimerEvent: {}
+[1.200906] (-) TimerEvent: {}
+[1.301015] (-) TimerEvent: {}
+[1.401126] (-) TimerEvent: {}
+[1.501235] (-) TimerEvent: {}
+[1.601359] (-) TimerEvent: {}
+[1.701469] (-) TimerEvent: {}
+[1.801581] (-) TimerEvent: {}
+[1.902199] (-) TimerEvent: {}
+[2.002392] (-) TimerEvent: {}
+[2.102508] (-) TimerEvent: {}
+[2.202627] (-) TimerEvent: {}
+[2.302771] (-) TimerEvent: {}
+[2.402915] (-) TimerEvent: {}
+[2.502999] (-) TimerEvent: {}
+[2.603121] (-) TimerEvent: {}
+[2.703242] (-) TimerEvent: {}
+[2.803440] (-) TimerEvent: {}
+[2.903611] (-) TimerEvent: {}
+[3.003713] (-) TimerEvent: {}
+[3.103813] (-) TimerEvent: {}
+[3.203930] (-) TimerEvent: {}
+[3.304076] (-) TimerEvent: {}
+[3.404231] (-) TimerEvent: {}
+[3.504379] (-) TimerEvent: {}
+[3.604535] (-) TimerEvent: {}
+[3.704692] (-) TimerEvent: {}
+[3.804815] (-) TimerEvent: {}
+[3.904925] (-) TimerEvent: {}
+[4.005083] (-) TimerEvent: {}
+[4.105246] (-) TimerEvent: {}
+[4.205423] (-) TimerEvent: {}
+[4.305593] (-) TimerEvent: {}
+[4.405712] (-) TimerEvent: {}
+[4.505823] (-) TimerEvent: {}
+[4.605951] (-) TimerEvent: {}
+[4.706148] (-) TimerEvent: {}
+[4.806276] (-) TimerEvent: {}
+[4.906456] (-) TimerEvent: {}
+[5.006644] (-) TimerEvent: {}
+[5.106827] (-) TimerEvent: {}
+[5.207026] (-) TimerEvent: {}
+[5.307206] (-) TimerEvent: {}
+[5.407390] (-) TimerEvent: {}
+[5.507495] (-) TimerEvent: {}
+[5.607648] (-) TimerEvent: {}
+[5.707851] (-) TimerEvent: {}
+[5.808054] (-) TimerEvent: {}
+[5.908209] (-) TimerEvent: {}
+[6.008293] (-) TimerEvent: {}
+[6.108450] (-) TimerEvent: {}
+[6.208598] (-) TimerEvent: {}
+[6.308703] (-) TimerEvent: {}
+[6.408862] (-) TimerEvent: {}
+[6.509033] (-) TimerEvent: {}
+[6.609166] (-) TimerEvent: {}
+[6.709348] (-) TimerEvent: {}
+[6.809557] (-) TimerEvent: {}
+[6.909723] (-) TimerEvent: {}
+[7.009888] (-) TimerEvent: {}
+[7.110061] (-) TimerEvent: {}
+[7.210227] (-) TimerEvent: {}
+[7.310474] (-) TimerEvent: {}
+[7.410637] (-) TimerEvent: {}
+[7.510807] (-) TimerEvent: {}
+[7.611015] (-) TimerEvent: {}
+[7.711224] (-) TimerEvent: {}
+[7.811418] (-) TimerEvent: {}
+[7.911603] (-) TimerEvent: {}
+[8.011837] (-) TimerEvent: {}
+[8.112054] (-) TimerEvent: {}
+[8.212273] (-) TimerEvent: {}
+[8.312478] (-) TimerEvent: {}
+[8.412641] (-) TimerEvent: {}
+[8.512761] (-) TimerEvent: {}
+[8.612882] (-) TimerEvent: {}
+[8.713007] (-) TimerEvent: {}
+[8.813124] (-) TimerEvent: {}
+[8.913228] (-) TimerEvent: {}
+[9.013412] (-) TimerEvent: {}
+[9.113629] (-) TimerEvent: {}
+[9.213849] (-) TimerEvent: {}
+[9.314065] (-) TimerEvent: {}
+[9.414223] (-) TimerEvent: {}
+[9.514283] (-) TimerEvent: {}
+[9.614446] (-) TimerEvent: {}
+[9.714669] (-) TimerEvent: {}
+[9.814833] (-) TimerEvent: {}
+[9.915023] (-) TimerEvent: {}
+[10.015221] (-) TimerEvent: {}
+[10.115397] (-) TimerEvent: {}
+[10.215612] (-) TimerEvent: {}
+[10.315771] (-) TimerEvent: {}
+[10.415896] (-) TimerEvent: {}
+[10.516021] (-) TimerEvent: {}
+[10.616129] (-) TimerEvent: {}
+[10.716237] (-) TimerEvent: {}
+[10.816401] (-) TimerEvent: {}
+[10.916613] (-) TimerEvent: {}
+[11.016820] (-) TimerEvent: {}
+[11.117018] (-) TimerEvent: {}
+[11.217193] (-) TimerEvent: {}
+[11.317293] (-) TimerEvent: {}
+[11.417413] (-) TimerEvent: {}
+[11.517575] (-) TimerEvent: {}
+[11.617786] (-) TimerEvent: {}
+[11.717977] (-) TimerEvent: {}
+[11.818188] (-) TimerEvent: {}
+[11.918348] (-) TimerEvent: {}
+[12.018512] (-) TimerEvent: {}
+[12.119038] (-) TimerEvent: {}
+[12.219276] (-) TimerEvent: {}
+[12.319487] (-) TimerEvent: {}
+[12.419684] (-) TimerEvent: {}
+[12.519839] (-) TimerEvent: {}
+[12.619985] (-) TimerEvent: {}
+[12.720159] (-) TimerEvent: {}
+[12.820303] (-) TimerEvent: {}
+[12.920482] (-) TimerEvent: {}
+[13.020680] (-) TimerEvent: {}
+[13.120877] (-) TimerEvent: {}
+[13.221079] (-) TimerEvent: {}
+[13.321294] (-) TimerEvent: {}
+[13.421462] (-) TimerEvent: {}
+[13.521583] (-) TimerEvent: {}
+[13.621699] (-) TimerEvent: {}
+[13.721816] (-) TimerEvent: {}
+[13.821937] (-) TimerEvent: {}
+[13.922092] (-) TimerEvent: {}
+[14.022255] (-) TimerEvent: {}
+[14.122366] (-) TimerEvent: {}
+[14.222525] (-) TimerEvent: {}
+[14.322686] (-) TimerEvent: {}
+[14.422859] (-) TimerEvent: {}
+[14.523041] (-) TimerEvent: {}
+[14.623263] (-) TimerEvent: {}
+[14.723506] (-) TimerEvent: {}
+[14.823699] (-) TimerEvent: {}
+[14.923869] (-) TimerEvent: {}
+[15.024089] (-) TimerEvent: {}
+[15.124307] (-) TimerEvent: {}
+[15.224501] (-) TimerEvent: {}
+[15.324710] (-) TimerEvent: {}
+[15.424934] (-) TimerEvent: {}
+[15.525145] (-) TimerEvent: {}
+[15.625361] (-) TimerEvent: {}
+[15.725564] (-) TimerEvent: {}
+[15.825801] (-) TimerEvent: {}
+[15.926077] (-) TimerEvent: {}
+[16.026276] (-) TimerEvent: {}
+[16.126448] (-) TimerEvent: {}
+[16.226583] (-) TimerEvent: {}
+[16.326685] (-) TimerEvent: {}
+[16.426863] (-) TimerEvent: {}
+[16.527032] (-) TimerEvent: {}
+[16.627545] (-) TimerEvent: {}
+[16.727733] (-) TimerEvent: {}
+[16.827945] (-) TimerEvent: {}
+[16.928454] (-) TimerEvent: {}
+[17.028676] (-) TimerEvent: {}
+[17.128891] (-) TimerEvent: {}
+[17.229056] (-) TimerEvent: {}
+[17.329179] (-) TimerEvent: {}
+[17.429371] (-) TimerEvent: {}
+[17.529539] (-) TimerEvent: {}
+[17.629645] (-) TimerEvent: {}
+[17.729759] (-) TimerEvent: {}
+[17.829880] (-) TimerEvent: {}
+[17.929987] (-) TimerEvent: {}
+[18.030149] (-) TimerEvent: {}
+[18.130287] (-) TimerEvent: {}
+[18.230400] (-) TimerEvent: {}
+[18.330551] (-) TimerEvent: {}
+[18.430686] (-) TimerEvent: {}
+[18.530801] (-) TimerEvent: {}
+[18.630971] (-) TimerEvent: {}
+[18.731127] (-) TimerEvent: {}
+[18.831268] (-) TimerEvent: {}
+[18.931443] (-) TimerEvent: {}
+[19.031672] (-) TimerEvent: {}
+[19.131873] (-) TimerEvent: {}
+[19.232061] (-) TimerEvent: {}
+[19.332271] (-) TimerEvent: {}
+[19.432493] (-) TimerEvent: {}
+[19.532664] (-) TimerEvent: {}
+[19.632811] (-) TimerEvent: {}
+[19.732969] (-) TimerEvent: {}
+[19.833131] (-) TimerEvent: {}
+[19.933335] (-) TimerEvent: {}
+[20.033515] (-) TimerEvent: {}
+[20.133697] (-) TimerEvent: {}
+[20.233890] (-) TimerEvent: {}
+[20.334073] (-) TimerEvent: {}
+[20.434219] (-) TimerEvent: {}
+[20.534380] (-) TimerEvent: {}
+[20.634589] (-) TimerEvent: {}
+[20.734744] (-) TimerEvent: {}
+[20.834849] (-) TimerEvent: {}
+[20.935028] (-) TimerEvent: {}
+[21.035244] (-) TimerEvent: {}
+[21.135447] (-) TimerEvent: {}
+[21.235663] (-) TimerEvent: {}
+[21.335827] (-) TimerEvent: {}
+[21.435963] (-) TimerEvent: {}
+[21.536162] (-) TimerEvent: {}
+[21.636368] (-) TimerEvent: {}
+[21.736642] (-) TimerEvent: {}
+[21.836807] (-) TimerEvent: {}
+[21.936977] (-) TimerEvent: {}
+[22.037162] (-) TimerEvent: {}
+[22.137281] (-) TimerEvent: {}
+[22.237401] (-) TimerEvent: {}
+[22.337561] (-) TimerEvent: {}
+[22.437708] (-) TimerEvent: {}
+[22.537867] (-) TimerEvent: {}
+[22.638041] (-) TimerEvent: {}
+[22.738158] (-) TimerEvent: {}
+[22.838272] (-) TimerEvent: {}
+[22.938462] (-) TimerEvent: {}
+[23.038652] (-) TimerEvent: {}
+[23.138816] (-) TimerEvent: {}
+[23.238998] (-) TimerEvent: {}
+[23.339161] (-) TimerEvent: {}
+[23.439317] (-) TimerEvent: {}
+[23.539480] (-) TimerEvent: {}
+[23.639658] (-) TimerEvent: {}
+[23.739814] (-) TimerEvent: {}
+[23.839941] (-) TimerEvent: {}
+[23.940067] (-) TimerEvent: {}
+[24.040224] (-) TimerEvent: {}
+[24.140442] (-) TimerEvent: {}
+[24.240637] (-) TimerEvent: {}
+[24.340820] (-) TimerEvent: {}
+[24.441030] (-) TimerEvent: {}
+[24.541214] (-) TimerEvent: {}
+[24.641407] (-) TimerEvent: {}
+[24.741600] (-) TimerEvent: {}
+[24.841785] (-) TimerEvent: {}
+[24.941976] (-) TimerEvent: {}
+[25.042173] (-) TimerEvent: {}
+[25.142331] (-) TimerEvent: {}
+[25.242523] (-) TimerEvent: {}
+[25.342675] (-) TimerEvent: {}
+[25.443477] (-) TimerEvent: {}
+[25.543661] (-) TimerEvent: {}
+[25.643811] (-) TimerEvent: {}
+[25.743969] (-) TimerEvent: {}
+[25.844108] (-) TimerEvent: {}
+[25.944227] (-) TimerEvent: {}
+[26.044375] (-) TimerEvent: {}
+[26.144511] (-) TimerEvent: {}
+[26.244661] (-) TimerEvent: {}
+[26.344800] (-) TimerEvent: {}
+[26.445323] (-) TimerEvent: {}
+[26.545497] (-) TimerEvent: {}
+[26.645666] (-) TimerEvent: {}
+[26.745857] (-) TimerEvent: {}
+[26.846044] (-) TimerEvent: {}
+[26.946238] (-) TimerEvent: {}
+[27.046465] (-) TimerEvent: {}
+[27.146659] (-) TimerEvent: {}
+[27.246857] (-) TimerEvent: {}
+[27.347055] (-) TimerEvent: {}
+[27.447280] (-) TimerEvent: {}
+[27.547454] (-) TimerEvent: {}
+[27.647608] (-) TimerEvent: {}
+[27.747760] (-) TimerEvent: {}
+[27.847887] (-) TimerEvent: {}
+[27.948034] (-) TimerEvent: {}
+[28.048219] (-) TimerEvent: {}
+[28.148442] (-) TimerEvent: {}
+[28.248601] (-) TimerEvent: {}
+[28.348776] (-) TimerEvent: {}
+[28.448974] (-) TimerEvent: {}
+[28.549153] (-) TimerEvent: {}
+[28.649306] (-) TimerEvent: {}
+[28.749463] (-) TimerEvent: {}
+[28.849650] (-) TimerEvent: {}
+[28.949858] (-) TimerEvent: {}
+[29.050070] (-) TimerEvent: {}
+[29.150225] (-) TimerEvent: {}
+[29.250322] (-) TimerEvent: {}
+[29.350518] (-) TimerEvent: {}
+[29.450726] (-) TimerEvent: {}
+[29.550901] (-) TimerEvent: {}
+[29.651047] (-) TimerEvent: {}
+[29.751243] (-) TimerEvent: {}
+[29.851472] (-) TimerEvent: {}
+[29.951678] (-) TimerEvent: {}
+[30.030239] (custom_msgs) CommandEnded: {'returncode': 0}
+[30.030701] (custom_msgs) JobProgress: {'identifier': 'custom_msgs', 'progress': 'build'}
+[30.031117] (custom_msgs) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/custom_msgs', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/custom_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/custom_msgs'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[30.051742] (-) TimerEvent: {}
+[30.064717] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_generator_c\n'}
+[30.070051] (custom_msgs) StdoutLine: {'line': b'[  1%] Built target custom_msgs__rs\n'}
+[30.071160] (custom_msgs) StdoutLine: {'line': b'[  3%] Built target custom_msgs__cpp\n'}
+[30.073506] (custom_msgs) StdoutLine: {'line': b'[ 14%] Built target custom_msgs__rosidl_generator_c\n'}
+[30.077322] (custom_msgs) StdoutLine: {'line': b'[ 14%] Built target ament_cmake_python_copy_custom_msgs\n'}
+[30.080974] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_cpp\n'}
+[30.081177] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_introspection_cpp\n'}
+[30.081516] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[30.081792] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_c\n'}
+[30.082000] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_introspection_c\n'}
+[30.083655] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_fastrtps_c\n'}
+[30.089634] (custom_msgs) StdoutLine: {'line': b'[ 25%] Built target custom_msgs__rosidl_typesupport_c\n'}
+[30.090706] (custom_msgs) StdoutLine: {'line': b'[ 35%] Built target custom_msgs__rosidl_typesupport_introspection_c\n'}
+[30.092265] (custom_msgs) StdoutLine: {'line': b'[ 46%] Built target custom_msgs__rosidl_typesupport_cpp\n'}
+[30.092621] (custom_msgs) StdoutLine: {'line': b'[ 79%] Built target custom_msgs__rosidl_typesupport_introspection_cpp\n'}
+[30.092661] (custom_msgs) StdoutLine: {'line': b'[ 79%] Built target custom_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[30.092693] (custom_msgs) StdoutLine: {'line': b'[ 79%] Built target custom_msgs__rosidl_typesupport_fastrtps_c\n'}
+[30.105482] (custom_msgs) StdoutLine: {'line': b'[ 79%] Built target custom_msgs\n'}
+[30.118669] (custom_msgs) StdoutLine: {'line': b'[ 81%] Built target custom_msgs__py\n'}
+[30.127960] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_generator_py\n'}
+[30.137288] (custom_msgs) StdoutLine: {'line': b'[ 90%] Built target custom_msgs__rosidl_generator_py\n'}
+[30.144732] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[30.145068] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[30.145264] (custom_msgs) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target custom_msgs__rosidl_typesupport_c__pyext\n'}
+[30.151820] (-) TimerEvent: {}
+[30.152785] (custom_msgs) StdoutLine: {'line': b'[ 93%] Built target custom_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[30.152923] (custom_msgs) StdoutLine: {'line': b'[ 96%] Built target custom_msgs__rosidl_typesupport_c__pyext\n'}
+[30.153290] (custom_msgs) StdoutLine: {'line': b'[100%] Built target custom_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[30.193092] (custom_msgs) StdoutLine: {'line': b'running egg_info\n'}
+[30.193398] (custom_msgs) StdoutLine: {'line': b'writing custom_msgs.egg-info/PKG-INFO\n'}
+[30.193501] (custom_msgs) StdoutLine: {'line': b'writing dependency_links to custom_msgs.egg-info/dependency_links.txt\n'}
+[30.193591] (custom_msgs) StdoutLine: {'line': b'writing top-level names to custom_msgs.egg-info/top_level.txt\n'}
+[30.194969] (custom_msgs) StdoutLine: {'line': b"reading manifest file 'custom_msgs.egg-info/SOURCES.txt'\n"}
+[30.195284] (custom_msgs) StdoutLine: {'line': b"writing manifest file 'custom_msgs.egg-info/SOURCES.txt'\n"}
+[30.211944] (custom_msgs) StdoutLine: {'line': b'[100%] Built target ament_cmake_python_build_custom_msgs_egg\n'}
+[30.220420] (custom_msgs) CommandEnded: {'returncode': 0}
+[30.220841] (custom_msgs) JobProgress: {'identifier': 'custom_msgs', 'progress': 'install'}
+[30.226566] (custom_msgs) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/custom_msgs'], 'cwd': '/home/zxcx/new_naw/build/custom_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/custom_msgs'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[30.232590] (custom_msgs) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[30.232649] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/ament_index/resource_index/rosidl_interfaces/custom_msgs\n'}
+[30.233098] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.233133] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.233161] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/vehicle_state.h\n'}
+[30.233190] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/map_data.h\n'}
+[30.233217] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/result.h\n'}
+[30.233260] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/goal.h\n'}
+[30.233293] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/chassis_info.h\n'}
+[30.233598] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/rosidl_generator_c__visibility_control.h\n'}
+[30.233675] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.233704] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__functions.c\n'}
+[30.233794] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__type_support.h\n'}
+[30.233834] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__functions.c\n'}
+[30.233864] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__functions.c\n'}
+[30.233895] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__functions.h\n'}
+[30.233935] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__type_support.h\n'}
+[30.233966] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__functions.h\n'}
+[30.234008] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__type_support.h\n'}
+[30.234074] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__functions.h\n'}
+[30.234105] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__functions.h\n'}
+[30.234149] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__type_support.h\n'}
+[30.234193] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__struct.h\n'}
+[30.234234] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__functions.c\n'}
+[30.234371] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__functions.h\n'}
+[30.234458] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__type_support.h\n'}
+[30.234488] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__struct.h\n'}
+[30.234536] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__struct.h\n'}
+[30.234569] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__struct.h\n'}
+[30.234600] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__functions.c\n'}
+[30.234644] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__struct.h\n'}
+[30.234693] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/library_path.sh\n'}
+[30.234724] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/library_path.dsv\n'}
+[30.234795] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_generator_c.so\n'}
+[30.234840] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.234870] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.234971] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[30.235006] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.235051] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__rosidl_typesupport_fastrtps_c.h\n'}
+[30.235082] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__rosidl_typesupport_fastrtps_c.h\n'}
+[30.235125] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__rosidl_typesupport_fastrtps_c.h\n'}
+[30.235156] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__rosidl_typesupport_fastrtps_c.h\n'}
+[30.235263] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__rosidl_typesupport_fastrtps_c.h\n'}
+[30.235396] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_fastrtps_c.so\n'}
+[30.235424] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.235451] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.235480] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[30.235548] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.235746] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__type_support.c\n'}
+[30.235774] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__rosidl_typesupport_introspection_c.h\n'}
+[30.235805] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__type_support.c\n'}
+[30.235840] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__type_support.c\n'}
+[30.235891] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__rosidl_typesupport_introspection_c.h\n'}
+[30.235963] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__rosidl_typesupport_introspection_c.h\n'}
+[30.235992] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__rosidl_typesupport_introspection_c.h\n'}
+[30.236018] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__type_support.c\n'}
+[30.236104] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__rosidl_typesupport_introspection_c.h\n'}
+[30.236133] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__type_support.c\n'}
+[30.236161] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_introspection_c.so\n'}
+[30.236214] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_c.so\n'}
+[30.236272] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.236309] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.236339] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/goal.hpp\n'}
+[30.236414] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[30.236446] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/vehicle_state.hpp\n'}
+[30.236488] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/result.hpp\n'}
+[30.236519] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/chassis_info.hpp\n'}
+[30.236548] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.236678] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__type_support.hpp\n'}
+[30.236706] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__builder.hpp\n'}
+[30.236734] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__builder.hpp\n'}
+[30.236764] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__builder.hpp\n'}
+[30.236858] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__builder.hpp\n'}
+[30.236909] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__traits.hpp\n'}
+[30.236945] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__struct.hpp\n'}
+[30.237025] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__type_support.hpp\n'}
+[30.237059] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__struct.hpp\n'}
+[30.237102] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__struct.hpp\n'}
+[30.237133] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__type_support.hpp\n'}
+[30.237163] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__type_support.hpp\n'}
+[30.237209] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__traits.hpp\n'}
+[30.237238] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__type_support.hpp\n'}
+[30.237381] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__struct.hpp\n'}
+[30.237413] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__traits.hpp\n'}
+[30.237441] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__builder.hpp\n'}
+[30.237467] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__traits.hpp\n'}
+[30.237491] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__struct.hpp\n'}
+[30.237517] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__traits.hpp\n'}
+[30.237542] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/map_data.hpp\n'}
+[30.237568] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.237594] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.237621] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[30.237649] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.237675] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[30.237701] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[30.237726] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[30.237752] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[30.237778] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/dds_fastrtps\n'}
+[30.237814] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[30.237840] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_fastrtps_cpp.so\n'}
+[30.237866] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs\n'}
+[30.237892] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg\n'}
+[30.237919] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail\n'}
+[30.237943] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__rosidl_typesupport_introspection_cpp.hpp\n'}
+[30.237970] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__rosidl_typesupport_introspection_cpp.hpp\n'}
+[30.237996] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/chassis_info__type_support.cpp\n'}
+[30.238023] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__type_support.cpp\n'}
+[30.238048] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/goal__rosidl_typesupport_introspection_cpp.hpp\n'}
+[30.238074] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__type_support.cpp\n'}
+[30.238100] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/map_data__rosidl_typesupport_introspection_cpp.hpp\n'}
+[30.238130] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__rosidl_typesupport_introspection_cpp.hpp\n'}
+[30.238156] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/result__type_support.cpp\n'}
+[30.238182] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/include/custom_msgs/custom_msgs/msg/detail/vehicle_state__type_support.cpp\n'}
+[30.238207] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_introspection_cpp.so\n'}
+[30.238233] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_typesupport_cpp.so\n'}
+[30.238270] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/pythonpath.sh\n'}
+[30.238298] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/pythonpath.dsv\n'}
+[30.238323] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs-0.0.0-py3.10.egg-info\n'}
+[30.238350] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[30.238374] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[30.238401] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[30.238429] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[30.238458] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs\n'}
+[30.238482] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/__init__.py\n'}
+[30.238507] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.238534] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/_custom_msgs_s.ep.rosidl_typesupport_c.c\n'}
+[30.238560] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.238586] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/libcustom_msgs__rosidl_generator_py.so\n'}
+[30.238611] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/_custom_msgs_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[30.238637] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg\n'}
+[30.238664] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_vehicle_state_s.c\n'}
+[30.238690] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_result_s.c\n'}
+[30.238715] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/__init__.py\n'}
+[30.238741] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_map_data.py\n'}
+[30.238767] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_map_data_s.c\n'}
+[30.238792] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_goal_s.c\n'}
+[30.238818] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_vehicle_state.py\n'}
+[30.238843] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_chassis_info_s.c\n'}
+[30.238870] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_goal.py\n'}
+[30.238896] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_chassis_info.py\n'}
+[30.238922] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg/_result.py\n'}
+[30.238946] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.238972] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/_custom_msgs_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[30.251894] (-) TimerEvent: {}
+[30.256133] (custom_msgs) StdoutLine: {'line': b"Listing '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs'...\n"}
+[30.256185] (custom_msgs) StdoutLine: {'line': b"Compiling '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/__init__.py'...\n"}
+[30.256216] (custom_msgs) StdoutLine: {'line': b"Listing '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/msg'...\n"}
+[30.258626] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.258891] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.259103] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages/custom_msgs/custom_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[30.259309] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/lib/libcustom_msgs__rosidl_generator_py.so\n'}
+[30.259452] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/ament_index/resource_index/rust_packages/custom_msgs\n'}
+[30.259627] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust\n'}
+[30.259664] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/src\n'}
+[30.259780] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/src/lib.rs\n'}
+[30.259845] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/src/msg\n'}
+[30.259875] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/src/msg/rmw.rs\n'}
+[30.260058] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/src/msg.rs\n'}
+[30.260092] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/build.rs\n'}
+[30.260125] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/rust/Cargo.toml\n'}
+[30.260157] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/MapData.idl\n'}
+[30.260193] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/VehicleState.idl\n'}
+[30.260274] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/Goal.idl\n'}
+[30.260353] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/Result.idl\n'}
+[30.260454] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/ChassisInfo.idl\n'}
+[30.260485] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/MapData.msg\n'}
+[30.260516] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/VehicleState.msg\n'}
+[30.262447] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/Goal.msg\n'}
+[30.262479] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/Result.msg\n'}
+[30.262513] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/msg/ChassisInfo.msg\n'}
+[30.262546] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/ament_index/resource_index/package_run_dependencies/custom_msgs\n'}
+[30.262581] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/ament_index/resource_index/parent_prefix_path/custom_msgs\n'}
+[30.262608] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/ament_prefix_path.sh\n'}
+[30.262635] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/ament_prefix_path.dsv\n'}
+[30.262661] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/path.sh\n'}
+[30.262686] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/environment/path.dsv\n'}
+[30.262713] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/local_setup.bash\n'}
+[30.262739] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/local_setup.sh\n'}
+[30.262764] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/local_setup.zsh\n'}
+[30.262854] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/local_setup.dsv\n'}
+[30.263038] (custom_msgs) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.dsv\n'}
+[30.263072] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/ament_index/resource_index/packages/custom_msgs\n'}
+[30.263103] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_generator_cExport.cmake\n'}
+[30.263140] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_generator_cExport-release.cmake\n'}
+[30.263336] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[30.263370] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_typesupport_fastrtps_cExport-release.cmake\n'}
+[30.263413] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_introspection_cExport.cmake\n'}
+[30.263457] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_introspection_cExport-release.cmake\n'}
+[30.263500] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_cExport.cmake\n'}
+[30.263545] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_cExport-release.cmake\n'}
+[30.263589] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_generator_cppExport.cmake\n'}
+[30.263633] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[30.263675] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_typesupport_fastrtps_cppExport-release.cmake\n'}
+[30.263716] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[30.263756] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_introspection_cppExport-release.cmake\n'}
+[30.263791] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_cppExport.cmake\n'}
+[30.263838] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgs__rosidl_typesupport_cppExport-release.cmake\n'}
+[30.263881] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_generator_pyExport.cmake\n'}
+[30.263925] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/export_custom_msgs__rosidl_generator_pyExport-release.cmake\n'}
+[30.263970] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/rosidl_cmake-extras.cmake\n'}
+[30.264001] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[30.264041] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[30.264077] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[30.264121] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[30.264163] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[30.264205] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[30.264235] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgsConfig.cmake\n'}
+[30.264467] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake/custom_msgsConfig-version.cmake\n'}
+[30.264501] (custom_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.xml\n'}
+[30.264529] (custom_msgs) CommandEnded: {'returncode': 0}
+[30.279775] (custom_msgs) JobEnded: {'identifier': 'custom_msgs', 'rc': 0}
+[30.280480] (algo_master) JobStarted: {'identifier': 'algo_master'}
+[30.282104] (esdf) JobStarted: {'identifier': 'esdf'}
+[30.283964] (planner) JobStarted: {'identifier': 'planner'}
+[30.285692] (relocation) JobStarted: {'identifier': 'relocation'}
+[30.287943] (algo_master) JobProgress: {'identifier': 'algo_master', 'progress': 'cmake'}
+[30.288345] (algo_master) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/algo_master', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/algo_master'], 'cwd': '/home/zxcx/new_naw/build/algo_master', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/algo_master'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.289126] (esdf) JobProgress: {'identifier': 'esdf', 'progress': 'cmake'}
+[30.289680] (esdf) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/esdf', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/esdf'], 'cwd': '/home/zxcx/new_naw/build/esdf', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/esdf'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.292398] (planner) JobProgress: {'identifier': 'planner', 'progress': 'cmake'}
+[30.292755] (planner) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/planner', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/planner'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.293919] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'cmake'}
+[30.294203] (relocation) Command: {'cmd': ['/usr/bin/cmake', '/home/zxcx/new_naw/relocation', '-DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/relocation'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.296771] (algo_master) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[30.298209] (esdf) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[30.301310] (planner) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[30.302387] (relocation) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[30.351994] (-) TimerEvent: {}
+[30.367906] (algo_master) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[30.369368] (planner) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[30.370818] (esdf) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[30.371888] (relocation) StdoutLine: {'line': b'-- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[30.385462] (planner) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[30.385597] (algo_master) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[30.386235] (esdf) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[30.386776] (algo_master) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[30.386923] (planner) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[30.387239] (relocation) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[30.387546] (esdf) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[30.388541] (relocation) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[30.389943] (algo_master) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[30.390321] (planner) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[30.390670] (esdf) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[30.391703] (relocation) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[30.394754] (algo_master) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[30.395132] (planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[30.395524] (esdf) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[30.396549] (relocation) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[30.400905] (algo_master) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[30.401357] (planner) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[30.401768] (esdf) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[30.402801] (relocation) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[30.422276] (planner) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[30.422346] (relocation) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[30.422424] (algo_master) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[30.422468] (esdf) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[30.423487] (relocation) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[30.423520] (planner) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[30.423550] (algo_master) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[30.423578] (esdf) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[30.452062] (-) TimerEvent: {}
+[30.495881] (planner) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[30.496152] (algo_master) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[30.499213] (esdf) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[30.499364] (relocation) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[30.527315] (algo_master) StdoutLine: {'line': b'-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)\n'}
+[30.527809] (relocation) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[30.527900] (esdf) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[30.534453] (planner) StdoutLine: {'line': b'-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)\n'}
+[30.541040] (planner) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[30.550515] (esdf) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[30.550607] (relocation) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[30.552148] (-) TimerEvent: {}
+[30.566980] (relocation) StdoutLine: {'line': b'-- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)\n'}
+[30.567078] (planner) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[30.567136] (esdf) StdoutLine: {'line': b'-- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)\n'}
+[30.575226] (algo_master) StdoutLine: {'line': b'-- Configuring done\n'}
+[30.581292] (algo_master) StdoutLine: {'line': b'-- Generating done\n'}
+[30.583388] (algo_master) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/algo_master\n'}
+[30.588831] (planner) StdoutLine: {'line': b'-- Found message_filters: 4.3.16 (/opt/ros/humble/share/message_filters/cmake)\n'}
+[30.588995] (algo_master) CommandEnded: {'returncode': 0}
+[30.589431] (algo_master) JobProgress: {'identifier': 'algo_master', 'progress': 'build'}
+[30.589934] (algo_master) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/algo_master', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/algo_master', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/algo_master'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.591589] (planner) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[30.591850] (esdf) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[30.591901] (relocation) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[30.618150] (esdf) StdoutLine: {'line': b'-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)\n'}
+[30.618233] (relocation) StdoutLine: {'line': b'-- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)\n'}
+[30.621350] (algo_master) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target algo_master\n'}
+[30.631187] (planner) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[30.632187] (planner) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[30.632308] (planner) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/zxcx/new_naw/planner/include\n'}
+[30.632356] (planner) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[30.633203] (planner) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[30.633234] (planner) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[30.633798] (planner) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[30.634860] (planner) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[30.634894] (planner) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[30.635148] (planner) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[30.635567] (planner) StdoutLine: {'line': b'-- Configuring done\n'}
+[30.636973] (algo_master) StdoutLine: {'line': b'[ 33%] Building CXX object CMakeFiles/algo_master.dir/src/algo_master_node.cpp.o\n'}
+[30.648557] (planner) StdoutLine: {'line': b'-- Generating done\n'}
+[30.652237] (planner) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/planner\n'}
+[30.652334] (-) TimerEvent: {}
+[30.752478] (-) TimerEvent: {}
+[30.852656] (-) TimerEvent: {}
+[30.858571] (esdf) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[30.858681] (planner) CommandEnded: {'returncode': 0}
+[30.859053] (planner) JobProgress: {'identifier': 'planner', 'progress': 'build'}
+[30.859277] (planner) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/planner', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.860251] (relocation) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[30.862638] (esdf) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[30.863532] (relocation) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[30.898854] (planner) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target planner_test\n'}
+[30.898943] (planner) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target planner_node\n'}
+[30.912683] (planner) StdoutLine: {'line': b'[  6%] Building CXX object CMakeFiles/planner_node.dir/src/replanner.cpp.o\n'}
+[30.914972] (planner) StdoutLine: {'line': b'[ 12%] Building CXX object CMakeFiles/planner_test.dir/src/replanner.cpp.o\n'}
+[30.916294] (planner) StdoutLine: {'line': b'[ 18%] Building CXX object CMakeFiles/planner_node.dir/src/planner_node.cpp.o\n'}
+[30.952759] (-) TimerEvent: {}
+[30.957561] (esdf) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[30.958472] (relocation) StdoutLine: {'line': b'-- Eigen found (include: /usr/include/eigen3, version: 3.4.0)\n'}
+[30.961395] (esdf) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[30.962636] (relocation) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[30.965194] (esdf) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[30.966614] (relocation) StdoutLine: {'line': b'-- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)\n'}
+[31.052435] (esdf) StdoutLine: {'line': b'-- Found Qhull version 8.0.2\n'}
+[31.052847] (-) TimerEvent: {}
+[31.053742] (relocation) StdoutLine: {'line': b'-- Found Qhull version 8.0.2\n'}
+[31.146606] (relocation) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[31.146833] (esdf) StdoutLine: {'line': b'-- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)\n'}
+[31.152943] (-) TimerEvent: {}
+[31.240125] (esdf) StdoutLine: {'line': b'-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)\n'}
+[31.241451] (relocation) StdoutLine: {'line': b'-- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)\n'}
+[31.246502] (esdf) StderrLine: {'line': b'CMake Warning (dev) at CMakeLists.txt:14 (find_package):\n'}
+[31.246586] (esdf) StderrLine: {'line': b'  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.\n'}
+[31.246627] (esdf) StderrLine: {'line': b'  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy\n'}
+[31.246659] (esdf) StderrLine: {'line': b'  command to set the policy and suppress this warning.\n'}
+[31.246688] (esdf) StderrLine: {'line': b'\n'}
+[31.246716] (esdf) StderrLine: {'line': b'  CMake variable PCL_ROOT is set to:\n'}
+[31.246745] (esdf) StderrLine: {'line': b'\n'}
+[31.246772] (esdf) StderrLine: {'line': b'    /usr\n'}
+[31.246798] (esdf) StderrLine: {'line': b'\n'}
+[31.246824] (esdf) StderrLine: {'line': b'  For compatibility, CMake is ignoring the variable.\n'}
+[31.246852] (esdf) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[31.246878] (esdf) StderrLine: {'line': b'\n'}
+[31.247878] (relocation) StdoutLine: {'line': b'-- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[31.253015] (-) TimerEvent: {}
+[31.261911] (relocation) StderrLine: {'line': b'CMake Warning (dev) at CMakeLists.txt:27 (find_package):\n'}
+[31.262005] (relocation) StderrLine: {'line': b'  Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.\n'}
+[31.262039] (relocation) StderrLine: {'line': b'  Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy\n'}
+[31.262068] (relocation) StderrLine: {'line': b'  command to set the policy and suppress this warning.\n'}
+[31.262095] (relocation) StderrLine: {'line': b'\n'}
+[31.262124] (relocation) StderrLine: {'line': b'  CMake variable PCL_ROOT is set to:\n'}
+[31.262152] (relocation) StderrLine: {'line': b'\n'}
+[31.262180] (relocation) StderrLine: {'line': b'    /usr\n'}
+[31.262207] (relocation) StderrLine: {'line': b'\n'}
+[31.262234] (relocation) StderrLine: {'line': b'  For compatibility, CMake is ignoring the variable.\n'}
+[31.262271] (relocation) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[31.262299] (relocation) StderrLine: {'line': b'\n'}
+[31.274572] (relocation) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[31.300778] (esdf) StdoutLine: {'line': b'-- Configuring done\n'}
+[31.314837] (relocation) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[31.315031] (relocation) StdoutLine: {'line': b'-- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/zxcx/new_naw/relocation/include>\n'}
+[31.315075] (relocation) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[31.315430] (relocation) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[31.316473] (relocation) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[31.316513] (relocation) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[31.316697] (relocation) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[31.317117] (relocation) StdoutLine: {'line': b'-- Configuring done\n'}
+[31.352641] (esdf) StdoutLine: {'line': b'-- Generating done\n'}
+[31.353087] (-) TimerEvent: {}
+[31.361010] (esdf) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/esdf\n'}
+[31.371696] (esdf) CommandEnded: {'returncode': 0}
+[31.372324] (esdf) JobProgress: {'identifier': 'esdf', 'progress': 'build'}
+[31.372617] (esdf) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/esdf', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/esdf', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/esdf'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[31.380303] (relocation) StdoutLine: {'line': b'-- Generating done\n'}
+[31.393841] (relocation) StdoutLine: {'line': b'-- Build files have been written to: /home/zxcx/new_naw/build/relocation\n'}
+[31.405183] (relocation) CommandEnded: {'returncode': 0}
+[31.405940] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'build'}
+[31.405957] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/relocation', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[31.409436] (esdf) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target esdf_map_lib\n'}
+[31.435360] (esdf) StdoutLine: {'line': b'[ 50%] Built target esdf_map_lib\n'}
+[31.444941] (relocation) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target relocation_core\n'}
+[31.446713] (esdf) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target esdf_test\n'}
+[31.447925] (esdf) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target esdf_node\n'}
+[31.453166] (-) TimerEvent: {}
+[31.457409] (esdf) StdoutLine: {'line': b'[ 75%] Built target esdf_test\n'}
+[31.460742] (esdf) StdoutLine: {'line': b'[100%] Built target esdf_node\n'}
+[31.463028] (relocation) StdoutLine: {'line': b'[ 60%] Built target relocation_core\n'}
+[31.468764] (esdf) CommandEnded: {'returncode': 0}
+[31.469392] (esdf) JobProgress: {'identifier': 'esdf', 'progress': 'install'}
+[31.470077] (esdf) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/esdf'], 'cwd': '/home/zxcx/new_naw/build/esdf', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/esdf'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[31.474494] (esdf) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[31.474870] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/lib/esdf/esdf_node\n'}
+[31.475139] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/lib/esdf/esdf_test\n'}
+[31.475253] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/package_run_dependencies/esdf\n'}
+[31.475295] (esdf) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/parent_prefix_path/esdf\n'}
+[31.475395] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/ament_prefix_path.sh\n'}
+[31.475431] (esdf) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/esdf/share/esdf/environment/ament_prefix_path.dsv\n'}
+[31.475542] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/environment/path.sh\n'}
+[31.475580] (esdf) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/esdf/share/esdf/environment/path.dsv\n'}
+[31.475656] (relocation) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target test_node\n'}
+[31.475745] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.bash\n'}
+[31.475782] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.sh\n'}
+[31.475859] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.zsh\n'}
+[31.475892] (esdf) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/esdf/share/esdf/local_setup.dsv\n'}
+[31.475985] (esdf) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/esdf/share/esdf/package.dsv\n'}
+[31.476085] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/ament_index/resource_index/packages/esdf\n'}
+[31.476119] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/cmake/esdfConfig.cmake\n'}
+[31.476147] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/cmake/esdfConfig-version.cmake\n'}
+[31.476179] (esdf) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/esdf/share/esdf/package.xml\n'}
+[31.476908] (esdf) CommandEnded: {'returncode': 0}
+[31.484075] (esdf) JobEnded: {'identifier': 'esdf', 'rc': 0}
+[31.484410] (relocation) StdoutLine: {'line': b'Consolidate compiler generated dependencies of target relocation_node\n'}
+[31.487784] (relocation) StdoutLine: {'line': b'[ 80%] Built target test_node\n'}
+[31.493354] (relocation) StdoutLine: {'line': b'[ 90%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o\n'}
+[31.553302] (-) TimerEvent: {}
+[31.653510] (-) TimerEvent: {}
+[31.736580] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)\xe2\x80\x99:\n'}
+[31.736761] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:123:33: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[31.736826] (planner) StderrLine: {'line': b'  123 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {\n'}
+[31.736873] (planner) StderrLine: {'line': b'      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[31.737225] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98bool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)\xe2\x80\x99:\n'}
+[31.737322] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:123:33: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[31.737383] (planner) StderrLine: {'line': b'  123 |         for (int k = idx + 1; k < temp_tra.GetNumPoints() - 1; ++k) {\n'}
+[31.737433] (planner) StderrLine: {'line': b'      |                               ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[31.737529] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:196:61: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[31.737562] (planner) StderrLine: {'line': b'  196 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {\n'}
+[31.737592] (planner) StderrLine: {'line': b'      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[31.738260] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:196:61: warning: comparison of integer expressions of different signedness: \xe2\x80\x98int\xe2\x80\x99 and \xe2\x80\x98size_t\xe2\x80\x99 {aka \xe2\x80\x98long unsigned int\xe2\x80\x99} [-Wsign-compare]\n'}
+[31.738324] (planner) StderrLine: {'line': b'  196 |             if (front_res.seg_idx >= 0 && front_res.seg_idx < new_tra.GetNumPoints() - 1) {\n'}
+[31.738375] (planner) StderrLine: {'line': b'      |                                           ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'}
+[31.741134] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const\xe2\x80\x99:\n'}
+[31.741221] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:363:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[31.741286] (planner) StderrLine: {'line': b'  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[31.741334] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[31.741374] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:363:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[31.741416] (planner) StderrLine: {'line': b'  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[31.741444] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[31.741470] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:364:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[31.741498] (planner) StderrLine: {'line': b'  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[31.741524] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[31.741551] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:364:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[31.741582] (planner) StderrLine: {'line': b'  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[31.741607] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[31.741836] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp: In member function \xe2\x80\x98Eigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const\xe2\x80\x99:\n'}
+[31.741897] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:363:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[31.741932] (planner) StderrLine: {'line': b'  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[31.741963] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[31.741992] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:363:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[31.742019] (planner) StderrLine: {'line': b'  363 |         if (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;\n'}
+[31.742046] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[31.742072] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:364:9: warning: this \xe2\x80\x98if\xe2\x80\x99 clause does not guard... [-Wmisleading-indentation]\n'}
+[31.742103] (planner) StderrLine: {'line': b'  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[31.742131] (planner) StderrLine: {'line': b'      |         ^~\n'}
+[31.742161] (planner) StderrLine: {'line': b'/home/zxcx/new_naw/planner/src/replanner.cpp:364:29: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the \xe2\x80\x98if\xe2\x80\x99\n'}
+[31.742190] (planner) StderrLine: {'line': b'  364 |         if (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;\n'}
+[31.742221] (planner) StderrLine: {'line': b'      |                             ^~\n'}
+[31.753590] (-) TimerEvent: {}
+[31.853768] (-) TimerEvent: {}
+[31.953958] (-) TimerEvent: {}
+[32.054142] (-) TimerEvent: {}
+[32.154324] (-) TimerEvent: {}
+[32.254510] (-) TimerEvent: {}
+[32.354687] (-) TimerEvent: {}
+[32.454856] (-) TimerEvent: {}
+[32.506596] (planner) StdoutLine: {'line': b'[ 25%] Linking CXX executable planner_test\n'}
+[32.554971] (-) TimerEvent: {}
+[32.655162] (-) TimerEvent: {}
+[32.755333] (-) TimerEvent: {}
+[32.821287] (planner) StdoutLine: {'line': b'[ 62%] Built target planner_test\n'}
+[32.855453] (-) TimerEvent: {}
+[32.955650] (-) TimerEvent: {}
+[33.055848] (-) TimerEvent: {}
+[33.156059] (-) TimerEvent: {}
+[33.256277] (-) TimerEvent: {}
+[33.356489] (-) TimerEvent: {}
+[33.456679] (-) TimerEvent: {}
+[33.556881] (-) TimerEvent: {}
+[33.657089] (-) TimerEvent: {}
+[33.757302] (-) TimerEvent: {}
+[33.857493] (-) TimerEvent: {}
+[33.957704] (-) TimerEvent: {}
+[34.057901] (-) TimerEvent: {}
+[34.158098] (-) TimerEvent: {}
+[34.258307] (-) TimerEvent: {}
+[34.358516] (-) TimerEvent: {}
+[34.458716] (-) TimerEvent: {}
+[34.558912] (-) TimerEvent: {}
+[34.659088] (-) TimerEvent: {}
+[34.759306] (-) TimerEvent: {}
+[34.859511] (-) TimerEvent: {}
+[34.959706] (-) TimerEvent: {}
+[35.059884] (-) TimerEvent: {}
+[35.160093] (-) TimerEvent: {}
+[35.260310] (-) TimerEvent: {}
+[35.341742] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor \xe2\x80\x98relocation::RelocationNode::RelocationNode()\xe2\x80\x99:\n'}
+[35.341911] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:579:10: warning: \xe2\x80\x98relocation::RelocationNode::trigger_reloc_\xe2\x80\x99 will be initialized after [-Wreorder]\n'}
+[35.341970] (relocation) StderrLine: {'line': b'  579 |     bool trigger_reloc_;\n'}
+[35.342017] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~\n'}
+[35.342063] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:573:10: warning:   \xe2\x80\x98bool relocation::RelocationNode::map_initialized_\xe2\x80\x99 [-Wreorder]\n'}
+[35.342122] (relocation) StderrLine: {'line': b'  573 |     bool map_initialized_;\n'}
+[35.342164] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~~~\n'}
+[35.342206] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:50:5: warning:   when initialized here [-Wreorder]\n'}
+[35.342262] (relocation) StderrLine: {'line': b'   50 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)\n'}
+[35.342303] (relocation) StderrLine: {'line': b'      |     ^~~~~~~~~~~~~~\n'}
+[35.360425] (-) TimerEvent: {}
+[35.460628] (-) TimerEvent: {}
+[35.560835] (-) TimerEvent: {}
+[35.661030] (-) TimerEvent: {}
+[35.761223] (-) TimerEvent: {}
+[35.861432] (-) TimerEvent: {}
+[35.961631] (-) TimerEvent: {}
+[36.061819] (-) TimerEvent: {}
+[36.162006] (-) TimerEvent: {}
+[36.262212] (-) TimerEvent: {}
+[36.362410] (-) TimerEvent: {}
+[36.462586] (-) TimerEvent: {}
+[36.562780] (-) TimerEvent: {}
+[36.662961] (-) TimerEvent: {}
+[36.763151] (-) TimerEvent: {}
+[36.863354] (-) TimerEvent: {}
+[36.963542] (-) TimerEvent: {}
+[37.063725] (-) TimerEvent: {}
+[37.163900] (-) TimerEvent: {}
+[37.264078] (-) TimerEvent: {}
+[37.364287] (-) TimerEvent: {}
+[37.464466] (-) TimerEvent: {}
+[37.564661] (-) TimerEvent: {}
+[37.664857] (-) TimerEvent: {}
+[37.765054] (-) TimerEvent: {}
+[37.865226] (-) TimerEvent: {}
+[37.965429] (-) TimerEvent: {}
+[38.065622] (-) TimerEvent: {}
+[38.165816] (-) TimerEvent: {}
+[38.266006] (-) TimerEvent: {}
+[38.303606] (algo_master) StdoutLine: {'line': b'[ 66%] Linking CXX executable algo_master\n'}
+[38.366123] (-) TimerEvent: {}
+[38.405315] (algo_master) StdoutLine: {'line': b'[100%] Built target algo_master\n'}
+[38.466239] (-) TimerEvent: {}
+[38.566449] (-) TimerEvent: {}
+[38.666650] (-) TimerEvent: {}
+[38.766851] (-) TimerEvent: {}
+[38.867059] (-) TimerEvent: {}
+[38.967261] (-) TimerEvent: {}
+[39.067453] (-) TimerEvent: {}
+[39.167653] (-) TimerEvent: {}
+[39.267849] (-) TimerEvent: {}
+[39.368051] (-) TimerEvent: {}
+[39.468264] (-) TimerEvent: {}
+[39.568452] (-) TimerEvent: {}
+[39.668645] (-) TimerEvent: {}
+[39.768836] (-) TimerEvent: {}
+[39.869031] (-) TimerEvent: {}
+[39.969216] (-) TimerEvent: {}
+[40.069431] (-) TimerEvent: {}
+[40.169635] (-) TimerEvent: {}
+[40.269828] (-) TimerEvent: {}
+[40.370028] (-) TimerEvent: {}
+[40.470231] (-) TimerEvent: {}
+[40.570447] (-) TimerEvent: {}
+[40.670633] (-) TimerEvent: {}
+[40.770827] (-) TimerEvent: {}
+[40.871036] (-) TimerEvent: {}
+[40.971243] (-) TimerEvent: {}
+[41.071456] (-) TimerEvent: {}
+[41.171648] (-) TimerEvent: {}
+[41.271838] (-) TimerEvent: {}
+[41.372043] (-) TimerEvent: {}
+[41.472241] (-) TimerEvent: {}
+[41.572440] (-) TimerEvent: {}
+[41.672628] (-) TimerEvent: {}
+[41.772817] (-) TimerEvent: {}
+[41.873002] (-) TimerEvent: {}
+[41.973196] (-) TimerEvent: {}
+[42.073407] (-) TimerEvent: {}
+[42.173603] (-) TimerEvent: {}
+[42.273781] (-) TimerEvent: {}
+[42.373955] (-) TimerEvent: {}
+[42.474133] (-) TimerEvent: {}
+[42.574308] (-) TimerEvent: {}
+[42.674492] (-) TimerEvent: {}
+[42.774675] (-) TimerEvent: {}
+[42.874840] (-) TimerEvent: {}
+[42.975021] (-) TimerEvent: {}
+[43.075197] (-) TimerEvent: {}
+[43.175385] (-) TimerEvent: {}
+[43.275576] (-) TimerEvent: {}
+[43.375764] (-) TimerEvent: {}
+[43.475954] (-) TimerEvent: {}
+[43.576145] (-) TimerEvent: {}
+[43.676332] (-) TimerEvent: {}
+[43.776518] (-) TimerEvent: {}
+[43.876703] (-) TimerEvent: {}
+[43.976885] (-) TimerEvent: {}
+[44.077075] (-) TimerEvent: {}
+[44.177314] (-) TimerEvent: {}
+[44.277508] (-) TimerEvent: {}
+[44.377699] (-) TimerEvent: {}
+[44.477875] (-) TimerEvent: {}
+[44.578048] (-) TimerEvent: {}
+[44.678244] (-) TimerEvent: {}
+[44.778422] (-) TimerEvent: {}
+[44.878596] (-) TimerEvent: {}
+[44.978760] (-) TimerEvent: {}
+[45.078950] (-) TimerEvent: {}
+[45.179137] (-) TimerEvent: {}
+[45.279312] (-) TimerEvent: {}
+[45.379467] (-) TimerEvent: {}
+[45.479646] (-) TimerEvent: {}
+[45.579842] (-) TimerEvent: {}
+[45.680034] (-) TimerEvent: {}
+[45.780226] (-) TimerEvent: {}
+[45.880422] (-) TimerEvent: {}
+[45.980613] (-) TimerEvent: {}
+[46.080812] (-) TimerEvent: {}
+[46.180998] (-) TimerEvent: {}
+[46.281183] (-) TimerEvent: {}
+[46.381369] (-) TimerEvent: {}
+[46.481610] (-) TimerEvent: {}
+[46.581806] (-) TimerEvent: {}
+[46.681992] (-) TimerEvent: {}
+[46.782179] (-) TimerEvent: {}
+[46.882367] (-) TimerEvent: {}
+[46.982560] (-) TimerEvent: {}
+[47.082746] (-) TimerEvent: {}
+[47.182923] (-) TimerEvent: {}
+[47.283094] (-) TimerEvent: {}
+[47.383271] (-) TimerEvent: {}
+[47.483435] (-) TimerEvent: {}
+[47.583622] (-) TimerEvent: {}
+[47.683815] (-) TimerEvent: {}
+[47.784006] (-) TimerEvent: {}
+[47.884196] (-) TimerEvent: {}
+[47.984391] (-) TimerEvent: {}
+[48.017147] (planner) StdoutLine: {'line': b'[ 68%] Linking CXX executable planner_node\n'}
+[48.017553] (algo_master) CommandEnded: {'returncode': 0}
+[48.018200] (algo_master) JobProgress: {'identifier': 'algo_master', 'progress': 'install'}
+[48.018413] (algo_master) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/algo_master'], 'cwd': '/home/zxcx/new_naw/build/algo_master', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/algo_master'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[48.024425] (algo_master) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[48.024772] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/lib/algo_master/algo_master\n'}
+[48.025830] (algo_master) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/algo_master/lib/algo_master/algo_master" to ""\n'}
+[48.025957] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/package_run_dependencies/algo_master\n'}
+[48.026051] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/parent_prefix_path/algo_master\n'}
+[48.026085] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.sh\n'}
+[48.026155] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.dsv\n'}
+[48.026268] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.sh\n'}
+[48.026395] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.dsv\n'}
+[48.026452] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.bash\n'}
+[48.026615] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.sh\n'}
+[48.026663] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.zsh\n'}
+[48.026743] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.dsv\n'}
+[48.026775] (algo_master) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv\n'}
+[48.026805] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/packages/algo_master\n'}
+[48.026838] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig.cmake\n'}
+[48.026877] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig-version.cmake\n'}
+[48.026919] (algo_master) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.xml\n'}
+[48.027671] (algo_master) CommandEnded: {'returncode': 0}
+[48.034322] (algo_master) JobEnded: {'identifier': 'algo_master', 'rc': 0}
+[48.084474] (-) TimerEvent: {}
+[48.184605] (-) TimerEvent: {}
+[48.223489] (planner) StdoutLine: {'line': b'[100%] Built target planner_node\n'}
+[48.284696] (-) TimerEvent: {}
+[48.384791] (-) TimerEvent: {}
+[48.484909] (-) TimerEvent: {}
+[48.584992] (-) TimerEvent: {}
+[48.685080] (-) TimerEvent: {}
+[48.785166] (-) TimerEvent: {}
+[48.885267] (-) TimerEvent: {}
+[48.985375] (-) TimerEvent: {}
+[49.085461] (-) TimerEvent: {}
+[49.185549] (-) TimerEvent: {}
+[49.285634] (-) TimerEvent: {}
+[49.385718] (-) TimerEvent: {}
+[49.485833] (-) TimerEvent: {}
+[49.585918] (-) TimerEvent: {}
+[49.686005] (-) TimerEvent: {}
+[49.786090] (-) TimerEvent: {}
+[49.886177] (-) TimerEvent: {}
+[49.986275] (-) TimerEvent: {}
+[50.086363] (-) TimerEvent: {}
+[50.186521] (-) TimerEvent: {}
+[50.286730] (-) TimerEvent: {}
+[50.386881] (-) TimerEvent: {}
+[50.486993] (-) TimerEvent: {}
+[50.587095] (-) TimerEvent: {}
+[50.687209] (-) TimerEvent: {}
+[50.787329] (-) TimerEvent: {}
+[50.887447] (-) TimerEvent: {}
+[50.987559] (-) TimerEvent: {}
+[51.087633] (-) TimerEvent: {}
+[51.187748] (-) TimerEvent: {}
+[51.287871] (-) TimerEvent: {}
+[51.387992] (-) TimerEvent: {}
+[51.435920] (relocation) StdoutLine: {'line': b'[100%] Linking CXX executable relocation_node\n'}
+[51.436049] (planner) CommandEnded: {'returncode': 0}
+[51.439730] (planner) JobProgress: {'identifier': 'planner', 'progress': 'install'}
+[51.439964] (planner) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/planner'], 'cwd': '/home/zxcx/new_naw/build/planner', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/planner'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[51.445433] (planner) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[51.445817] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_node\n'}
+[51.448278] (planner) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_node" to ""\n'}
+[51.448568] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/lib/planner/planner_test\n'}
+[51.449208] (planner) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/planner/lib/planner/planner_test" to ""\n'}
+[51.449245] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/package_run_dependencies/planner\n'}
+[51.449289] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/parent_prefix_path/planner\n'}
+[51.449389] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.sh\n'}
+[51.449423] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/ament_prefix_path.dsv\n'}
+[51.449500] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/environment/path.sh\n'}
+[51.449531] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/environment/path.dsv\n'}
+[51.449605] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.bash\n'}
+[51.449684] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.sh\n'}
+[51.449739] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/local_setup.zsh\n'}
+[51.449779] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/local_setup.dsv\n'}
+[51.449851] (planner) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/planner/share/planner/package.dsv\n'}
+[51.449922] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/ament_index/resource_index/packages/planner\n'}
+[51.449990] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig.cmake\n'}
+[51.450030] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/cmake/plannerConfig-version.cmake\n'}
+[51.450068] (planner) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/planner/share/planner/package.xml\n'}
+[51.488079] (-) TimerEvent: {}
+[51.588178] (-) TimerEvent: {}
+[51.688278] (-) TimerEvent: {}
+[51.788364] (-) TimerEvent: {}
+[51.888457] (-) TimerEvent: {}
+[51.977662] (relocation) StdoutLine: {'line': b'[100%] Built target relocation_node\n'}
+[51.977772] (planner) CommandEnded: {'returncode': 0}
+[51.984714] (planner) JobEnded: {'identifier': 'planner', 'rc': 0}
+[51.988531] (-) TimerEvent: {}
+[52.088683] (-) TimerEvent: {}
+[52.188877] (-) TimerEvent: {}
+[52.289056] (-) TimerEvent: {}
+[52.389227] (-) TimerEvent: {}
+[52.489450] (-) TimerEvent: {}
+[52.589609] (-) TimerEvent: {}
+[52.689736] (-) TimerEvent: {}
+[52.790056] (-) TimerEvent: {}
+[52.890297] (-) TimerEvent: {}
+[52.990526] (-) TimerEvent: {}
+[53.090733] (-) TimerEvent: {}
+[53.190876] (-) TimerEvent: {}
+[53.291023] (-) TimerEvent: {}
+[53.391223] (-) TimerEvent: {}
+[53.491429] (-) TimerEvent: {}
+[53.591645] (-) TimerEvent: {}
+[53.691799] (-) TimerEvent: {}
+[53.791971] (-) TimerEvent: {}
+[53.892162] (-) TimerEvent: {}
+[53.992370] (-) TimerEvent: {}
+[54.092577] (-) TimerEvent: {}
+[54.192729] (-) TimerEvent: {}
+[54.292912] (-) TimerEvent: {}
+[54.393079] (-) TimerEvent: {}
+[54.493239] (-) TimerEvent: {}
+[54.593476] (-) TimerEvent: {}
+[54.693647] (-) TimerEvent: {}
+[54.793783] (-) TimerEvent: {}
+[54.893967] (-) TimerEvent: {}
+[54.994123] (-) TimerEvent: {}
+[55.094280] (-) TimerEvent: {}
+[55.194435] (-) TimerEvent: {}
+[55.294586] (-) TimerEvent: {}
+[55.395230] (-) TimerEvent: {}
+[55.495416] (-) TimerEvent: {}
+[55.595588] (-) TimerEvent: {}
+[55.695781] (-) TimerEvent: {}
+[55.795997] (-) TimerEvent: {}
+[55.896180] (-) TimerEvent: {}
+[55.996340] (-) TimerEvent: {}
+[56.096530] (-) TimerEvent: {}
+[56.196709] (-) TimerEvent: {}
+[56.296896] (-) TimerEvent: {}
+[56.397381] (-) TimerEvent: {}
+[56.497561] (-) TimerEvent: {}
+[56.597719] (-) TimerEvent: {}
+[56.697885] (-) TimerEvent: {}
+[56.798075] (-) TimerEvent: {}
+[56.898887] (-) TimerEvent: {}
+[56.999376] (-) TimerEvent: {}
+[57.099601] (-) TimerEvent: {}
+[57.199793] (-) TimerEvent: {}
+[57.299992] (-) TimerEvent: {}
+[57.400194] (-) TimerEvent: {}
+[57.500410] (-) TimerEvent: {}
+[57.601033] (-) TimerEvent: {}
+[57.701214] (-) TimerEvent: {}
+[57.801385] (-) TimerEvent: {}
+[57.901549] (-) TimerEvent: {}
+[58.001723] (-) TimerEvent: {}
+[58.101893] (-) TimerEvent: {}
+[58.202003] (-) TimerEvent: {}
+[58.302167] (-) TimerEvent: {}
+[58.402285] (-) TimerEvent: {}
+[58.502394] (-) TimerEvent: {}
+[58.602568] (-) TimerEvent: {}
+[58.702782] (-) TimerEvent: {}
+[58.803006] (-) TimerEvent: {}
+[58.903232] (-) TimerEvent: {}
+[59.003483] (-) TimerEvent: {}
+[59.103706] (-) TimerEvent: {}
+[59.203930] (-) TimerEvent: {}
+[59.304476] (-) TimerEvent: {}
+[59.404698] (-) TimerEvent: {}
+[59.504872] (-) TimerEvent: {}
+[59.605043] (-) TimerEvent: {}
+[59.705270] (-) TimerEvent: {}
+[59.805489] (-) TimerEvent: {}
+[59.905992] (-) TimerEvent: {}
+[60.006840] (-) TimerEvent: {}
+[60.107041] (-) TimerEvent: {}
+[60.207238] (-) TimerEvent: {}
+[60.307470] (-) TimerEvent: {}
+[60.407637] (-) TimerEvent: {}
+[60.507804] (-) TimerEvent: {}
+[60.608018] (-) TimerEvent: {}
+[60.708204] (-) TimerEvent: {}
+[60.808472] (-) TimerEvent: {}
+[60.908651] (-) TimerEvent: {}
+[61.008833] (-) TimerEvent: {}
+[61.109047] (-) TimerEvent: {}
+[61.209237] (-) TimerEvent: {}
+[61.309496] (-) TimerEvent: {}
+[61.409661] (-) TimerEvent: {}
+[61.509826] (-) TimerEvent: {}
+[61.610036] (-) TimerEvent: {}
+[61.710229] (-) TimerEvent: {}
+[61.810633] (-) TimerEvent: {}
+[61.910789] (-) TimerEvent: {}
+[62.010919] (-) TimerEvent: {}
+[62.111131] (-) TimerEvent: {}
+[62.211283] (-) TimerEvent: {}
+[62.311435] (-) TimerEvent: {}
+[62.411650] (-) TimerEvent: {}
+[62.511883] (-) TimerEvent: {}
+[62.612111] (-) TimerEvent: {}
+[62.712324] (-) TimerEvent: {}
+[62.812542] (-) TimerEvent: {}
+[62.912721] (-) TimerEvent: {}
+[63.012881] (-) TimerEvent: {}
+[63.113093] (-) TimerEvent: {}
+[63.213301] (-) TimerEvent: {}
+[63.313504] (-) TimerEvent: {}
+[63.413656] (-) TimerEvent: {}
+[63.513780] (-) TimerEvent: {}
+[63.613912] (-) TimerEvent: {}
+[63.714036] (-) TimerEvent: {}
+[63.814144] (-) TimerEvent: {}
+[63.914276] (-) TimerEvent: {}
+[64.014470] (-) TimerEvent: {}
+[64.114690] (-) TimerEvent: {}
+[64.214895] (-) TimerEvent: {}
+[64.315114] (-) TimerEvent: {}
+[64.415361] (-) TimerEvent: {}
+[64.515529] (-) TimerEvent: {}
+[64.615990] (-) TimerEvent: {}
+[64.716215] (-) TimerEvent: {}
+[64.816431] (-) TimerEvent: {}
+[64.916656] (-) TimerEvent: {}
+[65.016868] (-) TimerEvent: {}
+[65.117123] (-) TimerEvent: {}
+[65.217331] (-) TimerEvent: {}
+[65.317558] (-) TimerEvent: {}
+[65.417774] (-) TimerEvent: {}
+[65.517981] (-) TimerEvent: {}
+[65.618157] (-) TimerEvent: {}
+[65.718419] (-) TimerEvent: {}
+[65.818585] (-) TimerEvent: {}
+[65.918740] (-) TimerEvent: {}
+[66.018935] (-) TimerEvent: {}
+[66.119142] (-) TimerEvent: {}
+[66.219355] (-) TimerEvent: {}
+[66.319570] (-) TimerEvent: {}
+[66.419730] (-) TimerEvent: {}
+[66.519883] (-) TimerEvent: {}
+[66.620029] (-) TimerEvent: {}
+[66.720231] (-) TimerEvent: {}
+[66.820457] (-) TimerEvent: {}
+[66.920620] (-) TimerEvent: {}
+[67.020813] (-) TimerEvent: {}
+[67.120990] (-) TimerEvent: {}
+[67.221117] (-) TimerEvent: {}
+[67.321268] (-) TimerEvent: {}
+[67.421356] (-) TimerEvent: {}
+[67.521516] (-) TimerEvent: {}
+[67.621677] (-) TimerEvent: {}
+[67.721806] (-) TimerEvent: {}
+[67.821933] (-) TimerEvent: {}
+[67.922069] (-) TimerEvent: {}
+[68.022185] (-) TimerEvent: {}
+[68.122308] (-) TimerEvent: {}
+[68.222435] (-) TimerEvent: {}
+[68.322562] (-) TimerEvent: {}
+[68.422687] (-) TimerEvent: {}
+[68.522820] (-) TimerEvent: {}
+[68.623001] (-) TimerEvent: {}
+[68.723164] (-) TimerEvent: {}
+[68.823275] (-) TimerEvent: {}
+[68.923422] (-) TimerEvent: {}
+[69.023633] (-) TimerEvent: {}
+[69.123853] (-) TimerEvent: {}
+[69.224065] (-) TimerEvent: {}
+[69.324307] (-) TimerEvent: {}
+[69.424512] (-) TimerEvent: {}
+[69.524713] (-) TimerEvent: {}
+[69.624932] (-) TimerEvent: {}
+[69.725142] (-) TimerEvent: {}
+[69.825343] (-) TimerEvent: {}
+[69.925482] (-) TimerEvent: {}
+[70.025574] (-) TimerEvent: {}
+[70.125702] (-) TimerEvent: {}
+[70.225816] (-) TimerEvent: {}
+[70.325989] (-) TimerEvent: {}
+[70.426205] (-) TimerEvent: {}
+[70.526384] (-) TimerEvent: {}
+[70.626539] (-) TimerEvent: {}
+[70.726708] (-) TimerEvent: {}
+[70.826828] (-) TimerEvent: {}
+[70.926945] (-) TimerEvent: {}
+[71.027106] (-) TimerEvent: {}
+[71.127285] (-) TimerEvent: {}
+[71.227526] (-) TimerEvent: {}
+[71.328353] (-) TimerEvent: {}
+[71.428571] (-) TimerEvent: {}
+[71.528730] (-) TimerEvent: {}
+[71.628933] (-) TimerEvent: {}
+[71.729164] (-) TimerEvent: {}
+[71.829377] (-) TimerEvent: {}
+[71.929510] (-) TimerEvent: {}
+[72.029616] (-) TimerEvent: {}
+[72.129780] (-) TimerEvent: {}
+[72.229941] (-) TimerEvent: {}
+[72.330113] (-) TimerEvent: {}
+[72.430274] (-) TimerEvent: {}
+[72.530431] (-) TimerEvent: {}
+[72.630672] (-) TimerEvent: {}
+[72.730895] (-) TimerEvent: {}
+[72.831121] (-) TimerEvent: {}
+[72.931294] (-) TimerEvent: {}
+[73.031457] (-) TimerEvent: {}
+[73.131651] (-) TimerEvent: {}
+[73.231868] (-) TimerEvent: {}
+[73.332089] (-) TimerEvent: {}
+[73.432258] (-) TimerEvent: {}
+[73.532413] (-) TimerEvent: {}
+[73.632622] (-) TimerEvent: {}
+[73.732830] (-) TimerEvent: {}
+[73.833054] (-) TimerEvent: {}
+[73.933307] (-) TimerEvent: {}
+[74.033514] (-) TimerEvent: {}
+[74.133717] (-) TimerEvent: {}
+[74.233923] (-) TimerEvent: {}
+[74.334143] (-) TimerEvent: {}
+[74.434351] (-) TimerEvent: {}
+[74.534553] (-) TimerEvent: {}
+[74.634770] (-) TimerEvent: {}
+[74.735010] (-) TimerEvent: {}
+[74.835190] (-) TimerEvent: {}
+[74.935308] (-) TimerEvent: {}
+[75.035424] (-) TimerEvent: {}
+[75.135543] (-) TimerEvent: {}
+[75.235710] (-) TimerEvent: {}
+[75.335874] (-) TimerEvent: {}
+[75.435994] (-) TimerEvent: {}
+[75.536116] (-) TimerEvent: {}
+[75.636236] (-) TimerEvent: {}
+[75.736347] (-) TimerEvent: {}
+[75.836434] (-) TimerEvent: {}
+[75.936567] (-) TimerEvent: {}
+[76.036789] (-) TimerEvent: {}
+[76.136938] (-) TimerEvent: {}
+[76.237027] (-) TimerEvent: {}
+[76.337133] (-) TimerEvent: {}
+[76.437265] (-) TimerEvent: {}
+[76.537382] (-) TimerEvent: {}
+[76.637523] (-) TimerEvent: {}
+[76.737734] (-) TimerEvent: {}
+[76.837935] (-) TimerEvent: {}
+[76.938123] (-) TimerEvent: {}
+[77.038273] (-) TimerEvent: {}
+[77.138453] (-) TimerEvent: {}
+[77.238691] (-) TimerEvent: {}
+[77.338916] (-) TimerEvent: {}
+[77.439077] (-) TimerEvent: {}
+[77.539235] (-) TimerEvent: {}
+[77.639465] (-) TimerEvent: {}
+[77.739620] (-) TimerEvent: {}
+[77.839738] (-) TimerEvent: {}
+[77.939852] (-) TimerEvent: {}
+[78.040016] (-) TimerEvent: {}
+[78.140304] (-) TimerEvent: {}
+[78.240459] (-) TimerEvent: {}
+[78.340626] (-) TimerEvent: {}
+[78.440804] (-) TimerEvent: {}
+[78.540927] (-) TimerEvent: {}
+[78.641040] (-) TimerEvent: {}
+[78.741159] (-) TimerEvent: {}
+[78.841279] (-) TimerEvent: {}
+[78.941440] (-) TimerEvent: {}
+[79.041661] (-) TimerEvent: {}
+[79.141909] (-) TimerEvent: {}
+[79.242088] (-) TimerEvent: {}
+[79.342242] (-) TimerEvent: {}
+[79.442417] (-) TimerEvent: {}
+[79.542526] (-) TimerEvent: {}
+[79.642687] (-) TimerEvent: {}
+[79.742842] (-) TimerEvent: {}
+[79.843010] (-) TimerEvent: {}
+[79.943166] (-) TimerEvent: {}
+[80.043340] (-) TimerEvent: {}
+[80.143545] (-) TimerEvent: {}
+[80.243710] (-) TimerEvent: {}
+[80.343881] (-) TimerEvent: {}
+[80.444111] (-) TimerEvent: {}
+[80.544320] (-) TimerEvent: {}
+[80.644521] (-) TimerEvent: {}
+[80.744705] (-) TimerEvent: {}
+[80.844875] (-) TimerEvent: {}
+[80.944989] (-) TimerEvent: {}
+[81.045167] (-) TimerEvent: {}
+[81.145329] (-) TimerEvent: {}
+[81.246205] (-) TimerEvent: {}
+[81.346448] (-) TimerEvent: {}
+[81.446612] (-) TimerEvent: {}
+[81.546726] (-) TimerEvent: {}
+[81.646899] (-) TimerEvent: {}
+[81.747056] (-) TimerEvent: {}
+[81.847182] (-) TimerEvent: {}
+[81.947342] (-) TimerEvent: {}
+[82.014676] (relocation) CommandEnded: {'returncode': 0}
+[82.018339] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'install'}
+[82.018638] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/relocation'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('SYSTEMD_EXEC_PID', '2576'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg02Pov2B:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/63c8d51c_c968_4d88_badc_917f20f5e29e'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.130'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f25c0-29f6-7cc2-bcf3-365f611d99d1'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[82.025066] (relocation) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[82.025163] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so\n'}
+[82.025336] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node\n'}
+[82.025797] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node\n'}
+[82.027939] (relocation) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""\n'}
+[82.028094] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include\n'}
+[82.028145] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation\n'}
+[82.028199] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp\n'}
+[82.028364] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp\n'}
+[82.028418] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp\n'}
+[82.028557] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp\n'}
+[82.028596] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp\n'}
+[82.028780] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation\n'}
+[82.028863] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation\n'}
+[82.028893] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh\n'}
+[82.028920] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv\n'}
+[82.028947] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh\n'}
+[82.028973] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv\n'}
+[82.029000] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash\n'}
+[82.029027] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh\n'}
+[82.029055] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh\n'}
+[82.029082] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv\n'}
+[82.029108] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv\n'}
+[82.029135] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation\n'}
+[82.029161] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake\n'}
+[82.029187] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake\n'}
+[82.029214] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml\n'}
+[82.030093] (relocation) CommandEnded: {'returncode': 0}
+[82.037877] (relocation) JobEnded: {'identifier': 'relocation', 'rc': 0}
+[82.038288] (-) EventReactorShutdown: {}

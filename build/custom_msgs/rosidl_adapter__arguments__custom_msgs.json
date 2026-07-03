@@ -1,0 +1,10 @@
+{
+  "package_name": "custom_msgs",
+  "non_idl_tuples": [
+    "/home/zxcx/new_naw/custom_msgs:msg/MapData.msg",
+    "/home/zxcx/new_naw/custom_msgs:msg/VehicleState.msg",
+    "/home/zxcx/new_naw/custom_msgs:msg/Goal.msg",
+    "/home/zxcx/new_naw/custom_msgs:msg/Result.msg",
+    "/home/zxcx/new_naw/custom_msgs:msg/ChassisInfo.msg"
+  ]
+}

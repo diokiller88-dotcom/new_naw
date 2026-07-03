@@ -1,16 +1,54 @@
 #include "planner_2d/replanner.hpp"
+#include <chrono>
 #include <cmath>
 #include <queue>
 #include <spdlog/spdlog.h>
 
 namespace planner_2d {
+    namespace {
+        constexpr double min_particalreplan_sq = min_particalreplan * min_particalreplan;
+        constexpr double min_wholereplan_sq = min_wholereplan * min_wholereplan;
+        constexpr double narrow_region_esdf = 0.9;
+        constexpr double narrow_region_sample_step = 0.25;
+        constexpr double open_region_sample_step = 1.0;
+
+        float ComputeCostFromESDF(double dist) {
+            if (dist < 0.05) return 1e4f;
+            if (dist < safe_dist) {
+                double penalty = safe_dist - dist;
+                return static_cast<float>(std::pow(penalty, 3) * 20.0);
+            }
+            return 0.0f;
+        }
+
+        Eigen::Vector2d GetForwardSample(const minco& traj) {
+            int num_points = static_cast<int>(traj.GetNumPoints());
+            if (num_points < 2) return Eigen::Vector2d::Zero();
+            int seg_idx = std::min(1, num_points - 2);
+            return traj.GetPosition(seg_idx, 0.0);
+        }
+    }
 
     replanner::replanner(const jps& jps_, const LBFGS& lbfgs_, const project& project_)
         : m_jps(jps_), m_lbfgs(lbfgs_), m_Project(project_) ,m_ResPose(Eigen::Vector2d::Zero()),m_ResVec(Eigen::Vector2d::Zero()){}
 
+    void replanner::ResetPlanStats() {
+        m_LastPlanType = "none";
+        m_LastPlanDurationMs = 0.0;
+        m_LastJpsDurationMs = 0.0;
+        m_LastPlanTriggered = false;
+    }
+
+    void replanner::SetPlanStats(const std::string& plan_type, double duration_ms) {
+        m_LastPlanType = plan_type;
+        m_LastPlanDurationMs = duration_ms;
+        m_LastPlanTriggered = true;
+    }
+
     bool replanner::InitMapWithESDF(const std::vector<int>& occupancy_map, const std::vector<double>& esdf_map, int width, int height, double res_x, double res_y, double origin_x, double origin_y){
         m_ResX = res_x; m_ResY = res_y; m_OriginX = origin_x; m_OriginY = origin_y; m_MapLenX = width; m_MapWeightY = height;
         m_GetRes = false;
+        ResetPlanStats();
         
         m_GlobalOccupancy = occupancy_map;
         m_GlobalEsdf = esdf_map;
@@ -37,23 +75,111 @@ namespace planner_2d {
         int start_x = static_cast<int>(std::round((local_origin_x - m_OriginX) / m_ResX));
         int start_y = static_cast<int>(std::round((local_origin_y - m_OriginY) / m_ResY));
 
+        std::vector<float> local_cost_map(local_w * local_h, 0.0f);
         for (int y = 0; y < local_h; ++y) {
             for (int x = 0; x < local_w; ++x) {
                 int gx = start_x + x;
                 int gy = start_y + y;
+                int l_idx = y * local_w + x;
+                local_cost_map[l_idx] = ComputeCostFromESDF(local_esdf[l_idx]);
                 if (gx >= 0 && gx < m_MapLenX && gy >= 0 && gy < m_MapWeightY) {
                     int g_idx = gy * m_MapLenX + gx;
-                    int l_idx = y * local_w + x;
                     m_GlobalOccupancy[g_idx] = local_occ[l_idx];
                     m_GlobalEsdf[g_idx] = local_esdf[l_idx];
                 }
             }
         }
-        InitMapWithESDF(m_GlobalOccupancy, m_GlobalEsdf, m_MapLenX, m_MapWeightY, m_ResX, m_ResY, m_OriginX, m_OriginY);
+
+        m_lbfgs.UpdateMapPatch(local_cost_map, local_w, local_h, local_origin_x, local_origin_y);
+        m_ReplanAstar.UpdateMapPatchWithESDF(local_occ, local_esdf, local_w, local_h, start_x, start_y);
+        m_jps.UpdateMapPatchWithESDF(local_occ, local_esdf, local_w, local_h, start_x, start_y);
+    }
+
+    Eigen::Vector2d replanner::GridToPhys(const Eigen::Vector2i& grid_pt) const {
+        return Eigen::Vector2d(m_OriginX + grid_pt.x() * m_ResX, m_OriginY + grid_pt.y() * m_ResY);
+    }
+
+    bool replanner::IsNarrowGrid(int gx, int gy) const {
+        if (gx < 0 || gx >= m_MapLenX || gy < 0 || gy >= m_MapWeightY) return true;
+        return m_GlobalEsdf[gy * m_MapLenX + gx] < narrow_region_esdf;
+    }
+
+    void replanner::AppendUniquePoint(std::vector<Eigen::Vector2d>& path, const Eigen::Vector2d& point) const {
+        if (path.empty() || (path.back() - point).norm() > 1e-6) path.push_back(point);
+    }
+
+    void replanner::RasterizeSegment(const Eigen::Vector2i& start_pt, const Eigen::Vector2i& end_pt) {
+        m_GridSegmentCache.clear();
+
+        int x0 = start_pt.x(), y0 = start_pt.y();
+        int x1 = end_pt.x(), y1 = end_pt.y();
+        int dx = std::abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = -std::abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        int err = dx + dy;
+
+        while (true) {
+            m_GridSegmentCache.emplace_back(x0, y0);
+            if (x0 == x1 && y0 == y1) break;
+            int e2 = 2 * err;
+            if (e2 >= dy) { err += dy; x0 += sx; }
+            if (e2 <= dx) { err += dx; y0 += sy; }
+        }
+    }
+
+    void replanner::AppendAdaptiveSegmentSamples(int begin_idx, int end_idx, bool is_narrow, std::vector<Eigen::Vector2d>& phys_path) {
+        if (begin_idx < 0 || end_idx < begin_idx || end_idx >= static_cast<int>(m_GridSegmentCache.size())) return;
+
+        double sample_step = is_narrow ? narrow_region_sample_step : open_region_sample_step;
+        AppendUniquePoint(phys_path, GridToPhys(m_GridSegmentCache[begin_idx]));
+
+        double accum_dist = 0.0;
+        for (int i = begin_idx + 1; i <= end_idx; ++i) {
+            accum_dist += (GridToPhys(m_GridSegmentCache[i]) - GridToPhys(m_GridSegmentCache[i - 1])).norm();
+            if (accum_dist >= sample_step || i == end_idx) {
+                AppendUniquePoint(phys_path, GridToPhys(m_GridSegmentCache[i]));
+                accum_dist = 0.0;
+            }
+        }
+    }
+
+    void replanner::BuildSegmentedAdaptivePath(const std::vector<Eigen::Vector2d>& jps_grid_path, std::vector<Eigen::Vector2d>& phys_path) {
+        phys_path.clear();
+        if (jps_grid_path.empty()) return;
+
+        if (jps_grid_path.size() == 1) {
+            AppendUniquePoint(phys_path, Eigen::Vector2d(m_OriginX + jps_grid_path.front().x() * m_ResX,
+                                                         m_OriginY + jps_grid_path.front().y() * m_ResY));
+            return;
+        }
+
+        for (size_t seg_idx = 1; seg_idx < jps_grid_path.size(); ++seg_idx) {
+            Eigen::Vector2i start_pt(static_cast<int>(std::round(jps_grid_path[seg_idx - 1].x())),
+                                     static_cast<int>(std::round(jps_grid_path[seg_idx - 1].y())));
+            Eigen::Vector2i end_pt(static_cast<int>(std::round(jps_grid_path[seg_idx].x())),
+                                   static_cast<int>(std::round(jps_grid_path[seg_idx].y())));
+            RasterizeSegment(start_pt, end_pt);
+            if (m_GridSegmentCache.empty()) continue;
+
+            int run_start = 0;
+            bool current_narrow = IsNarrowGrid(m_GridSegmentCache.front().x(), m_GridSegmentCache.front().y());
+
+            for (int i = 1; i < static_cast<int>(m_GridSegmentCache.size()); ++i) {
+                bool next_narrow = IsNarrowGrid(m_GridSegmentCache[i].x(), m_GridSegmentCache[i].y());
+                if (next_narrow != current_narrow) {
+                    AppendAdaptiveSegmentSamples(run_start, i - 1, current_narrow, phys_path);
+                    AppendUniquePoint(phys_path, GridToPhys(m_GridSegmentCache[i]));
+                    run_start = i;
+                    current_narrow = next_narrow;
+                }
+            }
+            AppendAdaptiveSegmentSamples(run_start, static_cast<int>(m_GridSegmentCache.size()) - 1, current_narrow, phys_path);
+        }
     }
 
     bool replanner::InitPoint(const double& source_x_, const double& source_y_, const double& target_x_, const double& target_y_){
+        auto t_start = std::chrono::high_resolution_clock::now();
         m_GetRes = false;
+        ResetPlanStats();
 
         Eigen::Vector2d valid_target = ClosestFreeGoal(Eigen::Vector2d(target_x_, target_y_));
 
@@ -63,16 +189,27 @@ namespace planner_2d {
         int sx = static_cast<int>((source_x_ - m_OriginX) / m_ResX), sy = static_cast<int>((source_y_ - m_OriginY) / m_ResY);
         int tx = static_cast<int>((valid_target.x() - m_OriginX) / m_ResX), ty = static_cast<int>((valid_target.y() - m_OriginY) / m_ResY);
         if (!m_jps.InitPoint(sx, sy, tx, ty)) return false;
+        auto t_jps = std::chrono::high_resolution_clock::now();
         if (!m_jps.SetPath()) return false;
+        m_LastJpsDurationMs = std::chrono::duration<double, std::milli>(
+            std::chrono::high_resolution_clock::now() - t_jps).count();
 
         std::vector<Eigen::Vector2d> grid_path = m_jps.GetEigenPath();
-        std::vector<Eigen::Vector2d> phys_path;
-        phys_path.reserve(grid_path.size());
-        for (const auto& pt : grid_path) phys_path.emplace_back(m_OriginX + pt.x() * m_ResX, m_OriginY + pt.y() * m_ResY);
+        m_AdaptivePathCache.clear();
+        BuildSegmentedAdaptivePath(grid_path, m_AdaptivePathCache);
+        if (m_AdaptivePathCache.size() < 2) {
+            m_AdaptivePathCache.clear();
+            for (const auto& pt : grid_path) {
+                m_AdaptivePathCache.emplace_back(m_OriginX + pt.x() * m_ResX, m_OriginY + pt.y() * m_ResY);
+            }
+        }
+        const auto& phys_path = m_AdaptivePathCache;
         double time = ComputeWholeTime(phys_path);
         if (!m_lbfgs.InitXState(phys_path, {}, time)) return false;
         if (!m_lbfgs.Optimize()) spdlog::warn("[Replanner] LBFGS returned false.");
         SetTrajectory(); 
+        double duration_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
+        SetPlanStats("global", duration_ms);
         return true;
     }
 
@@ -93,6 +230,7 @@ namespace planner_2d {
                            const std::vector<int>& local_occ, const std::vector<double>& local_esdf, 
                            int local_w, int local_h, double local_origin_x, double local_origin_y) {
         m_GetRes = false;
+        ResetPlanStats();
         m_DetourPath.clear();
         m_FrontTime = 0.0; 
         
@@ -124,13 +262,13 @@ namespace planner_2d {
         splice_idx = std::min(splice_idx, static_cast<int>(temp_tra.GetNumPoints()) - 2);
         if (splice_idx <= idx) splice_idx = std::min(idx + 3, static_cast<int>(temp_tra.GetNumPoints()) - 2);
 
-        if (close_pos.dist_sq > min_wholereplan) {
+        if (close_pos.dist_sq > min_wholereplan_sq) {
             InitPoint(p_.x(), p_.y(), m_TargetPoint.x(), m_TargetPoint.y());
             resvec_ = m_lbfgs.GetMincoTrajectory().GetVelocity(0, 0.0);
-            respose_ = m_lbfgs.GetMincoTrajectory().GetPosition(1, 0.0);
+            respose_ = GetForwardSample(m_lbfgs.GetMincoTrajectory());
             m_FrontPoint = respose_;
         }
-        else if (nostop && close_pos.dist_sq <= min_particalreplan) {
+        else if (nostop && close_pos.dist_sq <= min_particalreplan_sq) {
             Eigen::Vector2d frontpoint = temp_tra.GetPosition(splice_idx, 0.0);
             m_FrontPoint = frontpoint; 
             
@@ -143,6 +281,7 @@ namespace planner_2d {
                 int sx = static_cast<int>(grid_proj.x()), sy = static_cast<int>(grid_proj.y());
                 int gx = static_cast<int>(grid_front.x()), gy = static_cast<int>(grid_front.y());
 
+                auto t_start = std::chrono::high_resolution_clock::now();
                 m_ReplanAstar.SetStartGoal(sx, sy, gx, gy);
                 if (m_ReplanAstar.FindPath() && (m_ReplanAstar.GetPath().size() * m_ResX) < min_wholereplan * 3.0) {
                     for (const auto& pt : m_ReplanAstar.GetPath()) {
@@ -151,14 +290,16 @@ namespace planner_2d {
                     PraticalReplan(p_, v_, frontpoint, frontvector, m_ReplanAstar.GetPath(), splice_idx);
                     resvec_ = m_lbfgs.GetMincoTrajectory().GetVelocity(0, 0.0);
                     resvec_ *= 0.5; 
+                    double duration_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
+                    SetPlanStats("local", duration_ms);
                 } else {
                     InitPoint(p_.x(), p_.y(), m_TargetPoint.x(), m_TargetPoint.y());
                     resvec_ = m_lbfgs.GetMincoTrajectory().GetVelocity(0, 0.0);
                 }
-                respose_ = m_lbfgs.GetMincoTrajectory().GetPosition(1, 0.0);
+                respose_ = GetForwardSample(m_lbfgs.GetMincoTrajectory());
             }
         }
-        else if (!nostop || (nostop && close_pos.dist_sq > min_particalreplan)) {
+        else if (!nostop || (nostop && close_pos.dist_sq > min_particalreplan_sq)) {
             Eigen::Vector2d frontpoint = temp_tra.GetPosition(splice_idx, 0.0);
             Eigen::Vector2d frontvector = temp_tra.GetVelocity(splice_idx, 0.0);
             m_FrontPoint = frontpoint;
@@ -166,6 +307,7 @@ namespace planner_2d {
             int newx = static_cast<int>((frontpoint.x() - m_OriginX) / m_ResX);
             int newy = static_cast<int>((frontpoint.y() - m_OriginY) / m_ResY);
             
+            auto t_start = std::chrono::high_resolution_clock::now();
             m_ReplanAstar.SetStartGoal(static_cast<int>(grid_p.x()), static_cast<int>(grid_p.y()), newx, newy);
             
             if (m_ReplanAstar.FindPath() && (m_ReplanAstar.GetPath().size() * m_ResX) < min_wholereplan * 3.0) {
@@ -174,11 +316,13 @@ namespace planner_2d {
                 }
                 PraticalReplan(p_, v_, frontpoint, frontvector, m_ReplanAstar.GetPath(), splice_idx);
                 resvec_ = m_lbfgs.GetMincoTrajectory().GetVelocity(0, 0.0);
+                double duration_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
+                SetPlanStats("local", duration_ms);
             } else {
                 InitPoint(p_.x(), p_.y(), m_TargetPoint.x(), m_TargetPoint.y());
                 resvec_ = m_lbfgs.GetMincoTrajectory().GetVelocity(0, 0.0);
             }
-            respose_ = m_lbfgs.GetMincoTrajectory().GetPosition(1, 0.0);
+            respose_ = GetForwardSample(m_lbfgs.GetMincoTrajectory());
         }
 
         m_ResVec = resvec_;
@@ -256,6 +400,7 @@ namespace planner_2d {
 
     bool replanner::UpdateGoal(const Eigen::Vector2d& p_, const Eigen::Vector2d& new_goal_, const Eigen::Vector2d& new_vel_) {
         m_GetRes = false;
+        ResetPlanStats();
         
         Eigen::Vector2d valid_goal = ClosestFreeGoal(new_goal_);
 
@@ -265,9 +410,10 @@ namespace planner_2d {
         
         Eigen::Vector2d grid_new_target((valid_goal.x() - m_OriginX) / m_ResX, (valid_goal.y() - m_OriginY) / m_ResY);
 
-        if (dist_sq > min_wholereplan) {
+        if (dist_sq > min_wholereplan_sq) {
             InitPoint(p_.x(), p_.y(), valid_goal.x(), valid_goal.y());
         } else {
+            auto t_start = std::chrono::high_resolution_clock::now();
             ProjectionResult close_pos = m_Project.FindClosestPoint(p_);
             int robot_idx = std::max(0, close_pos.seg_idx);
             int splice_idx = std::max(robot_idx, num_pts - front_replan - 2);
@@ -283,7 +429,12 @@ namespace planner_2d {
             m_ReplanAstar.SetStartGoal(sx, sy, gx, gy);
             
             if (m_ReplanAstar.FindPath() && (m_ReplanAstar.GetPath().size() * m_ResX) < min_wholereplan * 3.0) {
-                PraticalReplanGoal(splice_pos, splice_vel, valid_goal, new_vel_, m_ReplanAstar.GetPath(), splice_idx);
+                if (!PraticalReplanGoal(splice_pos, splice_vel, valid_goal, new_vel_, m_ReplanAstar.GetPath(), splice_idx)) {
+                    InitPoint(p_.x(), p_.y(), valid_goal.x(), valid_goal.y());
+                } else {
+                    double duration_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
+                    SetPlanStats("local", duration_ms);
+                }
             } else {
                 InitPoint(p_.x(), p_.y(), valid_goal.x(), valid_goal.y());
             }

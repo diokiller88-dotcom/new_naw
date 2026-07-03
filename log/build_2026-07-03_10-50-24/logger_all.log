@@ -1,0 +1,606 @@
+[0.053s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--cmake-args', '-DCMAKE_BUILD_TYPE=Release']
+[0.053s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=32, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=['-DCMAKE_BUILD_TYPE=Release'], cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7a0425c60280>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7a0425c2f3a0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7a0425c2f3a0>>)
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.128s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.128s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/zxcx/new_naw'
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.128s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extensions ['ignore', 'ignore_ament_install']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extension 'ignore'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extension 'ignore_ament_install'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extensions ['colcon_pkg']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extension 'colcon_pkg'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extensions ['colcon_meta']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extension 'colcon_meta'
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extensions ['ros']
+[0.134s] Level 1:colcon.colcon_core.package_identification:_identify(algo_master) by extension 'ros'
+[0.135s] DEBUG:colcon.colcon_core.package_identification:Package 'algo_master' with type 'ros.ament_cmake' and name 'algo_master'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extensions ['ignore', 'ignore_ament_install']
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extension 'ignore'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extension 'ignore_ament_install'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extensions ['colcon_pkg']
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extension 'colcon_pkg'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extensions ['colcon_meta']
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extension 'colcon_meta'
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extensions ['ros']
+[0.135s] Level 1:colcon.colcon_core.package_identification:_identify(controller) by extension 'ros'
+[0.136s] DEBUG:colcon.colcon_core.package_identification:Package 'controller' with type 'ros.ament_cmake' and name 'controller'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extension 'ignore'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extension 'ignore_ament_install'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extensions ['colcon_pkg']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extension 'colcon_pkg'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extensions ['colcon_meta']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extension 'colcon_meta'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extensions ['ros']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(custom_msgs) by extension 'ros'
+[0.136s] DEBUG:colcon.colcon_core.package_identification:Package 'custom_msgs' with type 'ros.ament_cmake' and name 'custom_msgs'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extensions ['ignore', 'ignore_ament_install']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extension 'ignore'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extension 'ignore_ament_install'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extensions ['colcon_pkg']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extension 'colcon_pkg'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extensions ['colcon_meta']
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extension 'colcon_meta'
+[0.136s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extensions ['ros']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(esdf) by extension 'ros'
+[0.137s] DEBUG:colcon.colcon_core.package_identification:Package 'esdf' with type 'ros.ament_cmake' and name 'esdf'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extensions ['ignore', 'ignore_ament_install']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extension 'ignore'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extension 'ignore_ament_install'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extensions ['colcon_pkg']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extension 'colcon_pkg'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extensions ['colcon_meta']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extension 'colcon_meta'
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extensions ['ros']
+[0.137s] Level 1:colcon.colcon_core.package_identification:_identify(livox_ros_driver2) by extension 'ros'
+[0.138s] DEBUG:colcon.colcon_core.package_identification:Package 'livox_ros_driver2' with type 'ros.ament_cmake' and name 'livox_ros_driver2'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extensions ['ignore', 'ignore_ament_install']
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extension 'ignore'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extension 'ignore_ament_install'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extensions ['colcon_pkg']
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extension 'colcon_pkg'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extensions ['colcon_meta']
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extension 'colcon_meta'
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extensions ['ros']
+[0.138s] Level 1:colcon.colcon_core.package_identification:_identify(planner) by extension 'ros'
+[0.139s] DEBUG:colcon.colcon_core.package_identification:Package 'planner' with type 'ros.ament_cmake' and name 'planner'
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extensions ['ignore', 'ignore_ament_install']
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extension 'ignore'
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extension 'ignore_ament_install'
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extensions ['colcon_pkg']
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extension 'colcon_pkg'
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extensions ['colcon_meta']
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extension 'colcon_meta'
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extensions ['ros']
+[0.139s] Level 1:colcon.colcon_core.package_identification:_identify(point_lio) by extension 'ros'
+[0.140s] DEBUG:colcon.colcon_core.package_identification:Package 'point_lio' with type 'ros.ament_cmake' and name 'point_lio'
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extensions ['ignore', 'ignore_ament_install']
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extension 'ignore'
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extension 'ignore_ament_install'
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extensions ['colcon_pkg']
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extension 'colcon_pkg'
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extensions ['colcon_meta']
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extension 'colcon_meta'
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extensions ['ros']
+[0.140s] Level 1:colcon.colcon_core.package_identification:_identify(relocation) by extension 'ros'
+[0.140s] DEBUG:colcon.colcon_core.package_identification:Package 'relocation' with type 'ros.ament_cmake' and name 'relocation'
+[0.140s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.140s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.140s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.140s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.140s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.157s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.158s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 298 installed packages in /opt/ros/humble
+[0.159s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_target' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_clean_cache' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_clean_first' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'cmake_force_configure' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'ament_cmake_args' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'catkin_cmake_args' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.179s] DEBUG:colcon.colcon_core.verb:Building package 'controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/controller', 'merge_install': False, 'path': '/home/zxcx/new_naw/controller', 'symlink_install': False, 'test_result_base': None}
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_target' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'custom_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.179s] DEBUG:colcon.colcon_core.verb:Building package 'custom_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/custom_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/custom_msgs', 'merge_install': False, 'path': '/home/zxcx/new_naw/custom_msgs', 'symlink_install': False, 'test_result_base': None}
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_target' from command line to 'None'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_clean_cache' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_clean_first' from command line to 'False'
+[0.179s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'cmake_force_configure' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'ament_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'catkin_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'livox_ros_driver2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.180s] DEBUG:colcon.colcon_core.verb:Building package 'livox_ros_driver2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/livox_ros_driver2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/livox_ros_driver2', 'merge_install': False, 'path': '/home/zxcx/new_naw/livox_ros_driver2', 'symlink_install': False, 'test_result_base': None}
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_target' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_clean_cache' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_clean_first' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'cmake_force_configure' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'ament_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'catkin_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'algo_master' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.180s] DEBUG:colcon.colcon_core.verb:Building package 'algo_master' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/algo_master', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/algo_master', 'merge_install': False, 'path': '/home/zxcx/new_naw/algo_master', 'symlink_install': False, 'test_result_base': None}
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_target' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_clean_cache' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_clean_first' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'cmake_force_configure' from command line to 'False'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'ament_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'catkin_cmake_args' from command line to 'None'
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'esdf' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.180s] DEBUG:colcon.colcon_core.verb:Building package 'esdf' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/esdf', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/esdf', 'merge_install': False, 'path': '/home/zxcx/new_naw/esdf', 'symlink_install': False, 'test_result_base': None}
+[0.180s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_target' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_clean_cache' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_clean_first' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'cmake_force_configure' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'ament_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'catkin_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'planner' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.181s] DEBUG:colcon.colcon_core.verb:Building package 'planner' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/planner', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/planner', 'merge_install': False, 'path': '/home/zxcx/new_naw/planner', 'symlink_install': False, 'test_result_base': None}
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_target' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_clean_cache' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_clean_first' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'cmake_force_configure' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'ament_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'catkin_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'point_lio' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.181s] DEBUG:colcon.colcon_core.verb:Building package 'point_lio' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/point_lio', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/point_lio', 'merge_install': False, 'path': '/home/zxcx/new_naw/point_lio', 'symlink_install': False, 'test_result_base': None}
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_args' from command line to '['-DCMAKE_BUILD_TYPE=Release']'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_target' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_clean_cache' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_clean_first' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'cmake_force_configure' from command line to 'False'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'ament_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'catkin_cmake_args' from command line to 'None'
+[0.181s] Level 5:colcon.colcon_core.verb:set package 'relocation' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.181s] DEBUG:colcon.colcon_core.verb:Building package 'relocation' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/zxcx/new_naw/build/relocation', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': ['-DCMAKE_BUILD_TYPE=Release'], 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/zxcx/new_naw/install/relocation', 'merge_install': False, 'path': '/home/zxcx/new_naw/relocation', 'symlink_install': False, 'test_result_base': None}
+[0.181s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.182s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.183s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/custom_msgs' with build type 'ament_cmake'
+[0.183s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/custom_msgs'
+[0.184s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.184s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.184s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.187s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/livox_ros_driver2' with build type 'ament_cmake'
+[0.187s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/livox_ros_driver2'
+[0.187s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.187s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.189s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/controller' with build type 'ament_cmake'
+[0.189s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/controller'
+[0.189s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.189s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.193s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/custom_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/custom_msgs
+[0.198s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/livox_ros_driver2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/livox_ros_driver2 -- -j32 -l32
+[0.200s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/controller': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/controller -- -j32 -l32
+[0.227s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/controller' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/controller -- -j32 -l32
+[0.235s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/controller': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/controller
+[0.241s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(controller)
+[0.241s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/controller' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/controller
+[0.242s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller' for CMake module files
+[0.243s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller' for CMake config files
+[0.243s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller', 'cmake_prefix_path')
+[0.243s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.ps1'
+[0.243s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.dsv'
+[0.244s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.sh'
+[0.244s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/bin'
+[0.244s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/lib/pkgconfig/controller.pc'
+[0.244s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/lib/python3.10/site-packages'
+[0.244s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/bin'
+[0.245s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.ps1'
+[0.245s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/controller/share/controller/package.dsv'
+[0.245s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.sh'
+[0.246s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.bash'
+[0.246s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.zsh'
+[0.247s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/controller/share/colcon-core/packages/controller)
+[0.247s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(controller)
+[0.247s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller' for CMake module files
+[0.247s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller' for CMake config files
+[0.247s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller', 'cmake_prefix_path')
+[0.247s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.ps1'
+[0.248s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.dsv'
+[0.248s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/controller/share/controller/hook/cmake_prefix_path.sh'
+[0.248s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/bin'
+[0.248s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/lib/pkgconfig/controller.pc'
+[0.248s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/lib/python3.10/site-packages'
+[0.248s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/controller/bin'
+[0.249s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.ps1'
+[0.249s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/controller/share/controller/package.dsv'
+[0.249s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.sh'
+[0.249s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.bash'
+[0.249s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/controller/share/controller/package.zsh'
+[0.250s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/controller/share/colcon-core/packages/controller)
+[0.388s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/livox_ros_driver2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/livox_ros_driver2 -- -j32 -l32
+[0.389s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/livox_ros_driver2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/livox_ros_driver2
+[0.425s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(livox_ros_driver2)
+[0.425s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2' for CMake module files
+[0.426s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/livox_ros_driver2' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/livox_ros_driver2
+[0.426s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2' for CMake config files
+[0.426s] Level 1:colcon.colcon_core.shell:create_environment_hook('livox_ros_driver2', 'cmake_prefix_path')
+[0.426s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.ps1'
+[0.427s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.dsv'
+[0.427s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.sh'
+[0.427s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib'
+[0.427s] Level 1:colcon.colcon_core.shell:create_environment_hook('livox_ros_driver2', 'ld_library_path_lib')
+[0.427s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.ps1'
+[0.428s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.dsv'
+[0.428s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.sh'
+[0.428s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/bin'
+[0.428s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib/pkgconfig/livox_ros_driver2.pc'
+[0.428s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib/python3.10/site-packages'
+[0.428s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/bin'
+[0.429s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.ps1'
+[0.429s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.dsv'
+[0.429s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.sh'
+[0.429s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.bash'
+[0.430s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.zsh'
+[0.430s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/livox_ros_driver2/share/colcon-core/packages/livox_ros_driver2)
+[0.430s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(livox_ros_driver2)
+[0.430s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2' for CMake module files
+[0.431s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2' for CMake config files
+[0.431s] Level 1:colcon.colcon_core.shell:create_environment_hook('livox_ros_driver2', 'cmake_prefix_path')
+[0.431s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.ps1'
+[0.431s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.dsv'
+[0.431s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/cmake_prefix_path.sh'
+[0.432s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib'
+[0.432s] Level 1:colcon.colcon_core.shell:create_environment_hook('livox_ros_driver2', 'ld_library_path_lib')
+[0.432s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.ps1'
+[0.432s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.dsv'
+[0.432s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/hook/ld_library_path_lib.sh'
+[0.432s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/bin'
+[0.432s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib/pkgconfig/livox_ros_driver2.pc'
+[0.433s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/lib/python3.10/site-packages'
+[0.433s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/livox_ros_driver2/bin'
+[0.433s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.ps1'
+[0.433s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.dsv'
+[0.433s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.sh'
+[0.434s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.bash'
+[0.434s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/livox_ros_driver2/share/livox_ros_driver2/package.zsh'
+[0.434s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/livox_ros_driver2/share/colcon-core/packages/livox_ros_driver2)
+[0.434s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/point_lio' with build type 'ament_cmake'
+[0.434s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/point_lio'
+[0.435s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.435s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.441s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/point_lio': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
+[0.514s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/point_lio -- -j32 -l32
+[0.516s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/point_lio': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio
+[0.522s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(point_lio)
+[0.523s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio' for CMake module files
+[0.523s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/point_lio' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/livox_ros_driver2:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/livox_ros_driver2/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/livox_ros_driver2/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/point_lio
+[0.523s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio' for CMake config files
+[0.523s] Level 1:colcon.colcon_core.shell:create_environment_hook('point_lio', 'cmake_prefix_path')
+[0.523s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.ps1'
+[0.523s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.dsv'
+[0.524s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.sh'
+[0.524s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib'
+[0.524s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/bin'
+[0.524s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib/pkgconfig/point_lio.pc'
+[0.524s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib/python3.10/site-packages'
+[0.524s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/bin'
+[0.525s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.ps1'
+[0.525s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.dsv'
+[0.525s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.sh'
+[0.525s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.bash'
+[0.526s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.zsh'
+[0.526s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/point_lio/share/colcon-core/packages/point_lio)
+[0.526s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(point_lio)
+[0.526s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio' for CMake module files
+[0.526s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio' for CMake config files
+[0.527s] Level 1:colcon.colcon_core.shell:create_environment_hook('point_lio', 'cmake_prefix_path')
+[0.527s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.ps1'
+[0.527s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.dsv'
+[0.527s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/point_lio/share/point_lio/hook/cmake_prefix_path.sh'
+[0.527s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib'
+[0.527s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/bin'
+[0.527s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib/pkgconfig/point_lio.pc'
+[0.527s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/lib/python3.10/site-packages'
+[0.528s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/point_lio/bin'
+[0.528s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.ps1'
+[0.528s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.dsv'
+[0.528s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.sh'
+[0.528s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.bash'
+[0.529s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/point_lio/share/point_lio/package.zsh'
+[0.529s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/point_lio/share/colcon-core/packages/point_lio)
+[0.875s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/zxcx/new_naw/custom_msgs -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/custom_msgs
+[0.876s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/custom_msgs -- -j32 -l32
+[1.061s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/zxcx/new_naw/build/custom_msgs -- -j32 -l32
+[1.062s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/custom_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/custom_msgs
+[1.097s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(custom_msgs)
+[1.097s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/custom_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/zxcx/new_naw/build/custom_msgs
+[1.097s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs' for CMake module files
+[1.098s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs' for CMake config files
+[1.098s] Level 1:colcon.colcon_core.shell:create_environment_hook('custom_msgs', 'cmake_prefix_path')
+[1.098s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.ps1'
+[1.098s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.dsv'
+[1.099s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.sh'
+[1.099s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib'
+[1.099s] Level 1:colcon.colcon_core.shell:create_environment_hook('custom_msgs', 'ld_library_path_lib')
+[1.099s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.ps1'
+[1.099s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.dsv'
+[1.099s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.sh'
+[1.100s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/bin'
+[1.100s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib/pkgconfig/custom_msgs.pc'
+[1.100s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib/python3.10/site-packages'
+[1.100s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/bin'
+[1.100s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.ps1'
+[1.100s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.dsv'
+[1.101s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.sh'
+[1.101s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.bash'
+[1.101s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.zsh'
+[1.101s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/custom_msgs/share/colcon-core/packages/custom_msgs)
+[1.101s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(custom_msgs)
+[1.102s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs' for CMake module files
+[1.102s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs' for CMake config files
+[1.102s] Level 1:colcon.colcon_core.shell:create_environment_hook('custom_msgs', 'cmake_prefix_path')
+[1.102s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.ps1'
+[1.102s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.dsv'
+[1.103s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/cmake_prefix_path.sh'
+[1.103s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib'
+[1.103s] Level 1:colcon.colcon_core.shell:create_environment_hook('custom_msgs', 'ld_library_path_lib')
+[1.103s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.ps1'
+[1.103s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.dsv'
+[1.103s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/hook/ld_library_path_lib.sh'
+[1.104s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/bin'
+[1.104s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib/pkgconfig/custom_msgs.pc'
+[1.104s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/lib/python3.10/site-packages'
+[1.104s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/custom_msgs/bin'
+[1.104s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.ps1'
+[1.104s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.dsv'
+[1.105s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.sh'
+[1.105s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.bash'
+[1.105s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/package.zsh'
+[1.105s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/custom_msgs/share/colcon-core/packages/custom_msgs)
+[1.105s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/algo_master' with build type 'ament_cmake'
+[1.106s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/algo_master'
+[1.106s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.106s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.107s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/esdf' with build type 'ament_cmake'
+[1.108s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/esdf'
+[1.108s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.108s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.109s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/planner' with build type 'ament_cmake'
+[1.109s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/planner'
+[1.109s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.109s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.111s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/zxcx/new_naw/relocation' with build type 'ament_cmake'
+[1.111s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/zxcx/new_naw/relocation'
+[1.111s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.111s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.115s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/algo_master': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/algo_master -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/algo_master
+[1.117s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/esdf': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/esdf -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/esdf
+[1.119s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/planner -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/planner
+[1.120s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/relocation -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/relocation
+[1.398s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/algo_master' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/algo_master -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/algo_master
+[1.398s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/algo_master': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/algo_master -- -j32 -l32
+[1.449s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/algo_master' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/algo_master -- -j32 -l32
+[1.450s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/algo_master': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/algo_master
+[1.454s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/planner -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/planner
+[1.455s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[1.457s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(algo_master)
+[1.457s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/algo_master' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/algo_master
+[1.457s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master' for CMake module files
+[1.458s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master' for CMake config files
+[1.458s] Level 1:colcon.colcon_core.shell:create_environment_hook('algo_master', 'cmake_prefix_path')
+[1.458s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.ps1'
+[1.458s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.dsv'
+[1.458s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.sh'
+[1.459s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib'
+[1.459s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/bin'
+[1.459s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib/pkgconfig/algo_master.pc'
+[1.459s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib/python3.10/site-packages'
+[1.459s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/bin'
+[1.459s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.ps1'
+[1.459s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv'
+[1.460s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.sh'
+[1.460s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.bash'
+[1.460s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.zsh'
+[1.460s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/algo_master/share/colcon-core/packages/algo_master)
+[1.460s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(algo_master)
+[1.461s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master' for CMake module files
+[1.461s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master' for CMake config files
+[1.461s] Level 1:colcon.colcon_core.shell:create_environment_hook('algo_master', 'cmake_prefix_path')
+[1.461s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.ps1'
+[1.461s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.dsv'
+[1.462s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/algo_master/share/algo_master/hook/cmake_prefix_path.sh'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/bin'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib/pkgconfig/algo_master.pc'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/lib/python3.10/site-packages'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/algo_master/bin'
+[1.462s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.ps1'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.sh'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.bash'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/algo_master/share/algo_master/package.zsh'
+[1.463s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/algo_master/share/colcon-core/packages/algo_master)
+[1.519s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/planner -- -j32 -l32
+[1.521s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/planner': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner
+[1.528s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(planner)
+[1.528s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner' for CMake module files
+[1.529s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/planner' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/planner
+[1.529s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner' for CMake config files
+[1.529s] Level 1:colcon.colcon_core.shell:create_environment_hook('planner', 'cmake_prefix_path')
+[1.529s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.ps1'
+[1.529s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.dsv'
+[1.530s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.sh'
+[1.530s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib'
+[1.530s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/bin'
+[1.530s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib/pkgconfig/planner.pc'
+[1.530s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib/python3.10/site-packages'
+[1.530s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/bin'
+[1.530s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.ps1'
+[1.531s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/planner/share/planner/package.dsv'
+[1.531s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.sh'
+[1.531s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.bash'
+[1.531s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.zsh'
+[1.532s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/planner/share/colcon-core/packages/planner)
+[1.532s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(planner)
+[1.532s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner' for CMake module files
+[1.532s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner' for CMake config files
+[1.532s] Level 1:colcon.colcon_core.shell:create_environment_hook('planner', 'cmake_prefix_path')
+[1.532s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.ps1'
+[1.533s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.dsv'
+[1.533s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/planner/share/planner/hook/cmake_prefix_path.sh'
+[1.533s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib'
+[1.533s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/bin'
+[1.533s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib/pkgconfig/planner.pc'
+[1.533s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/lib/python3.10/site-packages'
+[1.534s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/planner/bin'
+[1.534s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.ps1'
+[1.534s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/planner/share/planner/package.dsv'
+[1.534s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.sh'
+[1.534s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.bash'
+[1.535s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/planner/share/planner/package.zsh'
+[1.535s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/planner/share/colcon-core/packages/planner)
+[2.069s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/esdf' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/esdf -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/esdf
+[2.071s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/esdf': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/esdf -- -j32 -l32
+[2.104s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake /home/zxcx/new_naw/relocation -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/zxcx/new_naw/install/relocation
+[2.105s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[2.154s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/esdf' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/esdf -- -j32 -l32
+[2.155s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/esdf': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/esdf
+[2.162s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(esdf)
+[2.162s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf' for CMake module files
+[2.162s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/esdf' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/esdf
+[2.163s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf' for CMake config files
+[2.163s] Level 1:colcon.colcon_core.shell:create_environment_hook('esdf', 'cmake_prefix_path')
+[2.163s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.ps1'
+[2.163s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.dsv'
+[2.163s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.sh'
+[2.164s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib'
+[2.164s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/bin'
+[2.164s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib/pkgconfig/esdf.pc'
+[2.164s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib/python3.10/site-packages'
+[2.164s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/bin'
+[2.164s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.ps1'
+[2.164s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/esdf/share/esdf/package.dsv'
+[2.165s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.sh'
+[2.165s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.bash'
+[2.165s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.zsh'
+[2.165s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/esdf/share/colcon-core/packages/esdf)
+[2.165s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(esdf)
+[2.166s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf' for CMake module files
+[2.166s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf' for CMake config files
+[2.166s] Level 1:colcon.colcon_core.shell:create_environment_hook('esdf', 'cmake_prefix_path')
+[2.166s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.ps1'
+[2.166s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.dsv'
+[2.166s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/esdf/share/esdf/hook/cmake_prefix_path.sh'
+[2.167s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib'
+[2.167s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/bin'
+[2.167s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib/pkgconfig/esdf.pc'
+[2.167s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/lib/python3.10/site-packages'
+[2.167s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/esdf/bin'
+[2.167s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.ps1'
+[2.168s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/esdf/share/esdf/package.dsv'
+[2.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.sh'
+[2.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.bash'
+[2.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/esdf/share/esdf/package.zsh'
+[2.168s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/esdf/share/colcon-core/packages/esdf)
+[2.203s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[2.204s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation
+[2.212s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(relocation)
+[2.213s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation' for CMake module files
+[2.213s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation
+[2.213s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation' for CMake config files
+[2.213s] Level 1:colcon.colcon_core.shell:create_environment_hook('relocation', 'cmake_prefix_path')
+[2.214s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.ps1'
+[2.214s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.dsv'
+[2.214s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.sh'
+[2.214s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib'
+[2.215s] Level 1:colcon.colcon_core.shell:create_environment_hook('relocation', 'ld_library_path_lib')
+[2.215s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.ps1'
+[2.215s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.dsv'
+[2.215s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.sh'
+[2.215s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/bin'
+[2.215s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib/pkgconfig/relocation.pc'
+[2.215s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib/python3.10/site-packages'
+[2.216s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/bin'
+[2.216s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.ps1'
+[2.216s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/package.dsv'
+[2.216s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.sh'
+[2.217s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.bash'
+[2.217s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.zsh'
+[2.217s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/relocation/share/colcon-core/packages/relocation)
+[2.217s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(relocation)
+[2.217s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation' for CMake module files
+[2.218s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation' for CMake config files
+[2.218s] Level 1:colcon.colcon_core.shell:create_environment_hook('relocation', 'cmake_prefix_path')
+[2.218s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.ps1'
+[2.218s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.dsv'
+[2.218s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/cmake_prefix_path.sh'
+[2.218s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib'
+[2.218s] Level 1:colcon.colcon_core.shell:create_environment_hook('relocation', 'ld_library_path_lib')
+[2.219s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.ps1'
+[2.219s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.dsv'
+[2.219s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/zxcx/new_naw/install/relocation/share/relocation/hook/ld_library_path_lib.sh'
+[2.219s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/bin'
+[2.219s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib/pkgconfig/relocation.pc'
+[2.219s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/lib/python3.10/site-packages'
+[2.219s] Level 1:colcon.colcon_core.environment:checking '/home/zxcx/new_naw/install/relocation/bin'
+[2.220s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.ps1'
+[2.220s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/zxcx/new_naw/install/relocation/share/relocation/package.dsv'
+[2.220s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.sh'
+[2.220s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.bash'
+[2.221s] INFO:colcon.colcon_core.shell:Creating package script '/home/zxcx/new_naw/install/relocation/share/relocation/package.zsh'
+[2.221s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/zxcx/new_naw/install/relocation/share/colcon-core/packages/relocation)
+[2.221s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.221s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.221s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.221s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.225s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[2.225s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[2.225s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[2.233s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.233s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zxcx/new_naw/install/local_setup.ps1'
+[2.234s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zxcx/new_naw/install/_local_setup_util_ps1.py'
+[2.234s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zxcx/new_naw/install/setup.ps1'
+[2.235s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zxcx/new_naw/install/local_setup.sh'
+[2.235s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/zxcx/new_naw/install/_local_setup_util_sh.py'
+[2.236s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zxcx/new_naw/install/setup.sh'
+[2.236s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zxcx/new_naw/install/local_setup.bash'
+[2.236s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zxcx/new_naw/install/setup.bash'
+[2.237s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/zxcx/new_naw/install/local_setup.zsh'
+[2.237s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/zxcx/new_naw/install/setup.zsh'

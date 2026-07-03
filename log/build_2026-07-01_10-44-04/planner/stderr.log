@@ -1,0 +1,86 @@
+In file included from [01m[K/home/zxcx/new_naw/planner/src/jps.cpp:1[m[K:
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:[m[K In constructor ‘[01m[Kplanner_2d::jps::jps()[m[K’:
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:79:54:[m[K [01;35m[Kwarning: [m[K‘[01m[Kplanner_2d::jps::m_IsInitPoint[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   79 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool [01;35m[Km_IsInitPoint[m[K;
+      |                                                      [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:64:18:[m[K [01;35m[Kwarning: [m[K  ‘[01m[Kuint16_t planner_2d::jps::m_SearchEpoch[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   64 |         uint16_t [01;35m[Km_SearchEpoch[m[K;
+      |                  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/jps.cpp:8:5:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    8 |     [01;35m[Kjps[m[K::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     [01;35m[K^~~[m[K
+In file included from [01m[K/home/zxcx/new_naw/planner/src/jps.cpp:1[m[K:
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:[m[K In constructor ‘[01m[Kplanner_2d::jps::jps()[m[K’:
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:79:54:[m[K [01;35m[Kwarning: [m[K‘[01m[Kplanner_2d::jps::m_IsInitPoint[m[K’ will be initialized after [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   79 |         bool m_IsInitMap; bool m_IsInitESDFMap; bool [01;35m[Km_IsInitPoint[m[K;
+      |                                                      [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/include/planner_2d/jps.hpp:64:18:[m[K [01;35m[Kwarning: [m[K  ‘[01m[Kuint16_t planner_2d::jps::m_SearchEpoch[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+   64 |         uint16_t [01;35m[Km_SearchEpoch[m[K;
+      |                  [01;35m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/jps.cpp:8:5:[m[K [01;35m[Kwarning: [m[K  when initialized here [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wreorder-Wreorder]8;;[m[K]
+    8 |     [01;35m[Kjps[m[K::jps() : m_MapLenX(0), m_MapWeightY(0), m_IsInitMap(false), m_IsInitESDFMap(false), m_IsInitPoint(false), m_SearchEpoch(0) {}
+      |     [01;35m[K^~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:[m[K In member function ‘[01m[Kint planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Knode[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+   33 |         AABBNode& [01;35m[Knode[m[K = m_TreeNodes.back();
+      |                   [01;35m[K^~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:[m[K In member function ‘[01m[Kvoid planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ka0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  171 |     void project::GetCubicExtrema([01;35m[Kdouble a0[m[K, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {
+      |                                   [01;35m[K~~~~~~~^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:[m[K In member function ‘[01m[Kint planner_2d::project::BuildTreeRecursive(std::vector<planner_2d::SegmentInfo>&, int, int)[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:33:19:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Knode[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+   33 |         AABBNode& [01;35m[Knode[m[K = m_TreeNodes.back();
+      |                   [01;35m[K^~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:[m[K In member function ‘[01m[Kvoid planner_2d::project::GetCubicExtrema(double, double, double, double, double, std::vector<double>&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/tra_project.cpp:171:42:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Ka0[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+  171 |     void project::GetCubicExtrema([01;35m[Kdouble a0[m[K, double a1, double a2, double a3, double T, std::vector<double>& extremas) const {
+      |                                   [01;35m[K~~~~~~~^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:[m[K In member function ‘[01m[Kbool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:119:33:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Ksize_t[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  119 |         for (int k = idx + 1; [01;35m[Kk < temp_tra.GetNumPoints() - 1[m[K; ++k) {
+      |                               [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:192:61:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Ksize_t[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  192 |             if (front_res.seg_idx >= 0 && [01;35m[Kfront_res.seg_idx < new_tra.GetNumPoints() - 1[m[K) {
+      |                                           [01;35m[K~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:[m[K In member function ‘[01m[KEigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:359:9:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmisleading-indentation-Wmisleading-indentation]8;;[m[K]
+  359 |         [01;35m[Kif[m[K (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         [01;35m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:359:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  359 |         if (gx < 0) gx = 0; [01;36m[Kif[m[K (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             [01;36m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:360:9:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmisleading-indentation-Wmisleading-indentation]8;;[m[K]
+  360 |         [01;35m[Kif[m[K (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         [01;35m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:360:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  360 |         if (gy < 0) gy = 0; [01;36m[Kif[m[K (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             [01;36m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:[m[K In member function ‘[01m[Kbool planner_2d::replanner::Update(const Vector2d&, const Vector2d&, const std::vector<int>&, const std::vector<double>&, int, int, double, double)[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:119:33:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Ksize_t[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  119 |         for (int k = idx + 1; [01;35m[Kk < temp_tra.GetNumPoints() - 1[m[K; ++k) {
+      |                               [01;35m[K~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:192:61:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kint[m[K’ and ‘[01m[Ksize_t[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+  192 |             if (front_res.seg_idx >= 0 && [01;35m[Kfront_res.seg_idx < new_tra.GetNumPoints() - 1[m[K) {
+      |                                           [01;35m[K~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:[m[K In member function ‘[01m[KEigen::Vector2d planner_2d::replanner::ClosestFreeGoal(const Vector2d&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:359:9:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmisleading-indentation-Wmisleading-indentation]8;;[m[K]
+  359 |         [01;35m[Kif[m[K (gx < 0) gx = 0; if (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |         [01;35m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:359:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  359 |         if (gx < 0) gx = 0; [01;36m[Kif[m[K (gx >= m_MapLenX) gx = m_MapLenX - 1;
+      |                             [01;36m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:360:9:[m[K [01;35m[Kwarning: [m[Kthis ‘[01m[Kif[m[K’ clause does not guard... [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmisleading-indentation-Wmisleading-indentation]8;;[m[K]
+  360 |         [01;35m[Kif[m[K (gy < 0) gy = 0; if (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |         [01;35m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/replanner.cpp:360:29:[m[K [01;36m[Knote: [m[K...this statement, but the latter is misleadingly indented as if it were guarded by the ‘[01m[Kif[m[K’
+  360 |         if (gy < 0) gy = 0; [01;36m[Kif[m[K (gy >= m_MapWeightY) gy = m_MapWeightY - 1;
+      |                             [01;36m[K^~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/minco.cpp:[m[K In member function ‘[01m[Kvoid planner_2d::minco::ComputeGradient(const MatrixXd&, Eigen::VectorXd&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/minco.cpp:82:56:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[KdCost_dCoeffs[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   82 |     void minco::ComputeGradient([01;35m[Kconst Eigen::MatrixXd& dCost_dCoeffs[m[K, Eigen::VectorXd& gradient) const {
+      |                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~[m[K
+[01m[K/home/zxcx/new_naw/planner/src/minco.cpp:[m[K In member function ‘[01m[Kvoid planner_2d::minco::ComputeGradient(const MatrixXd&, Eigen::VectorXd&) const[m[K’:
+[01m[K/home/zxcx/new_naw/planner/src/minco.cpp:82:56:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[KdCost_dCoeffs[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   82 |     void minco::ComputeGradient([01;35m[Kconst Eigen::MatrixXd& dCost_dCoeffs[m[K, Eigen::VectorXd& gradient) const {
+      |                                 [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~[m[K

@@ -1,0 +1,35 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from custom_msgs/msg/MapData.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/Header.idl"
+
+module custom_msgs {
+  module msg {
+    struct MapData {
+      std_msgs::msg::Header header;
+
+      boolean is_valid;
+
+      @verbatim (language="comment", text=
+        "地图基础信息")
+      int32 width;
+
+      int32 height;
+
+      double res_x;
+
+      double res_y;
+
+      double origin_x;
+
+      double origin_y;
+
+      @verbatim (language="comment", text=
+        "核心地图数据 (一维展开存储)")
+      sequence<int32> occupancy_array;
+
+      sequence<double> esdf_array;
+    };
+  };
+};
