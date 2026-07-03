@@ -1,1 +1,3 @@
 esdf/PCD/*.pcd
+history_db*.txt
+**/history_db*.txt
