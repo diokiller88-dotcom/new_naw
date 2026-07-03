@@ -305,7 +305,7 @@ int main(int argc, char** argv) {
             if (occupancy[i] == 1) {
                 esdf_img.at<cv::Vec3b>(HEIGHT - 1 - y, x) = cv::Vec3b(0, 0, 255);
             } else {
-                double dist = esdf_calc.m_ESDFMap[i] * RES_X;
+                double dist = std::sqrt(std::abs(esdf_calc.m_ESDFMap[i])) * RES_X;
                 unsigned char intensity = static_cast<unsigned char>(std::min(255.0, (dist / VIS_MAX_DIST_METERS) * 255.0));
                 esdf_img.at<cv::Vec3b>(HEIGHT - 1 - y, x) = cv::Vec3b(intensity, intensity, intensity);
             }

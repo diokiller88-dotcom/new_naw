@@ -1,0 +1,22 @@
+[0.018s] Invoking command in '/home/zxcx/new_naw/build/algo_master': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/algo_master -- -j32 -l32
+[0.058s] [100%] Built target algo_master
+[0.066s] Invoked command in '/home/zxcx/new_naw/build/algo_master' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/algo_master -- -j32 -l32
+[0.067s] Invoking command in '/home/zxcx/new_naw/build/algo_master': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/algo_master
+[0.072s] -- Install configuration: "Release"
+[0.072s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/lib/algo_master/algo_master
+[0.072s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/package_run_dependencies/algo_master
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/parent_prefix_path/algo_master
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.sh
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/ament_prefix_path.dsv
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.sh
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/environment/path.dsv
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.bash
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.sh
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.zsh
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/local_setup.dsv
+[0.073s] -- Installing: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.dsv
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/ament_index/resource_index/packages/algo_master
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig.cmake
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/cmake/algo_masterConfig-version.cmake
+[0.073s] -- Up-to-date: /home/zxcx/new_naw/install/algo_master/share/algo_master/package.xml
+[0.074s] Invoked command in '/home/zxcx/new_naw/build/algo_master' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/algo_master

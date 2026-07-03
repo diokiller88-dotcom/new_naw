@@ -274,16 +274,19 @@ bool feasible_map::Update(const pcl::PointCloud<pcl::PointXYZ>::Ptr &global_clou
                 int global_idx = gy * m_MapLenX + gx;
                 int local_idx = ly * local_W + lx;
                 
+                int hit_count = m_SW.getHitCount(lx, ly);
+                int miss_count = m_SW.getMissCount(lx, ly);
+                bool has_local_evidence = hit_count > 0 || miss_count > 0;
+
                 if (local_occ[local_idx] == 1) {
                     m_Map[global_idx].state = grip_state::occupy;
-                } else if (m_SW.getMissCount(lx, ly) > m_SW.getHitCount(lx, ly)) {
-                    if (m_Map[global_idx].state != grip_state::occupy) {
-                        m_Map[global_idx].state = grip_state::free;
-                    }
+                } else if (miss_count > hit_count) {
+                    m_Map[global_idx].state = grip_state::free;
                 }
                 
-                // 采用 min 融合局部和全局 ESDF，避免实时雷达冲刷抹除先验距离场！
-                m_GlobalESDF[global_idx] = std::min(m_GlobalESDF[global_idx], local_esdf[local_idx]);
+                if (has_local_evidence) {
+                    m_GlobalESDF[global_idx] = local_esdf[local_idx];
+                }
             }
         }
     }

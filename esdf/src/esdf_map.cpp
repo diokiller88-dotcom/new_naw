@@ -23,12 +23,13 @@ void esdf_map::SetSurfMap() {
     m_SurfMap = m_GripMap;
     m_ESDFMap.assign(m_GripMap.size(), 1e9); 
     
-    for (int i = 1; i < m_MapWeightY - 1; i++) {
-        for (int j = 1; j < m_MapLenX - 1; j++) {
+    for (int i = 0; i < m_MapWeightY; i++) {
+        for (int j = 0; j < m_MapLenX; j++) {
             int idx = i * m_MapLenX + j;
             if (m_GripMap[idx] == 1) {
                 m_ESDFMap[idx] = 0.0;
-                if (m_GripMap[idx+1] == 1 && m_GripMap[idx-1] == 1 &&
+                if (i > 0 && i < m_MapWeightY - 1 && j > 0 && j < m_MapLenX - 1 &&
+                    m_GripMap[idx+1] == 1 && m_GripMap[idx-1] == 1 &&
                     m_GripMap[idx+m_MapLenX] == 1 && m_GripMap[idx-m_MapLenX] == 1) {
                     m_SurfMap[idx] = -1;
                 }
@@ -41,50 +42,68 @@ void esdf_map::ComputeEDT() {
     const double INF = 1e9;
     const int W = m_MapLenX;
     const int H = m_MapWeightY;
-    std::vector<double> g(W * H);
-    std::vector<int> v(std::max(W, H));
-    std::vector<double> z(std::max(W, H) + 1);
-    ///下包络法，通过栈获得二项式的极小值的坐标点，然后通过极小值点获取一维每个点的欧式距离平方
-    for (int y = 0; y < H; ++y) {
-        int base = y * W;
-        int k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
-        for (int q = 1; q < W; ++q) {
-            auto get_s = [&]() {
-                return ((m_ESDFMap[base+q] + q*q) - (m_ESDFMap[base+v[k]] + v[k]*v[k])) / (2.0*(q-v[k]));
-            };
-            double s = get_s();
-            while (s <= z[k]) {
-                --k;
-                s = get_s();
+
+    auto edt_2d = [&](const std::vector<double>& seed_map) {
+        std::vector<double> dist(seed_map);
+        std::vector<double> g(W * H);
+        std::vector<int> v(std::max(W, H));
+        std::vector<double> z(std::max(W, H) + 1);
+
+        ///下包络法，通过栈获得二项式的极小值的坐标点，然后通过极小值点获取一维每个点的欧式距离平方
+        for (int y = 0; y < H; ++y) {
+            int base = y * W;
+            int k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
+            for (int q = 1; q < W; ++q) {
+                auto get_s = [&]() {
+                    return ((dist[base+q] + q*q) - (dist[base+v[k]] + v[k]*v[k])) / (2.0*(q-v[k]));
+                };
+                double s = get_s();
+                while (s <= z[k]) {
+                    --k;
+                    s = get_s();
+                }
+                v[++k] = q; z[k] = s; z[k+1] = INF;
             }
-            v[++k] = q; z[k] = s; z[k+1] = INF;
+            for (int q = 0, ki = 0; q < W; ++q) {
+                while (z[ki+1] < q) ++ki;
+                g[base+q] = std::pow(q - v[ki], 2) + dist[base + v[ki]];
+            }
         }
-        for (int q = 0, ki = 0; q < W; ++q) {
-            while (z[ki+1] < q) ++ki;
-            g[base+q] = std::pow(q - v[ki], 2) + m_ESDFMap[base + v[ki]];
+        ///////基于之前一维的获取二维的欧式距离的平方
+        for (int x = 0; x < W; ++x) {
+            int k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
+            for (int q = 1; q < H; ++q) {
+                auto get_s = [&]() {
+                    return ((g[q*W+x] + q*q) - (g[v[k]*W+x] + v[k]*v[k])) / (2.0*(q-v[k]));
+                };
+                double s = get_s();
+                while (s <= z[k]) {
+                    --k;
+                    s = get_s();
+                }
+                v[++k] = q; z[k] = s; z[k+1] = INF;
+            }
+            for (int q = 0, ki = 0; q < H; ++q) {
+                while (z[ki+1] < q) ++ki;
+                int idx = q * W + x;
+                dist[idx] = std::pow(q - v[ki], 2) + g[v[ki]*W+x];
+            }
         }
+        return dist;
+    };
+
+    std::vector<double> outside_seed(W * H, INF);
+    std::vector<double> inside_seed(W * H, INF);
+    for (int i = 0; i < W * H; ++i) {
+        if (m_GripMap[i] == 1) outside_seed[i] = 0.0;
+        else inside_seed[i] = 0.0;
     }
-    ///////基于之前一维的获取二维的欧式距离的平方
-    for (int x = 0; x < W; ++x) {
-        int k = 0; v[0] = 0; z[0] = -INF; z[1] = INF;
-        for (int q = 1; q < H; ++q) {
-            auto get_s = [&]() {
-                return ((g[q*W+x] + q*q) - (g[v[k]*W+x] + v[k]*v[k])) / (2.0*(q-v[k]));
-            };
-            double s = get_s();
-            while (s <= z[k]) {
-                --k;
-                s = get_s();
-            }
-            v[++k] = q; z[k] = s; z[k+1] = INF;
-        }
-        for (int q = 0, ki = 0; q < H; ++q) {
-            while (z[ki+1] < q) ++ki;
-            int idx = q * W + x;
-            m_ESDFMap[idx] = std::pow(q - v[ki], 2) + g[v[ki]*W+x];
-            if (m_SurfMap[idx] == -1) {
-                m_ESDFMap[idx] = -m_ESDFMap[idx];
-            }
+
+    m_ESDFMap = edt_2d(outside_seed);
+    std::vector<double> inside_dist = edt_2d(inside_seed);
+    for (int i = 0; i < W * H; ++i) {
+        if (m_SurfMap[i] == -1 && inside_dist[i] < INF * 0.5) {
+            m_ESDFMap[i] = -inside_dist[i];
         }
     }
 }

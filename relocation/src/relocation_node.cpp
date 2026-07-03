@@ -32,7 +32,7 @@ using namespace std::chrono_literals;
 namespace relocation {
 
 constexpr const char* node_name = "relocation_node";
-constexpr const char* default_pcd_path = "/home/hyl/new_nav/relocation/PCD/1.pcd";
+constexpr const char* default_pcd_path = "/home/zxcx/new_naw/relocation/PCD/1.pcd";
 constexpr const char* default_db_path = "history_db.txt";
 constexpr const char* topic_odom = "aft_mapped_to_init";
 constexpr const char* topic_cloud = "cloud_registered";

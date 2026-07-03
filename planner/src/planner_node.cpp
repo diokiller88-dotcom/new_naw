@@ -181,11 +181,31 @@ private:
 
         std::vector<int> occupancy(width * height);
         std::ifstream ifs_occ(occ_path);
-        for (int i = 0; i < width * height; ++i) ifs_occ >> occupancy[i];
+        int occ_width = 0, occ_height = 0;
+        if (!(ifs_occ >> occ_width >> occ_height) || occ_width != width || occ_height != height) {
+            RCLCPP_ERROR(this->get_logger(), "Invalid occupancy file header: %s", occ_path.c_str());
+            return;
+        }
+        for (int i = 0; i < width * height; ++i) {
+            if (!(ifs_occ >> occupancy[i])) {
+                RCLCPP_ERROR(this->get_logger(), "Invalid occupancy data: %s", occ_path.c_str());
+                return;
+            }
+        }
 
         std::vector<double> esdf_raw(width * height);
         std::ifstream ifs_esdf(esdf_path);
-        for (int i = 0; i < width * height; ++i) ifs_esdf >> esdf_raw[i];
+        int esdf_width = 0, esdf_height = 0;
+        if (!(ifs_esdf >> esdf_width >> esdf_height) || esdf_width != width || esdf_height != height) {
+            RCLCPP_ERROR(this->get_logger(), "Invalid ESDF file header: %s", esdf_path.c_str());
+            return;
+        }
+        for (int i = 0; i < width * height; ++i) {
+            if (!(ifs_esdf >> esdf_raw[i])) {
+                RCLCPP_ERROR(this->get_logger(), "Invalid ESDF data: %s", esdf_path.c_str());
+                return;
+            }
+        }
 
         std::vector<double> esdf_dist(width * height);
         for (size_t i = 0; i < esdf_raw.size(); ++i) {

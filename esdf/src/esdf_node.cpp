@@ -17,7 +17,7 @@ public:
     ESDFNode() : Node("esdf_node"), initialized_(false) {
         
         this->declare_parameter<bool>("use_offline_pcd", true);
-        this->declare_parameter<std::string>("pcd_path", "/home/hyl/new_nav/esdf/PCD/1.pcd");
+        this->declare_parameter<std::string>("pcd_path", "/home/zxcx/new_naw/esdf/PCD/1.pcd");
         this->declare_parameter<bool>("debug_mode", true);
 
         bool use_offline;
