@@ -13,6 +13,9 @@ namespace relocation {
         if (cloud.empty() || cloud[0].empty()) return false;
         m_Cloud = cloud; 
         m_Dim = cloud[0].size();
+        for (const auto& point : m_Cloud) {
+            if (static_cast<int>(point.size()) != m_Dim) return false;
+        }
         m_Indices.resize(cloud.size()); 
         std::iota(m_Indices.begin(), m_Indices.end(), 0);
         m_Root = BuildRecursive(0, m_Indices.size());
@@ -58,6 +61,10 @@ namespace relocation {
     }
 
     void ann_kdtree::SearchKNearest(const std::vector<uint8_t>& query, int k, std::vector<int>& out_indices, std::vector<int>& out_dists) {
+        out_indices.clear();
+        out_dists.clear();
+        if (static_cast<int>(query.size()) != m_Dim) return;
+
         std::priority_queue<DistIndex> pq; 
         int checks = 0;
         SearchRecursive(query, m_Root.get(), k, pq, checks);

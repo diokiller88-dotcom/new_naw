@@ -6,6 +6,8 @@
 
 namespace relocation {
 
+    constexpr int icp_min_valid_correspondences = 10;
+
     bool P2PointICP_SVD::Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_, 
                               const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_) {
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
@@ -40,6 +42,8 @@ namespace relocation {
         m_TargetKDTree.Build(m_TargetPC);
         m_RotatedMatrix = Eigen::Matrix3f::Identity();
         m_TransVector = Eigen::Vector3f::Zero();
+        m_LastError = std::numeric_limits<float>::max();
+        m_LastValidCount = 0;
         return true;
     }
 
@@ -48,6 +52,9 @@ namespace relocation {
         Eigen::Matrix3Xf S_matched(3, N);
         Eigen::Matrix3Xf T_matched(3, N);
         float prev_error = std::numeric_limits<float>::max();
+        float final_error = std::numeric_limits<float>::max();
+        int final_valid_count = 0;
+        bool has_valid_solution = false;
         std::vector<int> nn_indices(N, -1);
         std::vector<float> dists(N, 0.0f);
         std::vector<bool> valid_flag(N, false);
@@ -80,7 +87,10 @@ namespace relocation {
                 }
             }
 
-            if (valid_count < 3) break;
+            if (valid_count < icp_min_valid_correspondences) {
+                std::cerr << "[P2PointICP_SVD] Too few correspondences: " << valid_count << std::endl;
+                break;
+            }
             auto S_valid = S_matched.leftCols(valid_count);
             auto T_valid = T_matched.leftCols(valid_count);
             Eigen::Vector3f mean_S = S_valid.rowwise().mean();
@@ -109,10 +119,26 @@ namespace relocation {
             }
 
             current_error /= valid_count;
+            final_error = current_error;
+            final_valid_count = valid_count;
+            has_valid_solution = true;
             if (std::abs(prev_error - current_error) < 1e-5) break;
             prev_error = current_error;
         }
 
+        if (!has_valid_solution) {
+            std::cerr << "[P2PointICP_SVD] Solve failed, no valid ICP iteration." << std::endl;
+            return false;
+        }
+
+        if (final_error > m_MaxCorrespondenceDistance) {
+            std::cerr << "[P2PointICP_SVD] Solve rejected, error: " << final_error
+                      << ", valid correspondences: " << final_valid_count << std::endl;
+            return false;
+        }
+
+        m_LastError = final_error;
+        m_LastValidCount = final_valid_count;
         R_result_ = m_RotatedMatrix.cast<double>();
         T_result_ = m_TransVector.cast<double>();
         return true;
@@ -143,6 +169,8 @@ namespace relocation {
         m_TargetKDTree.Build(m_TargetPC);
         m_RotatedMatrix = Eigen::Matrix3f::Identity();
         m_TransVector = Eigen::Vector3f::Zero();
+        m_LastError = std::numeric_limits<float>::max();
+        m_LastValidCount = 0;
         return true;
     }
 
@@ -151,6 +179,9 @@ namespace relocation {
         Eigen::Matrix3Xf S_matched(3, N);
         Eigen::Matrix3Xf T_proj_matched(3, N);
         float prev_error = std::numeric_limits<float>::max();
+        float final_error = std::numeric_limits<float>::max();
+        int final_valid_count = 0;
+        bool has_valid_solution = false;
         std::vector<int> nn_indices(N, -1);
         std::vector<float> dists_to_plane(N, 0.0f);
         std::vector<Eigen::Vector3f> projected_points(N);
@@ -188,7 +219,10 @@ namespace relocation {
                 }
             }
 
-            if (valid_count < 3) break;
+            if (valid_count < icp_min_valid_correspondences) {
+                std::cerr << "[P2PlaneICP_SVD] Too few correspondences: " << valid_count << std::endl;
+                break;
+            }
             auto S_valid = S_matched.leftCols(valid_count);
             auto T_valid = T_proj_matched.leftCols(valid_count);
             Eigen::Vector3f mean_S = S_valid.rowwise().mean();
@@ -217,10 +251,26 @@ namespace relocation {
             }
 
             current_error /= valid_count;
+            final_error = current_error;
+            final_valid_count = valid_count;
+            has_valid_solution = true;
             if (std::abs(prev_error - current_error) < 1e-5) break;
             prev_error = current_error;
         }
 
+        if (!has_valid_solution) {
+            std::cerr << "[P2PlaneICP_SVD] Solve failed, no valid ICP iteration." << std::endl;
+            return false;
+        }
+
+        if (final_error > m_MaxCorrespondenceDistance) {
+            std::cerr << "[P2PlaneICP_SVD] Solve rejected, error: " << final_error
+                      << ", valid correspondences: " << final_valid_count << std::endl;
+            return false;
+        }
+
+        m_LastError = final_error;
+        m_LastValidCount = final_valid_count;
         R_result_ = m_RotatedMatrix.cast<double>();
         T_result_ = m_TransVector.cast<double>();
         return true;

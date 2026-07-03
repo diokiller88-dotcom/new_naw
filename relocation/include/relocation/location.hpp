@@ -14,9 +14,12 @@
 
 namespace relocation {
 
-    constexpr int loc_rough_k_candidates = 20;
+    constexpr int loc_rough_k_candidates = 80;
     constexpr float loc_prior_radius_limit = 15.0f;
     constexpr float loc_prior_penalty_scale = 0.2f;
+    constexpr float loc_prior_yaw_limit_deg = 75.0f;
+    constexpr float loc_prior_yaw_penalty_scale = 0.5f;
+    constexpr int loc_max_rough_pose_candidates = 8;
     
     constexpr float loc_icp_crop_z_min = 0.2f;
     constexpr float loc_icp_crop_z_max = 2.5f;
@@ -26,6 +29,16 @@ namespace relocation {
         float x, y, yaw;
         std::vector<uint8_t> binary_vec;
         iris::FeatureDesc desc;
+    };
+
+    struct RoughPoseCandidate {
+        double x = 0.0;
+        double y = 0.0;
+        double yaw_deg = 0.0;
+        double rough_score = 0.0;
+        double dist_to_prior = 0.0;
+        double yaw_diff_deg = 0.0;
+        int hist_index = -1;
     };
 
     class location {
@@ -40,8 +53,18 @@ namespace relocation {
         bool SetRoughPoseWithPrePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud, 
                                      const double& pre_x, const double& pre_y, const double& pre_yaw, 
                                      double& out_x, double& out_y, double& out_yaw);
+        bool GetRoughPoseCandidatesWithPrePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
+                                               const double& pre_x, const double& pre_y, const double& pre_yaw,
+                                               std::vector<RoughPoseCandidate>& candidates);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud, 
                             Eigen::Matrix3d& R, Eigen::Vector3d& T);
+        bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
+                            Eigen::Matrix3d& R, Eigen::Vector3d& T,
+                            double& out_icp_error, int& out_valid_count);
+        bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
+                            Eigen::Matrix3d& R, Eigen::Vector3d& T,
+                            double& out_icp_error, int& out_valid_count,
+                            int max_iterations, float voxel_leaf_size);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud);
 
     private:

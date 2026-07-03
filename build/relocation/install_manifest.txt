@@ -6,6 +6,10 @@
 /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp
 /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp
 /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp
+/home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd
+/home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md
+/home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd
+/home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd
 /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation
 /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation
 /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh

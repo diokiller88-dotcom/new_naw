@@ -1,0 +1,10 @@
+/home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor ‘relocation::RelocationNode::RelocationNode()’:
+/home/zxcx/new_naw/relocation/src/relocation_node.cpp:727:10: warning: ‘relocation::RelocationNode::trigger_reloc_’ will be initialized after [-Wreorder]
+  727 |     bool trigger_reloc_;
+      |          ^~~~~~~~~~~~~~
+/home/zxcx/new_naw/relocation/src/relocation_node.cpp:721:10: warning:   ‘bool relocation::RelocationNode::map_initialized_’ [-Wreorder]
+  721 |     bool map_initialized_;
+      |          ^~~~~~~~~~~~~~~~
+/home/zxcx/new_naw/relocation/src/relocation_node.cpp:116:5: warning:   when initialized here [-Wreorder]
+  116 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)
+      |     ^~~~~~~~~~~~~~

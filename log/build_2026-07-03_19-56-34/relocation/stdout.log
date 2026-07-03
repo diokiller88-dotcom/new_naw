@@ -1,0 +1,37 @@
+[ 60%] Built target relocation_core
+[ 80%] Built target test_node
+[ 90%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o
+[100%] Linking CXX executable relocation_node
+[100%] Built target relocation_node
+-- Install configuration: "Release"
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node
+-- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node
+-- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv
+-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake
+-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml

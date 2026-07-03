@@ -1,0 +1,264 @@
+[0.000000] (-) TimerEvent: {}
+[0.000278] (-) JobUnselected: {'identifier': 'algo_master'}
+[0.000299] (-) JobUnselected: {'identifier': 'controller'}
+[0.000313] (-) JobUnselected: {'identifier': 'custom_msgs'}
+[0.000327] (-) JobUnselected: {'identifier': 'esdf'}
+[0.000340] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000353] (-) JobUnselected: {'identifier': 'planner'}
+[0.000366] (-) JobUnselected: {'identifier': 'point_lio'}
+[0.000381] (relocation) JobQueued: {'identifier': 'relocation', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000399] (relocation) JobStarted: {'identifier': 'relocation'}
+[0.006847] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'cmake'}
+[0.007443] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'build'}
+[0.007893] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/relocation', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('OLDPWD', '/home/zxcx/下载'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '2377'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg07hBl09:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/a220233c_51db_48b8_8311_39090e3e8b85'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.419'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f27bc-5bb3-7891-8182-8eb735f92d1d'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[0.053709] (relocation) StdoutLine: {'line': b'[ 60%] Built target relocation_core\n'}
+[0.075600] (relocation) StdoutLine: {'line': b'[ 80%] Built target test_node\n'}
+[0.078584] (relocation) StdoutLine: {'line': b'[ 90%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o\n'}
+[0.099780] (-) TimerEvent: {}
+[0.199886] (-) TimerEvent: {}
+[0.300018] (-) TimerEvent: {}
+[0.400138] (-) TimerEvent: {}
+[0.500229] (-) TimerEvent: {}
+[0.600318] (-) TimerEvent: {}
+[0.700409] (-) TimerEvent: {}
+[0.800489] (-) TimerEvent: {}
+[0.900571] (-) TimerEvent: {}
+[1.000729] (-) TimerEvent: {}
+[1.100865] (-) TimerEvent: {}
+[1.200955] (-) TimerEvent: {}
+[1.301065] (-) TimerEvent: {}
+[1.401167] (-) TimerEvent: {}
+[1.501270] (-) TimerEvent: {}
+[1.601361] (-) TimerEvent: {}
+[1.701450] (-) TimerEvent: {}
+[1.801549] (-) TimerEvent: {}
+[1.901656] (-) TimerEvent: {}
+[2.001751] (-) TimerEvent: {}
+[2.101844] (-) TimerEvent: {}
+[2.201951] (-) TimerEvent: {}
+[2.302038] (-) TimerEvent: {}
+[2.402152] (-) TimerEvent: {}
+[2.502267] (-) TimerEvent: {}
+[2.602379] (-) TimerEvent: {}
+[2.702507] (-) TimerEvent: {}
+[2.802628] (-) TimerEvent: {}
+[2.902741] (-) TimerEvent: {}
+[3.002855] (-) TimerEvent: {}
+[3.102961] (-) TimerEvent: {}
+[3.203069] (-) TimerEvent: {}
+[3.303180] (-) TimerEvent: {}
+[3.403290] (-) TimerEvent: {}
+[3.503395] (-) TimerEvent: {}
+[3.598333] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor \xe2\x80\x98relocation::RelocationNode::RelocationNode()\xe2\x80\x99:\n'}
+[3.598495] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:701:10: warning: \xe2\x80\x98relocation::RelocationNode::trigger_reloc_\xe2\x80\x99 will be initialized after [-Wreorder]\n'}
+[3.598565] (relocation) StderrLine: {'line': b'  701 |     bool trigger_reloc_;\n'}
+[3.598612] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~\n'}
+[3.598645] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:695:10: warning:   \xe2\x80\x98bool relocation::RelocationNode::map_initialized_\xe2\x80\x99 [-Wreorder]\n'}
+[3.598682] (relocation) StderrLine: {'line': b'  695 |     bool map_initialized_;\n'}
+[3.598714] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~~~\n'}
+[3.598744] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:113:5: warning:   when initialized here [-Wreorder]\n'}
+[3.598774] (relocation) StderrLine: {'line': b'  113 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)\n'}
+[3.598805] (relocation) StderrLine: {'line': b'      |     ^~~~~~~~~~~~~~\n'}
+[3.603489] (-) TimerEvent: {}
+[3.703595] (-) TimerEvent: {}
+[3.803696] (-) TimerEvent: {}
+[3.903804] (-) TimerEvent: {}
+[4.003927] (-) TimerEvent: {}
+[4.104026] (-) TimerEvent: {}
+[4.204153] (-) TimerEvent: {}
+[4.304303] (-) TimerEvent: {}
+[4.404420] (-) TimerEvent: {}
+[4.504514] (-) TimerEvent: {}
+[4.604615] (-) TimerEvent: {}
+[4.704727] (-) TimerEvent: {}
+[4.804824] (-) TimerEvent: {}
+[4.904962] (-) TimerEvent: {}
+[5.005130] (-) TimerEvent: {}
+[5.105275] (-) TimerEvent: {}
+[5.205414] (-) TimerEvent: {}
+[5.305563] (-) TimerEvent: {}
+[5.405650] (-) TimerEvent: {}
+[5.505735] (-) TimerEvent: {}
+[5.605819] (-) TimerEvent: {}
+[5.705909] (-) TimerEvent: {}
+[5.806000] (-) TimerEvent: {}
+[5.906090] (-) TimerEvent: {}
+[6.006213] (-) TimerEvent: {}
+[6.106306] (-) TimerEvent: {}
+[6.206378] (-) TimerEvent: {}
+[6.306459] (-) TimerEvent: {}
+[6.406570] (-) TimerEvent: {}
+[6.506660] (-) TimerEvent: {}
+[6.606753] (-) TimerEvent: {}
+[6.706844] (-) TimerEvent: {}
+[6.806935] (-) TimerEvent: {}
+[6.907027] (-) TimerEvent: {}
+[7.007118] (-) TimerEvent: {}
+[7.107209] (-) TimerEvent: {}
+[7.207329] (-) TimerEvent: {}
+[7.307439] (-) TimerEvent: {}
+[7.407532] (-) TimerEvent: {}
+[7.507633] (-) TimerEvent: {}
+[7.607725] (-) TimerEvent: {}
+[7.707810] (-) TimerEvent: {}
+[7.807888] (-) TimerEvent: {}
+[7.907992] (-) TimerEvent: {}
+[8.008085] (-) TimerEvent: {}
+[8.108175] (-) TimerEvent: {}
+[8.208272] (-) TimerEvent: {}
+[8.308387] (-) TimerEvent: {}
+[8.408479] (-) TimerEvent: {}
+[8.508595] (-) TimerEvent: {}
+[8.608687] (-) TimerEvent: {}
+[8.708779] (-) TimerEvent: {}
+[8.808870] (-) TimerEvent: {}
+[8.908967] (-) TimerEvent: {}
+[9.009131] (-) TimerEvent: {}
+[9.109263] (-) TimerEvent: {}
+[9.209372] (-) TimerEvent: {}
+[9.309462] (-) TimerEvent: {}
+[9.409551] (-) TimerEvent: {}
+[9.509659] (-) TimerEvent: {}
+[9.609739] (-) TimerEvent: {}
+[9.709824] (-) TimerEvent: {}
+[9.809915] (-) TimerEvent: {}
+[9.910007] (-) TimerEvent: {}
+[10.010098] (-) TimerEvent: {}
+[10.110192] (-) TimerEvent: {}
+[10.210287] (-) TimerEvent: {}
+[10.310371] (-) TimerEvent: {}
+[10.410486] (-) TimerEvent: {}
+[10.510579] (-) TimerEvent: {}
+[10.610673] (-) TimerEvent: {}
+[10.710768] (-) TimerEvent: {}
+[10.810861] (-) TimerEvent: {}
+[10.910956] (-) TimerEvent: {}
+[11.011026] (-) TimerEvent: {}
+[11.111110] (-) TimerEvent: {}
+[11.211220] (-) TimerEvent: {}
+[11.311295] (-) TimerEvent: {}
+[11.411378] (-) TimerEvent: {}
+[11.511475] (-) TimerEvent: {}
+[11.611568] (-) TimerEvent: {}
+[11.711662] (-) TimerEvent: {}
+[11.811750] (-) TimerEvent: {}
+[11.911846] (-) TimerEvent: {}
+[12.011935] (-) TimerEvent: {}
+[12.112027] (-) TimerEvent: {}
+[12.212122] (-) TimerEvent: {}
+[12.312200] (-) TimerEvent: {}
+[12.412290] (-) TimerEvent: {}
+[12.512378] (-) TimerEvent: {}
+[12.612486] (-) TimerEvent: {}
+[12.712579] (-) TimerEvent: {}
+[12.812668] (-) TimerEvent: {}
+[12.912758] (-) TimerEvent: {}
+[13.012850] (-) TimerEvent: {}
+[13.112935] (-) TimerEvent: {}
+[13.213029] (-) TimerEvent: {}
+[13.313112] (-) TimerEvent: {}
+[13.413230] (-) TimerEvent: {}
+[13.513347] (-) TimerEvent: {}
+[13.613453] (-) TimerEvent: {}
+[13.713560] (-) TimerEvent: {}
+[13.813673] (-) TimerEvent: {}
+[13.913770] (-) TimerEvent: {}
+[14.013879] (-) TimerEvent: {}
+[14.114011] (-) TimerEvent: {}
+[14.214115] (-) TimerEvent: {}
+[14.314205] (-) TimerEvent: {}
+[14.414318] (-) TimerEvent: {}
+[14.514413] (-) TimerEvent: {}
+[14.614502] (-) TimerEvent: {}
+[14.714593] (-) TimerEvent: {}
+[14.814681] (-) TimerEvent: {}
+[14.914768] (-) TimerEvent: {}
+[15.014858] (-) TimerEvent: {}
+[15.114971] (-) TimerEvent: {}
+[15.215054] (-) TimerEvent: {}
+[15.315144] (-) TimerEvent: {}
+[15.415239] (-) TimerEvent: {}
+[15.515327] (-) TimerEvent: {}
+[15.615419] (-) TimerEvent: {}
+[15.715510] (-) TimerEvent: {}
+[15.815602] (-) TimerEvent: {}
+[15.915685] (-) TimerEvent: {}
+[16.015757] (-) TimerEvent: {}
+[16.115837] (-) TimerEvent: {}
+[16.215923] (-) TimerEvent: {}
+[16.316014] (-) TimerEvent: {}
+[16.416109] (-) TimerEvent: {}
+[16.516200] (-) TimerEvent: {}
+[16.616286] (-) TimerEvent: {}
+[16.716376] (-) TimerEvent: {}
+[16.816466] (-) TimerEvent: {}
+[16.916558] (-) TimerEvent: {}
+[17.016648] (-) TimerEvent: {}
+[17.116737] (-) TimerEvent: {}
+[17.216913] (-) TimerEvent: {}
+[17.317115] (-) TimerEvent: {}
+[17.417244] (-) TimerEvent: {}
+[17.517369] (-) TimerEvent: {}
+[17.617489] (-) TimerEvent: {}
+[17.717587] (-) TimerEvent: {}
+[17.817689] (-) TimerEvent: {}
+[17.917802] (-) TimerEvent: {}
+[18.017922] (-) TimerEvent: {}
+[18.118025] (-) TimerEvent: {}
+[18.218142] (-) TimerEvent: {}
+[18.318249] (-) TimerEvent: {}
+[18.418354] (-) TimerEvent: {}
+[18.518481] (-) TimerEvent: {}
+[18.618598] (-) TimerEvent: {}
+[18.718728] (-) TimerEvent: {}
+[18.818853] (-) TimerEvent: {}
+[18.918983] (-) TimerEvent: {}
+[19.019100] (-) TimerEvent: {}
+[19.119212] (-) TimerEvent: {}
+[19.219342] (-) TimerEvent: {}
+[19.319466] (-) TimerEvent: {}
+[19.364692] (relocation) StdoutLine: {'line': b'[100%] Linking CXX executable relocation_node\n'}
+[19.419566] (-) TimerEvent: {}
+[19.519690] (-) TimerEvent: {}
+[19.619815] (-) TimerEvent: {}
+[19.719929] (-) TimerEvent: {}
+[19.820054] (-) TimerEvent: {}
+[19.860174] (relocation) StdoutLine: {'line': b'[100%] Built target relocation_node\n'}
+[19.867232] (relocation) CommandEnded: {'returncode': 0}
+[19.868034] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'install'}
+[19.874716] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/relocation'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('OLDPWD', '/home/zxcx/下载'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '2377'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg07hBl09:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/a220233c_51db_48b8_8311_39090e3e8b85'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.419'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f27bc-5bb3-7891-8182-8eb735f92d1d'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[19.879525] (relocation) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[19.879661] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so\n'}
+[19.879828] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node\n'}
+[19.880099] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node\n'}
+[19.883389] (relocation) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""\n'}
+[19.883512] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include\n'}
+[19.883669] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation\n'}
+[19.883804] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp\n'}
+[19.883933] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp\n'}
+[19.883977] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp\n'}
+[19.884078] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp\n'}
+[19.884127] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp\n'}
+[19.884193] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD\n'}
+[19.884233] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd\n'}
+[19.884333] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md\n'}
+[19.884367] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd\n'}
+[19.884398] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd\n'}
+[19.884436] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation\n'}
+[19.884468] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation\n'}
+[19.884499] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh\n'}
+[19.884531] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv\n'}
+[19.884562] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh\n'}
+[19.884593] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv\n'}
+[19.884623] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash\n'}
+[19.884653] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh\n'}
+[19.884684] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh\n'}
+[19.884714] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv\n'}
+[19.884744] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv\n'}
+[19.884773] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation\n'}
+[19.884804] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake\n'}
+[19.884833] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake\n'}
+[19.884866] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml\n'}
+[19.885249] (relocation) CommandEnded: {'returncode': 0}
+[19.895533] (relocation) JobEnded: {'identifier': 'relocation', 'rc': 0}
+[19.895879] (-) EventReactorShutdown: {}

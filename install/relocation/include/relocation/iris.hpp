@@ -17,6 +17,9 @@ namespace relocation {
     constexpr float height_resolution = 0.25f; 
     constexpr int iris_rows = 10;              
     constexpr int iris_cols = 360;             
+    constexpr int iris_sector_bins = 36;
+    constexpr int iris_height_bins = 8;
+    constexpr int iris_binary_vec_size = iris_rows + iris_sector_bins + iris_height_bins + iris_rows * iris_sector_bins;
 
     constexpr int nscale = 4;
     constexpr int min_wavelength = 18;

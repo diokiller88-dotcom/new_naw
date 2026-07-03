@@ -1,0 +1,670 @@
+[0.000000] (-) TimerEvent: {}
+[0.000283] (-) JobUnselected: {'identifier': 'algo_master'}
+[0.000303] (-) JobUnselected: {'identifier': 'controller'}
+[0.000319] (-) JobUnselected: {'identifier': 'custom_msgs'}
+[0.000331] (-) JobUnselected: {'identifier': 'esdf'}
+[0.000344] (-) JobUnselected: {'identifier': 'livox_ros_driver2'}
+[0.000357] (-) JobUnselected: {'identifier': 'planner'}
+[0.000369] (-) JobUnselected: {'identifier': 'point_lio'}
+[0.000385] (relocation) JobQueued: {'identifier': 'relocation', 'dependencies': OrderedDict([('custom_msgs', '/home/zxcx/new_naw/install/custom_msgs')])}
+[0.000403] (relocation) JobStarted: {'identifier': 'relocation'}
+[0.006666] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'cmake'}
+[0.007164] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'build'}
+[0.007599] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/zxcx/new_naw/build/relocation', '--', '-j32', '-l32'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('OLDPWD', '/home/zxcx/下载'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '2377'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg07hBl09:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/a220233c_51db_48b8_8311_39090e3e8b85'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.419'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f27bc-5bb3-7891-8182-8eb735f92d1d'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[0.053611] (relocation) StdoutLine: {'line': b'[ 10%] Building CXX object CMakeFiles/relocation_core.dir/src/location.cpp.o\n'}
+[0.099757] (-) TimerEvent: {}
+[0.199910] (-) TimerEvent: {}
+[0.300086] (-) TimerEvent: {}
+[0.400213] (-) TimerEvent: {}
+[0.500337] (-) TimerEvent: {}
+[0.600448] (-) TimerEvent: {}
+[0.700555] (-) TimerEvent: {}
+[0.800670] (-) TimerEvent: {}
+[0.900780] (-) TimerEvent: {}
+[1.000886] (-) TimerEvent: {}
+[1.101006] (-) TimerEvent: {}
+[1.201128] (-) TimerEvent: {}
+[1.301234] (-) TimerEvent: {}
+[1.401348] (-) TimerEvent: {}
+[1.501469] (-) TimerEvent: {}
+[1.601596] (-) TimerEvent: {}
+[1.701726] (-) TimerEvent: {}
+[1.801851] (-) TimerEvent: {}
+[1.901980] (-) TimerEvent: {}
+[2.002115] (-) TimerEvent: {}
+[2.102230] (-) TimerEvent: {}
+[2.202355] (-) TimerEvent: {}
+[2.302476] (-) TimerEvent: {}
+[2.402593] (-) TimerEvent: {}
+[2.502705] (-) TimerEvent: {}
+[2.602829] (-) TimerEvent: {}
+[2.702923] (-) TimerEvent: {}
+[2.803042] (-) TimerEvent: {}
+[2.903153] (-) TimerEvent: {}
+[3.003278] (-) TimerEvent: {}
+[3.088006] (relocation) StdoutLine: {'line': b'[ 20%] Linking CXX shared library librelocation_core.so\n'}
+[3.103374] (-) TimerEvent: {}
+[3.203508] (-) TimerEvent: {}
+[3.303661] (-) TimerEvent: {}
+[3.403800] (-) TimerEvent: {}
+[3.503932] (-) TimerEvent: {}
+[3.604107] (-) TimerEvent: {}
+[3.704233] (-) TimerEvent: {}
+[3.804353] (-) TimerEvent: {}
+[3.904454] (-) TimerEvent: {}
+[4.004570] (-) TimerEvent: {}
+[4.104690] (-) TimerEvent: {}
+[4.204836] (-) TimerEvent: {}
+[4.304977] (-) TimerEvent: {}
+[4.405120] (-) TimerEvent: {}
+[4.505255] (-) TimerEvent: {}
+[4.605378] (-) TimerEvent: {}
+[4.705499] (-) TimerEvent: {}
+[4.805621] (-) TimerEvent: {}
+[4.834627] (relocation) StdoutLine: {'line': b'[ 60%] Built target relocation_core\n'}
+[4.858536] (relocation) StdoutLine: {'line': b'[ 70%] Building CXX object CMakeFiles/test_node.dir/src/test.cpp.o\n'}
+[4.860602] (relocation) StdoutLine: {'line': b'[ 80%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o\n'}
+[4.905714] (-) TimerEvent: {}
+[5.005842] (-) TimerEvent: {}
+[5.105951] (-) TimerEvent: {}
+[5.206068] (-) TimerEvent: {}
+[5.306200] (-) TimerEvent: {}
+[5.406333] (-) TimerEvent: {}
+[5.506439] (-) TimerEvent: {}
+[5.606539] (-) TimerEvent: {}
+[5.706664] (-) TimerEvent: {}
+[5.806808] (-) TimerEvent: {}
+[5.906927] (-) TimerEvent: {}
+[6.006983] (-) TimerEvent: {}
+[6.107098] (-) TimerEvent: {}
+[6.207233] (-) TimerEvent: {}
+[6.307371] (-) TimerEvent: {}
+[6.407485] (-) TimerEvent: {}
+[6.507590] (-) TimerEvent: {}
+[6.607707] (-) TimerEvent: {}
+[6.707810] (-) TimerEvent: {}
+[6.807916] (-) TimerEvent: {}
+[6.908037] (-) TimerEvent: {}
+[7.008159] (-) TimerEvent: {}
+[7.108262] (-) TimerEvent: {}
+[7.208397] (-) TimerEvent: {}
+[7.308564] (-) TimerEvent: {}
+[7.408712] (-) TimerEvent: {}
+[7.508822] (-) TimerEvent: {}
+[7.608940] (-) TimerEvent: {}
+[7.709062] (-) TimerEvent: {}
+[7.809178] (-) TimerEvent: {}
+[7.909296] (-) TimerEvent: {}
+[8.009414] (-) TimerEvent: {}
+[8.109577] (-) TimerEvent: {}
+[8.209745] (-) TimerEvent: {}
+[8.309870] (-) TimerEvent: {}
+[8.409983] (-) TimerEvent: {}
+[8.506568] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor \xe2\x80\x98relocation::RelocationNode::RelocationNode()\xe2\x80\x99:\n'}
+[8.506755] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:743:10: warning: \xe2\x80\x98relocation::RelocationNode::trigger_reloc_\xe2\x80\x99 will be initialized after [-Wreorder]\n'}
+[8.506822] (relocation) StderrLine: {'line': b'  743 |     bool trigger_reloc_;\n'}
+[8.506877] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~\n'}
+[8.506932] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:737:10: warning:   \xe2\x80\x98bool relocation::RelocationNode::map_initialized_\xe2\x80\x99 [-Wreorder]\n'}
+[8.507002] (relocation) StderrLine: {'line': b'  737 |     bool map_initialized_;\n'}
+[8.507052] (relocation) StderrLine: {'line': b'      |          ^~~~~~~~~~~~~~~~\n'}
+[8.507101] (relocation) StderrLine: {'line': b'/home/zxcx/new_naw/relocation/src/relocation_node.cpp:118:5: warning:   when initialized here [-Wreorder]\n'}
+[8.507148] (relocation) StderrLine: {'line': b'  118 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)\n'}
+[8.507197] (relocation) StderrLine: {'line': b'      |     ^~~~~~~~~~~~~~\n'}
+[8.510056] (-) TimerEvent: {}
+[8.610158] (-) TimerEvent: {}
+[8.710278] (-) TimerEvent: {}
+[8.750910] (relocation) StdoutLine: {'line': b'[ 90%] Linking CXX executable test_node\n'}
+[8.810397] (-) TimerEvent: {}
+[8.910534] (-) TimerEvent: {}
+[9.010649] (-) TimerEvent: {}
+[9.110775] (-) TimerEvent: {}
+[9.155837] (relocation) StdoutLine: {'line': b'[ 90%] Built target test_node\n'}
+[9.210862] (-) TimerEvent: {}
+[9.310978] (-) TimerEvent: {}
+[9.411111] (-) TimerEvent: {}
+[9.511223] (-) TimerEvent: {}
+[9.611344] (-) TimerEvent: {}
+[9.711471] (-) TimerEvent: {}
+[9.811590] (-) TimerEvent: {}
+[9.911705] (-) TimerEvent: {}
+[10.011823] (-) TimerEvent: {}
+[10.111962] (-) TimerEvent: {}
+[10.212092] (-) TimerEvent: {}
+[10.312219] (-) TimerEvent: {}
+[10.412342] (-) TimerEvent: {}
+[10.512458] (-) TimerEvent: {}
+[10.612564] (-) TimerEvent: {}
+[10.712672] (-) TimerEvent: {}
+[10.812774] (-) TimerEvent: {}
+[10.912882] (-) TimerEvent: {}
+[11.012987] (-) TimerEvent: {}
+[11.113092] (-) TimerEvent: {}
+[11.213194] (-) TimerEvent: {}
+[11.313303] (-) TimerEvent: {}
+[11.413408] (-) TimerEvent: {}
+[11.513513] (-) TimerEvent: {}
+[11.613612] (-) TimerEvent: {}
+[11.713711] (-) TimerEvent: {}
+[11.813829] (-) TimerEvent: {}
+[11.913963] (-) TimerEvent: {}
+[12.014078] (-) TimerEvent: {}
+[12.114206] (-) TimerEvent: {}
+[12.214321] (-) TimerEvent: {}
+[12.314442] (-) TimerEvent: {}
+[12.414564] (-) TimerEvent: {}
+[12.514674] (-) TimerEvent: {}
+[12.614784] (-) TimerEvent: {}
+[12.714904] (-) TimerEvent: {}
+[12.814995] (-) TimerEvent: {}
+[12.915118] (-) TimerEvent: {}
+[13.015221] (-) TimerEvent: {}
+[13.115350] (-) TimerEvent: {}
+[13.215463] (-) TimerEvent: {}
+[13.315596] (-) TimerEvent: {}
+[13.415709] (-) TimerEvent: {}
+[13.515827] (-) TimerEvent: {}
+[13.615939] (-) TimerEvent: {}
+[13.716071] (-) TimerEvent: {}
+[13.816194] (-) TimerEvent: {}
+[13.916306] (-) TimerEvent: {}
+[14.016420] (-) TimerEvent: {}
+[14.116535] (-) TimerEvent: {}
+[14.216642] (-) TimerEvent: {}
+[14.316758] (-) TimerEvent: {}
+[14.416882] (-) TimerEvent: {}
+[14.517000] (-) TimerEvent: {}
+[14.617115] (-) TimerEvent: {}
+[14.717238] (-) TimerEvent: {}
+[14.817361] (-) TimerEvent: {}
+[14.917470] (-) TimerEvent: {}
+[15.017588] (-) TimerEvent: {}
+[15.117711] (-) TimerEvent: {}
+[15.217836] (-) TimerEvent: {}
+[15.317967] (-) TimerEvent: {}
+[15.418069] (-) TimerEvent: {}
+[15.518195] (-) TimerEvent: {}
+[15.618332] (-) TimerEvent: {}
+[15.718456] (-) TimerEvent: {}
+[15.818571] (-) TimerEvent: {}
+[15.918704] (-) TimerEvent: {}
+[16.018834] (-) TimerEvent: {}
+[16.118980] (-) TimerEvent: {}
+[16.219155] (-) TimerEvent: {}
+[16.319341] (-) TimerEvent: {}
+[16.419469] (-) TimerEvent: {}
+[16.519605] (-) TimerEvent: {}
+[16.619723] (-) TimerEvent: {}
+[16.719830] (-) TimerEvent: {}
+[16.819921] (-) TimerEvent: {}
+[16.920022] (-) TimerEvent: {}
+[17.020111] (-) TimerEvent: {}
+[17.120203] (-) TimerEvent: {}
+[17.220297] (-) TimerEvent: {}
+[17.320416] (-) TimerEvent: {}
+[17.420509] (-) TimerEvent: {}
+[17.520634] (-) TimerEvent: {}
+[17.620755] (-) TimerEvent: {}
+[17.720868] (-) TimerEvent: {}
+[17.820981] (-) TimerEvent: {}
+[17.921101] (-) TimerEvent: {}
+[18.021223] (-) TimerEvent: {}
+[18.121343] (-) TimerEvent: {}
+[18.221472] (-) TimerEvent: {}
+[18.321595] (-) TimerEvent: {}
+[18.421716] (-) TimerEvent: {}
+[18.521840] (-) TimerEvent: {}
+[18.622026] (-) TimerEvent: {}
+[18.722209] (-) TimerEvent: {}
+[18.822381] (-) TimerEvent: {}
+[18.922551] (-) TimerEvent: {}
+[19.022700] (-) TimerEvent: {}
+[19.122858] (-) TimerEvent: {}
+[19.223008] (-) TimerEvent: {}
+[19.323172] (-) TimerEvent: {}
+[19.423341] (-) TimerEvent: {}
+[19.523521] (-) TimerEvent: {}
+[19.623691] (-) TimerEvent: {}
+[19.723858] (-) TimerEvent: {}
+[19.824044] (-) TimerEvent: {}
+[19.924223] (-) TimerEvent: {}
+[20.024394] (-) TimerEvent: {}
+[20.124555] (-) TimerEvent: {}
+[20.224720] (-) TimerEvent: {}
+[20.324894] (-) TimerEvent: {}
+[20.425066] (-) TimerEvent: {}
+[20.525233] (-) TimerEvent: {}
+[20.625413] (-) TimerEvent: {}
+[20.725587] (-) TimerEvent: {}
+[20.825755] (-) TimerEvent: {}
+[20.925912] (-) TimerEvent: {}
+[21.026087] (-) TimerEvent: {}
+[21.126262] (-) TimerEvent: {}
+[21.226437] (-) TimerEvent: {}
+[21.326615] (-) TimerEvent: {}
+[21.426784] (-) TimerEvent: {}
+[21.526967] (-) TimerEvent: {}
+[21.627143] (-) TimerEvent: {}
+[21.727313] (-) TimerEvent: {}
+[21.827475] (-) TimerEvent: {}
+[21.927638] (-) TimerEvent: {}
+[22.027807] (-) TimerEvent: {}
+[22.127992] (-) TimerEvent: {}
+[22.228162] (-) TimerEvent: {}
+[22.328331] (-) TimerEvent: {}
+[22.428500] (-) TimerEvent: {}
+[22.528682] (-) TimerEvent: {}
+[22.628863] (-) TimerEvent: {}
+[22.729013] (-) TimerEvent: {}
+[22.829176] (-) TimerEvent: {}
+[22.929337] (-) TimerEvent: {}
+[23.029497] (-) TimerEvent: {}
+[23.129656] (-) TimerEvent: {}
+[23.229820] (-) TimerEvent: {}
+[23.330007] (-) TimerEvent: {}
+[23.430179] (-) TimerEvent: {}
+[23.530354] (-) TimerEvent: {}
+[23.630523] (-) TimerEvent: {}
+[23.730695] (-) TimerEvent: {}
+[23.830877] (-) TimerEvent: {}
+[23.931014] (-) TimerEvent: {}
+[24.031174] (-) TimerEvent: {}
+[24.131342] (-) TimerEvent: {}
+[24.231520] (-) TimerEvent: {}
+[24.331712] (-) TimerEvent: {}
+[24.369833] (relocation) StdoutLine: {'line': b'[100%] Linking CXX executable relocation_node\n'}
+[24.431818] (-) TimerEvent: {}
+[24.532038] (-) TimerEvent: {}
+[24.632232] (-) TimerEvent: {}
+[24.732420] (-) TimerEvent: {}
+[24.832614] (-) TimerEvent: {}
+[24.882355] (relocation) StdoutLine: {'line': b'[100%] Built target relocation_node\n'}
+[24.932706] (-) TimerEvent: {}
+[25.032890] (-) TimerEvent: {}
+[25.133402] (-) TimerEvent: {}
+[25.233633] (-) TimerEvent: {}
+[25.333825] (-) TimerEvent: {}
+[25.434055] (-) TimerEvent: {}
+[25.534283] (-) TimerEvent: {}
+[25.634501] (-) TimerEvent: {}
+[25.734720] (-) TimerEvent: {}
+[25.834883] (-) TimerEvent: {}
+[25.935006] (-) TimerEvent: {}
+[26.035482] (-) TimerEvent: {}
+[26.135717] (-) TimerEvent: {}
+[26.235888] (-) TimerEvent: {}
+[26.336061] (-) TimerEvent: {}
+[26.436250] (-) TimerEvent: {}
+[26.536391] (-) TimerEvent: {}
+[26.636497] (-) TimerEvent: {}
+[26.736598] (-) TimerEvent: {}
+[26.836710] (-) TimerEvent: {}
+[26.936838] (-) TimerEvent: {}
+[27.037008] (-) TimerEvent: {}
+[27.137182] (-) TimerEvent: {}
+[27.237317] (-) TimerEvent: {}
+[27.337462] (-) TimerEvent: {}
+[27.437612] (-) TimerEvent: {}
+[27.537754] (-) TimerEvent: {}
+[27.637923] (-) TimerEvent: {}
+[27.738092] (-) TimerEvent: {}
+[27.838220] (-) TimerEvent: {}
+[27.938358] (-) TimerEvent: {}
+[28.038484] (-) TimerEvent: {}
+[28.138611] (-) TimerEvent: {}
+[28.238743] (-) TimerEvent: {}
+[28.338863] (-) TimerEvent: {}
+[28.438984] (-) TimerEvent: {}
+[28.539097] (-) TimerEvent: {}
+[28.639213] (-) TimerEvent: {}
+[28.739339] (-) TimerEvent: {}
+[28.839468] (-) TimerEvent: {}
+[28.939584] (-) TimerEvent: {}
+[29.039710] (-) TimerEvent: {}
+[29.139835] (-) TimerEvent: {}
+[29.239976] (-) TimerEvent: {}
+[29.340089] (-) TimerEvent: {}
+[29.440205] (-) TimerEvent: {}
+[29.540334] (-) TimerEvent: {}
+[29.640464] (-) TimerEvent: {}
+[29.740595] (-) TimerEvent: {}
+[29.840712] (-) TimerEvent: {}
+[29.940837] (-) TimerEvent: {}
+[30.005370] (relocation) CommandEnded: {'returncode': 0}
+[30.005815] (relocation) JobProgress: {'identifier': 'relocation', 'progress': 'install'}
+[30.013487] (relocation) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/zxcx/new_naw/build/relocation'], 'cwd': '/home/zxcx/new_naw/build/relocation', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('HTTPS_PROXY', 'http://127.0.0.1:7897/'), ('CODEX_CI', '1'), ('no_proxy', 'localhost,127.0.0.1'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'zxcx'), ('LC_TIME', 'zh_CN.UTF-8'), ('all_proxy', 'socks5://127.0.0.1:7897'), ('XDG_SESSION_TYPE', 'wayland'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/zxcx/new_naw/install/custom_msgs/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/zxcx'), ('OLDPWD', '/home/zxcx/下载'), ('DESKTOP_SESSION', 'ubuntu'), ('NO_PROXY', 'localhost,127.0.0.1,192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,::1'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('PAGER', 'cat'), ('LC_MONETARY', 'zh_CN.UTF-8'), ('LC_CTYPE', 'C.UTF-8'), ('DBUS_STARTER_BUS_TYPE', 'session'), ('SYSTEMD_EXEC_PID', '2377'), ('IM_CONFIG_CHECK_ENV', '1'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('COLORTERM', ''), ('NVM_DIR', '/home/zxcx/.nvm'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('https_proxy', 'http://127.0.0.1:7897'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'fcitx'), ('LOGNAME', 'zxcx'), ('ALL_PROXY', 'socks://127.0.0.1:7897/'), ('http_proxy', 'http://127.0.0.1:7897'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'zxcx'), ('TERM', 'dumb'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/zxcx/.codex/tmp/arg0/codex-arg07hBl09:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/zxcx0219:@/tmp/.ICE-unix/2377,unix/zxcx0219:/tmp/.ICE-unix/2377'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'zh_CN.UTF-8'), ('GNOME_TERMINAL_SCREEN', '/org/gnome/Terminal/screen/a220233c_51db_48b8_8311_39090e3e8b85'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':0'), ('CODEX_SANDBOX_NETWORK_DISABLED', '1'), ('LANG', 'C.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('LC_TELEPHONE', 'zh_CN.UTF-8'), ('XMODIFIERS', '@im=fcitx'), ('GH_PAGER', 'cat'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.BDFZR3'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('GNOME_TERMINAL_SERVICE', ':1.419'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LC_NAME', 'zh_CN.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019f27bc-5bb3-7891-8182-8eb735f92d1d'), ('LC_MEASUREMENT', 'zh_CN.UTF-8'), ('LC_IDENTIFICATION', 'zh_CN.UTF-8'), ('GIT_PAGER', 'cat'), ('QT_IM_MODULE', 'fcitx'), ('PWD', '/home/zxcx/new_naw/build/relocation'), ('LC_ALL', 'C.UTF-8'), ('CODEX_MANAGED_PACKAGE_ROOT', '/usr/lib/node_modules/@openai/codex'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('CLUTTER_IM_MODULE', 'fcitx'), ('NVM_CD_FLAGS', ''), ('DBUS_STARTER_ADDRESS', 'unix:path=/run/user/1000/bus,guid=9803bec6914d998d1030f7cd6a47165b'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('HTTP_PROXY', 'http://127.0.0.1:7897/'), ('LC_NUMERIC', 'zh_CN.UTF-8'), ('LC_PAPER', 'zh_CN.UTF-8'), ('COLCON', '1'), ('CODEX_MANAGED_BY_NPM', '1'), ('VTE_VERSION', '6800'), ('NVM_RC_VERSION', ''), ('CMAKE_PREFIX_PATH', '/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble')]), 'shell': False}
+[30.019002] (relocation) StdoutLine: {'line': b'-- Install configuration: "Release"\n'}
+[30.019196] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so\n'}
+[30.019637] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node\n'}
+[30.020085] (relocation) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/test_node" to ""\n'}
+[30.020242] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node\n'}
+[30.023443] (relocation) StdoutLine: {'line': b'-- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""\n'}
+[30.023610] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include\n'}
+[30.023658] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation\n'}
+[30.023740] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp\n'}
+[30.023891] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp\n'}
+[30.023943] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp\n'}
+[30.024009] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp\n'}
+[30.024063] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp\n'}
+[30.024139] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD\n'}
+[30.024308] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd\n'}
+[30.024354] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md\n'}
+[30.024397] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd\n'}
+[30.024440] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd\n'}
+[30.024482] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation\n'}
+[30.024525] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation\n'}
+[30.024568] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh\n'}
+[30.024609] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv\n'}
+[30.024651] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh\n'}
+[30.024694] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv\n'}
+[30.024736] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash\n'}
+[30.024778] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh\n'}
+[30.024820] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh\n'}
+[30.024861] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv\n'}
+[30.024904] (relocation) StdoutLine: {'line': b'-- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv\n'}
+[30.024945] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation\n'}
+[30.024999] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake\n'}
+[30.025040] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake\n'}
+[30.025090] (relocation) StdoutLine: {'line': b'-- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml\n'}
+[30.040870] (-) TimerEvent: {}
+[30.140995] (-) TimerEvent: {}
+[30.241122] (-) TimerEvent: {}
+[30.341243] (-) TimerEvent: {}
+[30.441363] (-) TimerEvent: {}
+[30.541480] (-) TimerEvent: {}
+[30.641588] (-) TimerEvent: {}
+[30.741718] (-) TimerEvent: {}
+[30.841839] (-) TimerEvent: {}
+[30.941942] (-) TimerEvent: {}
+[31.042054] (-) TimerEvent: {}
+[31.142154] (-) TimerEvent: {}
+[31.242260] (-) TimerEvent: {}
+[31.342357] (-) TimerEvent: {}
+[31.442458] (-) TimerEvent: {}
+[31.542558] (-) TimerEvent: {}
+[31.642652] (-) TimerEvent: {}
+[31.742757] (-) TimerEvent: {}
+[31.842861] (-) TimerEvent: {}
+[31.942967] (-) TimerEvent: {}
+[32.043128] (-) TimerEvent: {}
+[32.143297] (-) TimerEvent: {}
+[32.243424] (-) TimerEvent: {}
+[32.343545] (-) TimerEvent: {}
+[32.443674] (-) TimerEvent: {}
+[32.543811] (-) TimerEvent: {}
+[32.643946] (-) TimerEvent: {}
+[32.744082] (-) TimerEvent: {}
+[32.844199] (-) TimerEvent: {}
+[32.944322] (-) TimerEvent: {}
+[33.044438] (-) TimerEvent: {}
+[33.144618] (-) TimerEvent: {}
+[33.244831] (-) TimerEvent: {}
+[33.345015] (-) TimerEvent: {}
+[33.445208] (-) TimerEvent: {}
+[33.545371] (-) TimerEvent: {}
+[33.645492] (-) TimerEvent: {}
+[33.745609] (-) TimerEvent: {}
+[33.845735] (-) TimerEvent: {}
+[33.945907] (-) TimerEvent: {}
+[34.046094] (-) TimerEvent: {}
+[34.146253] (-) TimerEvent: {}
+[34.246719] (-) TimerEvent: {}
+[34.346909] (-) TimerEvent: {}
+[34.447076] (-) TimerEvent: {}
+[34.547202] (-) TimerEvent: {}
+[34.647374] (-) TimerEvent: {}
+[34.747524] (-) TimerEvent: {}
+[34.847697] (-) TimerEvent: {}
+[34.947856] (-) TimerEvent: {}
+[35.047994] (-) TimerEvent: {}
+[35.148108] (-) TimerEvent: {}
+[35.248231] (-) TimerEvent: {}
+[35.348377] (-) TimerEvent: {}
+[35.448527] (-) TimerEvent: {}
+[35.548681] (-) TimerEvent: {}
+[35.648821] (-) TimerEvent: {}
+[35.748942] (-) TimerEvent: {}
+[35.849101] (-) TimerEvent: {}
+[35.949232] (-) TimerEvent: {}
+[36.049393] (-) TimerEvent: {}
+[36.149549] (-) TimerEvent: {}
+[36.249701] (-) TimerEvent: {}
+[36.349848] (-) TimerEvent: {}
+[36.450006] (-) TimerEvent: {}
+[36.550183] (-) TimerEvent: {}
+[36.650349] (-) TimerEvent: {}
+[36.750490] (-) TimerEvent: {}
+[36.850624] (-) TimerEvent: {}
+[36.950762] (-) TimerEvent: {}
+[37.050883] (-) TimerEvent: {}
+[37.150993] (-) TimerEvent: {}
+[37.251098] (-) TimerEvent: {}
+[37.351199] (-) TimerEvent: {}
+[37.451304] (-) TimerEvent: {}
+[37.551435] (-) TimerEvent: {}
+[37.651582] (-) TimerEvent: {}
+[37.751707] (-) TimerEvent: {}
+[37.851854] (-) TimerEvent: {}
+[37.951996] (-) TimerEvent: {}
+[38.052102] (-) TimerEvent: {}
+[38.152203] (-) TimerEvent: {}
+[38.252306] (-) TimerEvent: {}
+[38.352440] (-) TimerEvent: {}
+[38.452580] (-) TimerEvent: {}
+[38.552720] (-) TimerEvent: {}
+[38.652902] (-) TimerEvent: {}
+[38.753076] (-) TimerEvent: {}
+[38.853205] (-) TimerEvent: {}
+[38.953384] (-) TimerEvent: {}
+[39.053556] (-) TimerEvent: {}
+[39.153680] (-) TimerEvent: {}
+[39.253864] (-) TimerEvent: {}
+[39.354024] (-) TimerEvent: {}
+[39.454184] (-) TimerEvent: {}
+[39.554351] (-) TimerEvent: {}
+[39.654516] (-) TimerEvent: {}
+[39.754665] (-) TimerEvent: {}
+[39.854838] (-) TimerEvent: {}
+[39.954986] (-) TimerEvent: {}
+[40.055135] (-) TimerEvent: {}
+[40.155322] (-) TimerEvent: {}
+[40.255480] (-) TimerEvent: {}
+[40.355661] (-) TimerEvent: {}
+[40.456161] (-) TimerEvent: {}
+[40.556357] (-) TimerEvent: {}
+[40.656545] (-) TimerEvent: {}
+[40.756731] (-) TimerEvent: {}
+[40.856904] (-) TimerEvent: {}
+[40.957081] (-) TimerEvent: {}
+[41.057242] (-) TimerEvent: {}
+[41.157406] (-) TimerEvent: {}
+[41.257559] (-) TimerEvent: {}
+[41.357685] (-) TimerEvent: {}
+[41.457813] (-) TimerEvent: {}
+[41.558004] (-) TimerEvent: {}
+[41.658180] (-) TimerEvent: {}
+[41.758324] (-) TimerEvent: {}
+[41.858482] (-) TimerEvent: {}
+[41.958618] (-) TimerEvent: {}
+[42.058756] (-) TimerEvent: {}
+[42.158901] (-) TimerEvent: {}
+[42.259033] (-) TimerEvent: {}
+[42.359169] (-) TimerEvent: {}
+[42.459303] (-) TimerEvent: {}
+[42.559447] (-) TimerEvent: {}
+[42.659629] (-) TimerEvent: {}
+[42.759788] (-) TimerEvent: {}
+[42.859901] (-) TimerEvent: {}
+[42.959982] (-) TimerEvent: {}
+[43.060091] (-) TimerEvent: {}
+[43.160215] (-) TimerEvent: {}
+[43.260358] (-) TimerEvent: {}
+[43.360518] (-) TimerEvent: {}
+[43.460686] (-) TimerEvent: {}
+[43.560833] (-) TimerEvent: {}
+[43.660996] (-) TimerEvent: {}
+[43.761168] (-) TimerEvent: {}
+[43.861326] (-) TimerEvent: {}
+[43.961487] (-) TimerEvent: {}
+[44.061625] (-) TimerEvent: {}
+[44.161797] (-) TimerEvent: {}
+[44.262001] (-) TimerEvent: {}
+[44.362183] (-) TimerEvent: {}
+[44.462326] (-) TimerEvent: {}
+[44.562451] (-) TimerEvent: {}
+[44.662573] (-) TimerEvent: {}
+[44.762687] (-) TimerEvent: {}
+[44.862862] (-) TimerEvent: {}
+[44.963037] (-) TimerEvent: {}
+[45.063199] (-) TimerEvent: {}
+[45.163370] (-) TimerEvent: {}
+[45.263513] (-) TimerEvent: {}
+[45.363691] (-) TimerEvent: {}
+[45.463858] (-) TimerEvent: {}
+[45.563988] (-) TimerEvent: {}
+[45.664109] (-) TimerEvent: {}
+[45.764230] (-) TimerEvent: {}
+[45.864353] (-) TimerEvent: {}
+[45.964487] (-) TimerEvent: {}
+[46.064607] (-) TimerEvent: {}
+[46.164723] (-) TimerEvent: {}
+[46.264849] (-) TimerEvent: {}
+[46.364987] (-) TimerEvent: {}
+[46.465119] (-) TimerEvent: {}
+[46.565261] (-) TimerEvent: {}
+[46.665401] (-) TimerEvent: {}
+[46.765543] (-) TimerEvent: {}
+[46.865670] (-) TimerEvent: {}
+[46.965792] (-) TimerEvent: {}
+[47.065924] (-) TimerEvent: {}
+[47.166059] (-) TimerEvent: {}
+[47.266177] (-) TimerEvent: {}
+[47.366294] (-) TimerEvent: {}
+[47.466409] (-) TimerEvent: {}
+[47.566526] (-) TimerEvent: {}
+[47.666633] (-) TimerEvent: {}
+[47.766747] (-) TimerEvent: {}
+[47.866864] (-) TimerEvent: {}
+[47.966998] (-) TimerEvent: {}
+[48.067169] (-) TimerEvent: {}
+[48.167367] (-) TimerEvent: {}
+[48.267504] (-) TimerEvent: {}
+[48.367623] (-) TimerEvent: {}
+[48.467759] (-) TimerEvent: {}
+[48.567899] (-) TimerEvent: {}
+[48.668028] (-) TimerEvent: {}
+[48.768163] (-) TimerEvent: {}
+[48.868277] (-) TimerEvent: {}
+[48.968382] (-) TimerEvent: {}
+[49.068493] (-) TimerEvent: {}
+[49.168634] (-) TimerEvent: {}
+[49.268802] (-) TimerEvent: {}
+[49.368969] (-) TimerEvent: {}
+[49.469125] (-) TimerEvent: {}
+[49.569239] (-) TimerEvent: {}
+[49.669359] (-) TimerEvent: {}
+[49.769470] (-) TimerEvent: {}
+[49.869601] (-) TimerEvent: {}
+[49.969743] (-) TimerEvent: {}
+[50.069861] (-) TimerEvent: {}
+[50.169996] (-) TimerEvent: {}
+[50.270139] (-) TimerEvent: {}
+[50.370274] (-) TimerEvent: {}
+[50.470403] (-) TimerEvent: {}
+[50.570549] (-) TimerEvent: {}
+[50.670652] (-) TimerEvent: {}
+[50.770809] (-) TimerEvent: {}
+[50.870975] (-) TimerEvent: {}
+[50.971113] (-) TimerEvent: {}
+[51.071243] (-) TimerEvent: {}
+[51.171378] (-) TimerEvent: {}
+[51.271517] (-) TimerEvent: {}
+[51.371650] (-) TimerEvent: {}
+[51.471802] (-) TimerEvent: {}
+[51.571966] (-) TimerEvent: {}
+[51.672114] (-) TimerEvent: {}
+[51.772301] (-) TimerEvent: {}
+[51.872452] (-) TimerEvent: {}
+[51.972597] (-) TimerEvent: {}
+[52.072791] (-) TimerEvent: {}
+[52.172987] (-) TimerEvent: {}
+[52.273156] (-) TimerEvent: {}
+[52.373328] (-) TimerEvent: {}
+[52.473493] (-) TimerEvent: {}
+[52.573648] (-) TimerEvent: {}
+[52.673803] (-) TimerEvent: {}
+[52.773938] (-) TimerEvent: {}
+[52.874095] (-) TimerEvent: {}
+[52.974248] (-) TimerEvent: {}
+[53.074395] (-) TimerEvent: {}
+[53.174562] (-) TimerEvent: {}
+[53.274736] (-) TimerEvent: {}
+[53.374906] (-) TimerEvent: {}
+[53.475019] (-) TimerEvent: {}
+[53.575187] (-) TimerEvent: {}
+[53.675333] (-) TimerEvent: {}
+[53.775487] (-) TimerEvent: {}
+[53.875664] (-) TimerEvent: {}
+[53.975802] (-) TimerEvent: {}
+[54.075925] (-) TimerEvent: {}
+[54.176083] (-) TimerEvent: {}
+[54.276236] (-) TimerEvent: {}
+[54.376372] (-) TimerEvent: {}
+[54.476496] (-) TimerEvent: {}
+[54.576613] (-) TimerEvent: {}
+[54.676747] (-) TimerEvent: {}
+[54.776900] (-) TimerEvent: {}
+[54.877058] (-) TimerEvent: {}
+[54.977185] (-) TimerEvent: {}
+[55.077295] (-) TimerEvent: {}
+[55.177404] (-) TimerEvent: {}
+[55.277578] (-) TimerEvent: {}
+[55.377799] (-) TimerEvent: {}
+[55.478011] (-) TimerEvent: {}
+[55.578175] (-) TimerEvent: {}
+[55.678361] (-) TimerEvent: {}
+[55.778561] (-) TimerEvent: {}
+[55.878715] (-) TimerEvent: {}
+[55.978863] (-) TimerEvent: {}
+[56.079078] (-) TimerEvent: {}
+[56.179305] (-) TimerEvent: {}
+[56.279523] (-) TimerEvent: {}
+[56.379705] (-) TimerEvent: {}
+[56.479829] (-) TimerEvent: {}
+[56.579984] (-) TimerEvent: {}
+[56.680143] (-) TimerEvent: {}
+[56.780272] (-) TimerEvent: {}
+[56.880405] (-) TimerEvent: {}
+[56.980566] (-) TimerEvent: {}
+[57.080722] (-) TimerEvent: {}
+[57.180847] (-) TimerEvent: {}
+[57.280974] (-) TimerEvent: {}
+[57.381097] (-) TimerEvent: {}
+[57.481222] (-) TimerEvent: {}
+[57.581343] (-) TimerEvent: {}
+[57.681501] (-) TimerEvent: {}
+[57.781647] (-) TimerEvent: {}
+[57.881814] (-) TimerEvent: {}
+[57.982306] (-) TimerEvent: {}
+[58.082549] (-) TimerEvent: {}
+[58.182759] (-) TimerEvent: {}
+[58.282933] (-) TimerEvent: {}
+[58.383085] (-) TimerEvent: {}
+[58.483216] (-) TimerEvent: {}
+[58.583395] (-) TimerEvent: {}
+[58.683565] (-) TimerEvent: {}
+[58.783701] (-) TimerEvent: {}
+[58.883828] (-) TimerEvent: {}
+[58.983938] (-) TimerEvent: {}
+[59.084065] (-) TimerEvent: {}
+[59.184176] (-) TimerEvent: {}
+[59.284282] (-) TimerEvent: {}
+[59.384428] (-) TimerEvent: {}
+[59.484584] (-) TimerEvent: {}
+[59.584691] (-) TimerEvent: {}
+[59.684827] (-) TimerEvent: {}
+[59.784992] (-) TimerEvent: {}
+[59.885167] (-) TimerEvent: {}
+[59.985314] (-) TimerEvent: {}
+[60.027303] (relocation) CommandEnded: {'returncode': 0}
+[60.037577] (relocation) JobEnded: {'identifier': 'relocation', 'rc': 0}
+[60.038017] (-) EventReactorShutdown: {}

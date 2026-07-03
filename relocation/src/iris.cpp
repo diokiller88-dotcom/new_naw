@@ -115,13 +115,51 @@ namespace relocation {
     }
 
     std::vector<uint8_t> iris::IrisToBinaryVec(const cv::Mat1b &src) {
-        std::vector<uint8_t> vec(src.rows);
-        for(int r = 0; r < src.rows; ++r) {
-            int row_sum = 0;
-            for(int c = 0; c < src.cols; ++c) {
-                if(src.at<uint8_t>(r, c) > 0) row_sum++;
+        std::vector<uint8_t> vec;
+        vec.reserve(iris_binary_vec_size);
+
+        for (int r = 0; r < src.rows; ++r) {
+            int occupied_cols = 0;
+            for (int c = 0; c < src.cols; ++c) {
+                if (src.at<uint8_t>(r, c) > 0) occupied_cols++;
             }
-            vec[r] = (row_sum > (src.cols / 2)) ? 1 : 0; 
+            vec.push_back(occupied_cols >= 3 ? 1 : 0);
+        }
+
+        const int sector_width = std::max(1, src.cols / iris_sector_bins);
+        for (int s = 0; s < iris_sector_bins; ++s) {
+            int occupied_cells = 0;
+            const int c_begin = s * sector_width;
+            const int c_end = (s == iris_sector_bins - 1) ? src.cols : std::min(src.cols, c_begin + sector_width);
+            for (int r = 0; r < src.rows; ++r) {
+                for (int c = c_begin; c < c_end; ++c) {
+                    if (src.at<uint8_t>(r, c) > 0) occupied_cells++;
+                }
+            }
+            vec.push_back(occupied_cells >= 2 ? 1 : 0);
+        }
+
+        for (int h = 0; h < iris_height_bins; ++h) {
+            int occupied_cells = 0;
+            const uint8_t mask = static_cast<uint8_t>(1u << h);
+            for (int r = 0; r < src.rows; ++r) {
+                for (int c = 0; c < src.cols; ++c) {
+                    if ((src.at<uint8_t>(r, c) & mask) != 0) occupied_cells++;
+                }
+            }
+            vec.push_back(occupied_cells >= 3 ? 1 : 0);
+        }
+
+        for (int r = 0; r < src.rows; ++r) {
+            for (int s = 0; s < iris_sector_bins; ++s) {
+                int occupied_cells = 0;
+                const int c_begin = s * sector_width;
+                const int c_end = (s == iris_sector_bins - 1) ? src.cols : std::min(src.cols, c_begin + sector_width);
+                for (int c = c_begin; c < c_end; ++c) {
+                    if (src.at<uint8_t>(r, c) > 0) occupied_cells++;
+                }
+                vec.push_back(occupied_cells >= 1 ? 1 : 0);
+            }
         }
         return vec;
     }

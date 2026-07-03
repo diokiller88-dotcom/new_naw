@@ -2,9 +2,11 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <cmath>
 #include <chrono>
 #include <exception>
+#include <limits>
 
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
@@ -40,6 +42,25 @@ constexpr float test_drag_min_dist = 5.0f;
 
 constexpr float test_prior_offset_x = 0.5f;
 constexpr float test_prior_offset_y = -0.8f;
+constexpr double test_min_rough_score_gap = 0.02;
+constexpr double test_min_rough_score_ratio = 1.10;
+constexpr double test_min_icp_error_gap = 0.05;
+constexpr double test_min_icp_error_ratio = 1.08;
+constexpr int test_min_icp_valid_count = 30;
+constexpr double test_min_icp_valid_ratio = 0.02;
+constexpr size_t test_max_icp_candidates = 3;
+constexpr double test_max_rough_score_ratio_for_icp = 1.35;
+constexpr double test_early_accept_icp_error = 0.25;
+constexpr int test_candidate_icp_max_iterations = 10;
+constexpr float test_candidate_icp_voxel_leaf_size = 0.35f;
+
+struct TestIcpCandidateResult {
+    RoughPoseCandidate rough;
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity();
+    Eigen::Vector3d T = Eigen::Vector3d::Zero();
+    double icp_error = std::numeric_limits<double>::max();
+    int valid_count = 0;
+};
 
 enum AppState { EDIT_MODE, TEST_MODE };
 AppState current_state = EDIT_MODE;
@@ -86,6 +107,12 @@ void draw_arrow(cv::Mat& img, float x, float y, float yaw_deg, cv::Scalar color,
     cv::Point end_pt(center.x + length * cos(rad), center.y - length * sin(rad));
     cv::arrowedLine(img, center, end_pt, color, 3, 8, 0, 0.3);
     cv::circle(img, center, 6, color, -1);
+}
+
+bool HasEnoughScoreSeparation(double best, double second, double min_gap, double min_ratio) {
+    double gap = second - best;
+    double ratio = second / std::max(best, 1e-6);
+    return gap >= min_gap || ratio >= min_ratio;
 }
 
 void redraw_edit_mode() {
@@ -197,6 +224,11 @@ bool LoadDatabase(const string& filename, vector<HistNode>& db) {
         size_t vec_size; in >> vec_size;
         db[i].binary_vec.resize(vec_size);
         for (size_t j = 0; j < vec_size; ++j) { int val; in >> val; db[i].binary_vec[j] = val; }
+        if (db[i].binary_vec.size() != iris_binary_vec_size) {
+            in.close();
+            db.clear();
+            return false;
+        }
         auto load_mat = [&](cv::Mat1b& mat) {
             int rows, cols; in >> rows >> cols; mat.create(rows, cols);
             for (int r = 0; r < rows; ++r) { for (int c = 0; c < cols; ++c) { int val; in >> val; mat(r, c) = val; } }
@@ -215,12 +247,12 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
 
     float prior_x = gt_x + test_prior_offset_x; 
     float prior_y = gt_y + test_prior_offset_y;
-    loc_module.GetPrePose(prior_x, prior_y, 0.0);
+    double prior_yaw = gt_yaw * M_PI / 180.0;
+    loc_module.GetPrePose(prior_x, prior_y, prior_yaw);
 
-    double coarse_x, coarse_y, coarse_yaw;
     auto t_coarse_start = chrono::steady_clock::now();
-    
-    bool rough_ok = loc_module.SetRoughPoseWithPrePose(query_cloud, prior_x, prior_y, 0.0, coarse_x, coarse_y, coarse_yaw);
+    vector<RoughPoseCandidate> rough_candidates;
+    bool rough_ok = loc_module.GetRoughPoseCandidatesWithPrePose(query_cloud, prior_x, prior_y, prior_yaw, rough_candidates);
     
     auto t_coarse_end = chrono::steady_clock::now();
     double coarse_time = chrono::duration_cast<chrono::milliseconds>(t_coarse_end - t_coarse_start).count();
@@ -229,37 +261,154 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         cout << "[失败] 粗定位未能找到有效匹配（可能超出先验范围）。" << endl;
         return;
     }
-    cout << "[Stage1: Iris] X: " << coarse_x << ", Y: " << coarse_y << ", Yaw: " << coarse_yaw << "° (" << coarse_time << "ms)" << endl;
+    cout << "[Stage1: Iris] 候选数: " << rough_candidates.size()
+         << ", Best X: " << rough_candidates.front().x
+         << ", Y: " << rough_candidates.front().y
+         << ", Yaw: " << rough_candidates.front().yaw_deg
+         << "°, Score: " << rough_candidates.front().rough_score
+         << " (" << coarse_time << "ms)" << endl;
 
     auto t_fine_start = chrono::steady_clock::now();
-    
-    Eigen::Matrix3d R_icp;
-    R_icp = Eigen::AngleAxisd(coarse_yaw * M_PI / 180.0, Eigen::Vector3d::UnitZ());
-    Eigen::Vector3d T_icp(coarse_x, coarse_y, 0.0);
+    vector<TestIcpCandidateResult> icp_results;
+    icp_results.reserve(rough_candidates.size());
+    double best_rough_score = rough_candidates.front().rough_score;
+    size_t attempted_icp_count = 0;
 
-    bool precise_ok = loc_module.SetPrecisePose(query_cloud, R_icp, T_icp);
+    for (const auto& candidate : rough_candidates) {
+        if (attempted_icp_count >= test_max_icp_candidates) break;
+        double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
+        if (attempted_icp_count > 0 && rough_ratio > test_max_rough_score_ratio_for_icp) {
+            break;
+        }
+
+        attempted_icp_count++;
+        Eigen::Matrix3d R_icp = Eigen::AngleAxisd(candidate.yaw_deg * M_PI / 180.0, Eigen::Vector3d::UnitZ()).toRotationMatrix();
+        Eigen::Vector3d T_icp(candidate.x, candidate.y, 0.0);
+        double icp_error = numeric_limits<double>::max();
+        int valid_count = 0;
+
+        if (!loc_module.SetPrecisePose(query_cloud, R_icp, T_icp, icp_error, valid_count,
+                                       test_candidate_icp_max_iterations,
+                                       test_candidate_icp_voxel_leaf_size)) {
+            continue;
+        }
+
+        TestIcpCandidateResult result;
+        result.rough = candidate;
+        result.R = R_icp;
+        result.T = T_icp;
+        result.icp_error = icp_error;
+        result.valid_count = valid_count;
+        icp_results.push_back(result);
+
+        double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(valid_count) / static_cast<double>(query_cloud->size());
+        bool enough_inliers = valid_count >= test_min_icp_valid_count &&
+                              valid_ratio >= test_min_icp_valid_ratio;
+        bool rough_unique_now = rough_candidates.size() < 2 ||
+                                HasEnoughScoreSeparation(rough_candidates[0].rough_score,
+                                                         rough_candidates[1].rough_score,
+                                                         test_min_rough_score_gap,
+                                                         test_min_rough_score_ratio);
+        if (rough_unique_now && enough_inliers && icp_error <= test_early_accept_icp_error) {
+            break;
+        }
+    }
     
     auto t_fine_end = chrono::steady_clock::now();
     double fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_end - t_fine_start).count();
 
-    float fine_x = coarse_x, fine_y = coarse_y, fine_yaw = coarse_yaw;
-    if (precise_ok) {
-        fine_x = T_icp.x();
-        fine_y = T_icp.y();
-        fine_yaw = atan2(R_icp(1, 0), R_icp(0, 0)) * 180.0 / M_PI;
-        if (fine_yaw < 0) fine_yaw += 360.0f;
+    cv::Mat temp = display_img.clone();
+    size_t display_candidate_count = std::min(attempted_icp_count, rough_candidates.size());
+    for (size_t i = 0; i < display_candidate_count; ++i) {
+        const auto& candidate = rough_candidates[i];
+        draw_arrow(temp, candidate.x, candidate.y, candidate.yaw_deg, cv::Scalar(0, 165, 255), test_arrow_length / 2);
+    }
+    draw_arrow(temp, gt_x, gt_y, gt_yaw, cv::Scalar(0, 0, 255));
+
+    if (icp_results.empty()) {
+        cout << "[失败] 粗定位候选数: " << rough_candidates.size()
+             << ", IcpTried: " << attempted_icp_count
+             << "，但全部 ICP 精定位失败。" << endl;
+        cv::putText(temp, "Rejected: all ICP candidates failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        cv::imshow("Interactive Relocation", temp);
+        return;
     }
 
-    cout << "[Stage2: ICP ] X: " << fine_x << ", Y: " << fine_y << ", Yaw: " << fine_yaw << "° (" << fine_time << "ms)" << endl;
+    sort(icp_results.begin(), icp_results.end(), [](const auto& lhs, const auto& rhs) {
+        if (abs(lhs.icp_error - rhs.icp_error) > 1e-4) return lhs.icp_error < rhs.icp_error;
+        if (lhs.valid_count != rhs.valid_count) return lhs.valid_count > rhs.valid_count;
+        return lhs.rough.rough_score < rhs.rough.rough_score;
+    });
+
+    const auto& best = icp_results.front();
+    bool rough_unique = rough_candidates.size() < 2 ||
+                        HasEnoughScoreSeparation(rough_candidates[0].rough_score,
+                                                 rough_candidates[1].rough_score,
+                                                 test_min_rough_score_gap,
+                                                 test_min_rough_score_ratio);
+    bool icp_unique = icp_results.size() < 2 ||
+                      HasEnoughScoreSeparation(best.icp_error,
+                                               icp_results[1].icp_error,
+                                               test_min_icp_error_gap,
+                                               test_min_icp_error_ratio);
+    double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(best.valid_count) / static_cast<double>(query_cloud->size());
+    bool enough_inliers = best.valid_count >= test_min_icp_valid_count &&
+                          valid_ratio >= test_min_icp_valid_ratio;
+
+    cout << "[Stage2: ICP ] IcpTried: " << attempted_icp_count
+         << ", IcpOK: " << icp_results.size()
+         << ", BestHist: " << best.rough.hist_index
+         << ", Error: " << best.icp_error
+         << ", Valid: " << best.valid_count
+         << ", Ratio: " << valid_ratio
+         << ", RoughUnique: " << rough_unique
+         << ", IcpUnique: " << icp_unique
+         << " (" << fine_time << "ms)" << endl;
+
+    if (!enough_inliers) {
+        cout << "[拒绝] ICP 有效匹配不足。" << endl;
+        cv::putText(temp, "Rejected: insufficient ICP inliers", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        cv::imshow("Interactive Relocation", temp);
+        return;
+    }
+
+    if (!rough_unique && !icp_unique) {
+        double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
+        double icp_gap = icp_results.size() >= 2 ? icp_results[1].icp_error - best.icp_error : 0.0;
+        cout << "[拒绝] 粗匹配和 ICP 均低置信。RoughGap: " << rough_gap << ", IcpGap: " << icp_gap << endl;
+        cv::putText(temp, "Rejected: ambiguous rough and ICP candidates", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        cv::imshow("Interactive Relocation", temp);
+        return;
+    }
+
+    Eigen::Matrix3d final_R = best.R;
+    Eigen::Vector3d final_T = best.T;
+    double final_icp_error = numeric_limits<double>::max();
+    int final_valid_count = 0;
+    if (!loc_module.SetPrecisePose(query_cloud, final_R, final_T, final_icp_error, final_valid_count)) {
+        cout << "[拒绝] 最佳候选通过粗 ICP 筛选，但最终精 ICP 失败。" << endl;
+        cv::putText(temp, "Rejected: final ICP failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        cv::imshow("Interactive Relocation", temp);
+        return;
+    }
+
+    auto t_fine_final_end = chrono::steady_clock::now();
+    fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_final_end - t_fine_start).count();
+
+    float fine_x = final_T.x();
+    float fine_y = final_T.y();
+    float fine_yaw = atan2(final_R(1, 0), final_R(0, 0)) * 180.0 / M_PI;
+    if (fine_yaw < 0) fine_yaw += 360.0f;
+
+    cout << "[接受] X: " << fine_x << ", Y: " << fine_y << ", Yaw: " << fine_yaw
+         << "°, FinalICP: " << final_icp_error
+         << ", FinalValid: " << final_valid_count << endl;
     cout << "[误差分析] 距离误差: " << sqrt(pow(fine_x - gt_x, 2) + pow(fine_y - gt_y, 2)) << "m" << endl;
 
-    cv::Mat temp = display_img.clone();
-    draw_arrow(temp, coarse_x, coarse_y, coarse_yaw, cv::Scalar(0, 165, 255)); 
     draw_arrow(temp, fine_x, fine_y, fine_yaw, cv::Scalar(0, 200, 0));         
-    draw_arrow(temp, gt_x, gt_y, gt_yaw, cv::Scalar(0, 0, 255));               
     
-    string info1 = "Red: GT | Orange: Iris | Green: ICP";
-    string info2 = "Time -> Iris: " + to_string((int)coarse_time) + "ms, ICP: " + to_string((int)fine_time) + "ms";
+    string info1 = "Red: GT | Orange: Iris candidates | Green: accepted ICP";
+    string info2 = "Iris: " + to_string((int)coarse_time) + "ms, ICP: " + to_string((int)fine_time) + "ms, IcpTried: " + to_string((int)attempted_icp_count) + ", IcpOK: " + to_string((int)icp_results.size());
     cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::imshow("Interactive Relocation", temp);
@@ -344,7 +493,7 @@ void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
 }
 
 int main() {
-    string pcd_path = "/home/hyl/new_nav/relocation/PCD/1.pcd";
+    string pcd_path = "relocation/PCD/1.pcd";
     string db_path = "history_db.txt";
 
     if (pcl::io::loadPCDFile<pcl::PointXYZ>(pcd_path, *global_map_cloud) == -1) return -1;

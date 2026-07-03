@@ -3,6 +3,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <Eigen/Dense>
+#include <limits>
 #include <vector>
 
 namespace relocation {
@@ -25,6 +26,8 @@ namespace relocation {
         bool Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_, 
                   const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_);
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
+        float GetLastError() const { return m_LastError; }
+        int GetLastValidCount() const { return m_LastValidCount; }
 
     private:
         int m_MaxIterations;
@@ -37,6 +40,8 @@ namespace relocation {
         
         Eigen::Matrix3f m_RotatedMatrix;
         Eigen::Vector3f m_TransVector;
+        float m_LastError = std::numeric_limits<float>::max();
+        int m_LastValidCount = 0;
     };
 
     class P2PlaneICP_SVD {
@@ -50,6 +55,8 @@ namespace relocation {
                   const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
                   const std::vector<Eigen::Vector3f>& targetNormals_);
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
+        float GetLastError() const { return m_LastError; }
+        int GetLastValidCount() const { return m_LastValidCount; }
 
     private:
         int m_MaxIterations;
@@ -63,6 +70,8 @@ namespace relocation {
         
         Eigen::Matrix3f m_RotatedMatrix;
         Eigen::Vector3f m_TransVector;
+        float m_LastError = std::numeric_limits<float>::max();
+        int m_LastValidCount = 0;
     };
 
 }

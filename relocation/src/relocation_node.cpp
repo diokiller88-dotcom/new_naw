@@ -19,9 +19,13 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
+#include <algorithm>
 #include <cmath>
+#include <filesystem>
 #include <limits>
 #include <chrono>
+
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 #include "relocation/location.hpp" 
 #include "custom_msgs/msg/chassis_info.hpp" 
@@ -32,7 +36,7 @@ using namespace std::chrono_literals;
 namespace relocation {
 
 constexpr const char* node_name = "relocation_node";
-constexpr const char* default_pcd_path = "/home/zxcx/new_naw/relocation/PCD/1.pcd";
+constexpr const char* default_pcd_path = "PCD/1.pcd";
 constexpr const char* default_db_path = "history_db.txt";
 constexpr const char* topic_odom = "aft_mapped_to_init";
 constexpr const char* topic_cloud = "cloud_registered";
@@ -43,6 +47,70 @@ constexpr const char* frame_id_map = "map";
 constexpr int default_accumulate_frames = 50;
 constexpr int pub_queue_size = 10;
 constexpr int sync_queue_size = 10;
+constexpr double reloc_min_rough_score_gap = 0.02;
+constexpr double reloc_min_rough_score_ratio = 1.10;
+constexpr double reloc_min_icp_error_gap = 0.05;
+constexpr double reloc_min_icp_error_ratio = 1.08;
+constexpr int reloc_min_icp_valid_count = 30;
+constexpr double reloc_min_icp_valid_ratio = 0.02;
+constexpr size_t reloc_max_icp_candidates = 3;
+constexpr double reloc_max_rough_score_ratio_for_icp = 1.35;
+constexpr double reloc_early_accept_icp_error = 0.25;
+constexpr int reloc_candidate_icp_max_iterations = 10;
+constexpr float reloc_candidate_icp_voxel_leaf_size = 0.35f;
+
+struct IcpCandidateResult {
+    RoughPoseCandidate rough;
+    Eigen::Matrix3d R = Eigen::Matrix3d::Identity();
+    Eigen::Vector3d T = Eigen::Vector3d::Zero();
+    double icp_error = std::numeric_limits<double>::max();
+    int valid_count = 0;
+};
+
+std::string StripPackagePrefix(const std::filesystem::path& path)
+{
+    auto iter = path.begin();
+    if (iter != path.end() && *iter == "relocation") {
+        std::filesystem::path stripped;
+        ++iter;
+        for (; iter != path.end(); ++iter) {
+            stripped /= *iter;
+        }
+        return stripped.string();
+    }
+    return path.string();
+}
+
+std::string ResolveReadablePath(const std::string& path)
+{
+    namespace fs = std::filesystem;
+    if (path.empty()) return path;
+
+    fs::path input(path);
+    if (input.is_absolute()) return path;
+
+    fs::path cwd_candidate = fs::current_path() / input;
+    if (fs::exists(cwd_candidate)) return cwd_candidate.string();
+
+    try {
+        fs::path share_dir(ament_index_cpp::get_package_share_directory("relocation"));
+        fs::path share_candidate = share_dir / input;
+        if (fs::exists(share_candidate)) return share_candidate.string();
+
+        fs::path stripped_candidate = share_dir / StripPackagePrefix(input);
+        if (fs::exists(stripped_candidate)) return stripped_candidate.string();
+    } catch (const std::exception&) {
+    }
+
+    return path;
+}
+
+bool HasEnoughScoreSeparation(double best, double second, double min_gap, double min_ratio)
+{
+    double gap = second - best;
+    double ratio = second / std::max(best, 1e-6);
+    return gap >= min_gap || ratio >= min_ratio;
+}
 
 class RelocationNode : public rclcpp::Node
 {
@@ -64,7 +132,7 @@ public:
         this->declare_parameter<double>("init_pose_y", -0.4);
         this->declare_parameter<double>("init_pose_yaw", 0.0); 
 
-        std::string pcd_path = this->get_parameter("pcd_path").as_string();
+        std::string pcd_path = ResolveReadablePath(this->get_parameter("pcd_path").as_string());
         std::string db_path = this->get_parameter("db_path").as_string();
         accumulate_frames_max_ = this->get_parameter("accumulate_frames").as_int();
         
@@ -441,53 +509,149 @@ private:
         Eigen::Isometry3d T_map_body = Eigen::Isometry3d::Identity();
 
         if (!is_relocated_ || trigger_reloc_) {
-            double rough_x, rough_y, rough_yaw_deg;
-            
-            double prior_x, prior_y;
+            double prior_x, prior_y, prior_yaw;
             if (sim_mode_) {
                 prior_x = odom_msg->pose.pose.position.x;
                 prior_y = odom_msg->pose.pose.position.y;
+                prior_yaw = std::atan2(T_lio_world_body.linear()(1, 0), T_lio_world_body.linear()(0, 0));
             } else {
                 if (!is_relocated_) {
                     prior_x = init_pose_x_;
                     prior_y = init_pose_y_;
+                    prior_yaw = init_pose_yaw_;
                 } else {
-                    Eigen::Vector3d current_guess = (T_map_lio_ * T_lio_world_body).translation();
+                    Eigen::Isometry3d T_map_body_guess = T_map_lio_ * T_lio_world_body;
+                    Eigen::Vector3d current_guess = T_map_body_guess.translation();
                     prior_x = current_guess.x();
                     prior_y = current_guess.y();
+                    prior_yaw = std::atan2(T_map_body_guess.linear()(1, 0), T_map_body_guess.linear()(0, 0));
                 }
             }
-            
-            if (loc_system_.SetRoughPoseWithPrePose(cloud_body_filtered, prior_x, prior_y, 0.0, rough_x, rough_y, rough_yaw_deg)) {
-                double rough_yaw_rad = rough_yaw_deg * M_PI / 180.0;
-                
-                Eigen::Isometry3d T_rough = Eigen::Isometry3d::Identity();
-                T_rough.translation() << rough_x, rough_y, odom_msg->pose.pose.position.z; 
-                T_rough.linear() = Eigen::AngleAxisd(rough_yaw_rad, Eigen::Vector3d::UnitZ()).toRotationMatrix();
 
-                Eigen::Matrix3d R_prec = T_rough.linear();
-                Eigen::Vector3d T_prec = T_rough.translation();
+            std::vector<RoughPoseCandidate> rough_candidates;
+            if (loc_system_.GetRoughPoseCandidatesWithPrePose(cloud_body_filtered, prior_x, prior_y, prior_yaw, rough_candidates)) {
+                std::vector<IcpCandidateResult> icp_results;
+                icp_results.reserve(rough_candidates.size());
+                double best_rough_score = rough_candidates.front().rough_score;
+                size_t attempted_icp_count = 0;
 
-                if (loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec)) {
+                for (const auto& candidate : rough_candidates) {
+                    if (attempted_icp_count >= reloc_max_icp_candidates) break;
+                    double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
+                    if (attempted_icp_count > 0 && rough_ratio > reloc_max_rough_score_ratio_for_icp) {
+                        break;
+                    }
+
+                    attempted_icp_count++;
+                    double rough_yaw_rad = candidate.yaw_deg * M_PI / 180.0;
+                    Eigen::Matrix3d R_prec = Eigen::AngleAxisd(rough_yaw_rad, Eigen::Vector3d::UnitZ()).toRotationMatrix();
+                    Eigen::Vector3d T_prec(candidate.x, candidate.y, odom_msg->pose.pose.position.z);
+                    double icp_error = std::numeric_limits<double>::max();
+                    int valid_count = 0;
+
+                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec, icp_error, valid_count,
+                                                    reloc_candidate_icp_max_iterations,
+                                                    reloc_candidate_icp_voxel_leaf_size)) {
+                        continue;
+                    }
+
+                    IcpCandidateResult result;
+                    result.rough = candidate;
+                    result.R = R_prec;
+                    result.T = T_prec;
+                    result.icp_error = icp_error;
+                    result.valid_count = valid_count;
+                    icp_results.push_back(result);
+
+                    double valid_ratio = cloud_body_filtered->empty()
+                                             ? 0.0
+                                             : static_cast<double>(valid_count) / static_cast<double>(cloud_body_filtered->size());
+                    bool enough_inliers = valid_count >= reloc_min_icp_valid_count &&
+                                          valid_ratio >= reloc_min_icp_valid_ratio;
+                    bool rough_unique_now = rough_candidates.size() < 2 ||
+                                            HasEnoughScoreSeparation(rough_candidates[0].rough_score,
+                                                                     rough_candidates[1].rough_score,
+                                                                     reloc_min_rough_score_gap,
+                                                                     reloc_min_rough_score_ratio);
+                    if (rough_unique_now && enough_inliers && icp_error <= reloc_early_accept_icp_error) {
+                        break;
+                    }
+                }
+
+                if (!icp_results.empty()) {
+                    std::sort(icp_results.begin(), icp_results.end(), [](const auto& lhs, const auto& rhs) {
+                        if (std::abs(lhs.icp_error - rhs.icp_error) > 1e-4) return lhs.icp_error < rhs.icp_error;
+                        if (lhs.valid_count != rhs.valid_count) return lhs.valid_count > rhs.valid_count;
+                        return lhs.rough.rough_score < rhs.rough.rough_score;
+                    });
+
+                    const auto& best = icp_results.front();
+                    bool rough_unique = rough_candidates.size() < 2 ||
+                                        HasEnoughScoreSeparation(rough_candidates[0].rough_score,
+                                                                 rough_candidates[1].rough_score,
+                                                                 reloc_min_rough_score_gap,
+                                                                 reloc_min_rough_score_ratio);
+                    bool icp_unique = icp_results.size() < 2 ||
+                                      HasEnoughScoreSeparation(best.icp_error,
+                                                               icp_results[1].icp_error,
+                                                               reloc_min_icp_error_gap,
+                                                               reloc_min_icp_error_ratio);
+                    double valid_ratio = cloud_body_filtered->empty()
+                                             ? 0.0
+                                             : static_cast<double>(best.valid_count) / static_cast<double>(cloud_body_filtered->size());
+                    bool enough_inliers = best.valid_count >= reloc_min_icp_valid_count &&
+                                          valid_ratio >= reloc_min_icp_valid_ratio;
+
+                    if (!enough_inliers) {
+                        RCLCPP_WARN(this->get_logger(),
+                                    "拒绝重定位：ICP有效匹配不足。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, Valid:%d, Ratio:%.3f, Error:%.4f",
+                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), best.valid_count, valid_ratio, best.icp_error);
+                        return;
+                    }
+
+                    if (!rough_unique && !icp_unique) {
+                        double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
+                        double icp_gap = icp_results.size() >= 2 ? icp_results[1].icp_error - best.icp_error : 0.0;
+                        RCLCPP_WARN(this->get_logger(),
+                                    "拒绝重定位：粗匹配和ICP均低置信。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, RoughGap:%.4f, IcpGap:%.4f, BestHist:%d, BestError:%.4f",
+                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), rough_gap, icp_gap, best.rough.hist_index, best.icp_error);
+                        return;
+                    }
+
+                    Eigen::Matrix3d final_R = best.R;
+                    Eigen::Vector3d final_T = best.T;
+                    double final_icp_error = std::numeric_limits<double>::max();
+                    int final_valid_count = 0;
+                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, final_R, final_T,
+                                                    final_icp_error, final_valid_count)) {
+                        RCLCPP_WARN(this->get_logger(),
+                                    "拒绝重定位：最佳候选通过粗ICP筛选，但最终精ICP失败。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, BestHist:%d",
+                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), best.rough.hist_index);
+                        return;
+                    }
+
                     is_relocated_ = true;
                     trigger_reloc_ = false; 
                     initial_gimbal_yaw_ = chassis_msg->gimbal_yaw;
                     
-                    T_map_body.linear() = R_prec;
-                    T_map_body.translation() = T_prec;
+                    T_map_body.linear() = final_R;
+                    T_map_body.translation() = final_T;
                     T_map_lio_ = T_map_body * T_lio_world_body.inverse();
 
-                    last_marker_x_ = T_prec.x();
-                    last_marker_y_ = T_prec.y();
-                    last_marker_yaw_ = std::atan2(R_prec(1, 0), R_prec(0, 0));
+                    last_marker_x_ = final_T.x();
+                    last_marker_y_ = final_T.y();
+                    last_marker_yaw_ = std::atan2(final_R(1, 0), final_R(0, 0));
 
-                    RCLCPP_INFO(this->get_logger(), "重定位成功! Map系下位姿: X:%.2f, Y:%.2f", T_prec.x(), T_prec.y());
+                    RCLCPP_INFO(this->get_logger(),
+                                "重定位成功! 候选数:%zu, IcpTried:%zu, IcpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseICP:%.4f, FinalICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, IcpUnique:%d, Map系下位姿: X:%.2f, Y:%.2f",
+                                rough_candidates.size(), attempted_icp_count, icp_results.size(), best.rough.hist_index, best.rough.rough_score,
+                                best.icp_error, final_icp_error, final_valid_count, valid_ratio, rough_unique, icp_unique, final_T.x(), final_T.y());
 
                     PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                     PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
                     PublishMatchedCloud2D(cloud_body_filtered, T_map_body, chassis_msg->header.stamp);
                 } else {
-                    RCLCPP_WARN(this->get_logger(), "粗定位成功，但 ICP 精定位匹配失败。");
+                    RCLCPP_WARN(this->get_logger(), "粗定位候选数: %zu, IcpTried:%zu，但全部 ICP 精定位失败。", rough_candidates.size(), attempted_icp_count);
                 }
             } else {
                 RCLCPP_WARN(this->get_logger(), "粗定位匹配失败，继续尝试...");

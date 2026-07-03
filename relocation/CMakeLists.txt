@@ -21,6 +21,7 @@ find_package(message_filters REQUIRED)
 find_package(custom_msgs REQUIRED) # 自定义消息包
 # [新增] 查找 visualization_msgs
 find_package(visualization_msgs REQUIRED) 
+find_package(ament_index_cpp REQUIRED)
 
 # 查找第三方包
 find_package(OpenCV REQUIRED)
@@ -71,6 +72,7 @@ ament_target_dependencies(relocation_node
   message_filters
   custom_msgs
   visualization_msgs # [新增] 添加依赖
+  ament_index_cpp
 )
 target_link_libraries(relocation_node relocation_core ${PCL_LIBRARIES})
 
@@ -83,6 +85,10 @@ install(TARGETS relocation_core test_node relocation_node
 
 install(DIRECTORY include/
   DESTINATION include
+)
+
+install(DIRECTORY PCD/
+  DESTINATION share/${PROJECT_NAME}/PCD
 )
 
 if(BUILD_TESTING)

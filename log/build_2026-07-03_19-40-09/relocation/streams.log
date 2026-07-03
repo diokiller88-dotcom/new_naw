@@ -1,0 +1,108 @@
+[0.008s] Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[0.027s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.098s] -- Found rclcpp: 16.0.19 (/opt/ros/humble/share/rclcpp/cmake)
+[0.114s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.115s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.118s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.123s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.129s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.146s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.146s] -- Found rmw_fastrtps_cpp: 6.2.10 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.212s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.239s] -- Found sensor_msgs: 4.9.1 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.253s] -- Found nav_msgs: 4.9.1 (/opt/ros/humble/share/nav_msgs/cmake)
+[0.262s] -- Found pcl_conversions: 2.4.5 (/opt/ros/humble/share/pcl_conversions/cmake)
+[0.283s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.303s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[0.490s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[0.495s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[0.587s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[0.592s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[0.596s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[0.684s] -- Found Qhull version 8.0.2
+[0.776s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[0.868s] -- Found custom_msgs: 0.0.0 (/home/zxcx/new_naw/install/custom_msgs/share/custom_msgs/cmake)
+[0.875s] -- Found visualization_msgs: 4.9.1 (/opt/ros/humble/share/visualization_msgs/cmake)
+[0.889s] CMake Warning (dev) at CMakeLists.txt:28 (find_package):
+[0.889s]   Policy CMP0074 is not set: find_package uses <PackageName>_ROOT variables.
+[0.889s]   Run "cmake --help-policy CMP0074" for policy details.  Use the cmake_policy
+[0.889s]   command to set the policy and suppress this warning.
+[0.889s] 
+[0.889s]   CMake variable PCL_ROOT is set to:
+[0.889s] 
+[0.889s]     /usr
+[0.889s] 
+[0.889s]   For compatibility, CMake is ignoring the variable.
+[0.889s] This warning is for project developers.  Use -Wno-dev to suppress it.
+[0.890s] 
+[0.901s] -- Found ament_lint_auto: 0.12.15 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.939s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.939s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/zxcx/new_naw/relocation/include>
+[0.939s] -- Configured cppcheck exclude dirs and/or files: 
+[0.940s] -- Added test 'lint_cmake' to check CMake code style
+[0.941s] -- Added test 'uncrustify' to check C / C++ code style
+[0.941s] -- Configured uncrustify additional arguments: 
+[0.941s] -- Added test 'xmllint' to check XML markup files
+[0.942s] -- Configuring done
+[0.992s] -- Generating done
+[1.005s] -- Build files have been written to: /home/zxcx/new_naw/build/relocation
+[1.041s] Consolidate compiler generated dependencies of target relocation_core
+[1.052s] [ 10%] Building CXX object CMakeFiles/relocation_core.dir/src/ann_kdtree.cpp.o
+[1.053s] [ 20%] Building CXX object CMakeFiles/relocation_core.dir/src/iris.cpp.o
+[1.055s] [ 30%] Building CXX object CMakeFiles/relocation_core.dir/src/location.cpp.o
+[4.133s] [ 40%] Linking CXX shared library librelocation_core.so
+[5.959s] [ 60%] Built target relocation_core
+[5.976s] Consolidate compiler generated dependencies of target test_node
+[5.979s] Consolidate compiler generated dependencies of target relocation_node
+[5.988s] [ 70%] Building CXX object CMakeFiles/test_node.dir/src/test.cpp.o
+[5.994s] [ 80%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o
+[9.662s] [ 90%] Linking CXX executable test_node
+[9.666s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor ‘relocation::RelocationNode::RelocationNode()’:
+[9.667s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:624:10: warning: ‘relocation::RelocationNode::trigger_reloc_’ will be initialized after [-Wreorder]
+[9.667s]   624 |     bool trigger_reloc_;
+[9.667s]       |          ^~~~~~~~~~~~~~
+[9.667s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:618:10: warning:   ‘bool relocation::RelocationNode::map_initialized_’ [-Wreorder]
+[9.667s]   618 |     bool map_initialized_;
+[9.667s]       |          ^~~~~~~~~~~~~~~~
+[9.667s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:91:5: warning:   when initialized here [-Wreorder]
+[9.667s]    91 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)
+[9.667s]       |     ^~~~~~~~~~~~~~
+[10.094s] [ 90%] Built target test_node
+[25.307s] [100%] Linking CXX executable relocation_node
+[25.809s] [100%] Built target relocation_node
+[25.817s] Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[25.824s] Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation
+[25.829s] -- Install configuration: "Release"
+[25.829s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so
+[25.830s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node
+[25.830s] -- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/test_node" to ""
+[25.830s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node
+[25.833s] -- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""
+[25.834s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include
+[25.834s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation
+[25.834s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp
+[25.834s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp
+[25.834s] -- Installing: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp
+[25.834s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp
+[25.834s] -- Installing: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp
+[25.834s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/PCD
+[25.834s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd
+[25.836s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md
+[25.836s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd
+[25.924s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd
+[25.939s] -- Installing: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh
+[25.939s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh
+[25.939s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh
+[25.939s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh
+[25.939s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv
+[25.939s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv
+[25.940s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation
+[25.940s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake
+[25.940s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake
+[25.940s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml
+[30.004s] Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation

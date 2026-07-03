@@ -1,0 +1,56 @@
+[0.008s] Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[0.053s] [ 10%] Building CXX object CMakeFiles/relocation_core.dir/src/location.cpp.o
+[3.088s] [ 20%] Linking CXX shared library librelocation_core.so
+[4.834s] [ 60%] Built target relocation_core
+[4.858s] [ 70%] Building CXX object CMakeFiles/test_node.dir/src/test.cpp.o
+[4.860s] [ 80%] Building CXX object CMakeFiles/relocation_node.dir/src/relocation_node.cpp.o
+[8.506s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp: In constructor ‘relocation::RelocationNode::RelocationNode()’:
+[8.506s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:743:10: warning: ‘relocation::RelocationNode::trigger_reloc_’ will be initialized after [-Wreorder]
+[8.506s]   743 |     bool trigger_reloc_;
+[8.507s]       |          ^~~~~~~~~~~~~~
+[8.507s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:737:10: warning:   ‘bool relocation::RelocationNode::map_initialized_’ [-Wreorder]
+[8.507s]   737 |     bool map_initialized_;
+[8.507s]       |          ^~~~~~~~~~~~~~~~
+[8.507s] /home/zxcx/new_naw/relocation/src/relocation_node.cpp:118:5: warning:   when initialized here [-Wreorder]
+[8.507s]   118 |     RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)
+[8.507s]       |     ^~~~~~~~~~~~~~
+[8.751s] [ 90%] Linking CXX executable test_node
+[9.156s] [ 90%] Built target test_node
+[24.370s] [100%] Linking CXX executable relocation_node
+[24.882s] [100%] Built target relocation_node
+[30.005s] Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --build /home/zxcx/new_naw/build/relocation -- -j32 -l32
+[30.013s] Invoking command in '/home/zxcx/new_naw/build/relocation': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation
+[30.019s] -- Install configuration: "Release"
+[30.019s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/librelocation_core.so
+[30.019s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/test_node
+[30.020s] -- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/test_node" to ""
+[30.020s] -- Installing: /home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node
+[30.023s] -- Set runtime path of "/home/zxcx/new_naw/install/relocation/lib/relocation/relocation_node" to ""
+[30.023s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include
+[30.023s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation
+[30.023s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/kd_tree.hpp
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/ann_kdtree.hpp
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/iris.hpp
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/include/relocation/icp.hpp
+[30.024s] -- Installing: /home/zxcx/new_naw/install/relocation/include/relocation/location.hpp
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/RMUC_2026.pcd
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/readme.md
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/rmuc_2025.pcd
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/PCD/1.pcd
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/package_run_dependencies/relocation
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/parent_prefix_path/relocation
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.sh
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/ament_prefix_path.dsv
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.sh
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/environment/path.dsv
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.bash
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.sh
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.zsh
+[30.024s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/local_setup.dsv
+[30.025s] -- Installing: /home/zxcx/new_naw/install/relocation/share/relocation/package.dsv
+[30.025s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/ament_index/resource_index/packages/relocation
+[30.025s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig.cmake
+[30.025s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/cmake/relocationConfig-version.cmake
+[30.025s] -- Up-to-date: /home/zxcx/new_naw/install/relocation/share/relocation/package.xml
+[60.027s] Invoked command in '/home/zxcx/new_naw/build/relocation' returned '0': AMENT_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/zxcx/new_naw/install/custom_msgs:/opt/ros/humble LD_LIBRARY_PATH=/home/zxcx/new_naw/install/custom_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/zxcx/new_naw/install/custom_msgs/local/lib/python3.10/dist-packages:${PYTHONPATH} /usr/bin/cmake --install /home/zxcx/new_naw/build/relocation
