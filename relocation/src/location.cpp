@@ -148,17 +148,11 @@ namespace relocation {
             float cand_x = m_history_db[idx].x;
             float cand_y = m_history_db[idx].y;
             float dist_to_prior = std::hypot(cand_x - pre_x, cand_y - pre_y);
-            if (dist_to_prior > loc_prior_radius_limit) continue; 
             int bias = 0;
             float score = iris::Compare(query_desc, m_history_db[idx].desc, &bias);
-            float penalty_factor = 1.0f + loc_prior_penalty_scale * (dist_to_prior / loc_prior_radius_limit);
             double cand_yaw = NormalizeAngleDeg(m_history_db[idx].yaw + bias);
             double pre_yaw_deg = pre_yaw * 180.0 / M_PI;
             double yaw_diff = AngleDiffDeg(cand_yaw, pre_yaw_deg);
-            if (yaw_diff > loc_prior_yaw_limit_deg) continue;
-            double yaw_penalty_factor = 1.0 + loc_prior_yaw_penalty_scale * (yaw_diff / loc_prior_yaw_limit_deg);
-            score *= penalty_factor;
-            score *= yaw_penalty_factor;
 
             RoughPoseCandidate candidate;
             candidate.x = cand_x;

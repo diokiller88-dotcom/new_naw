@@ -1,6 +1,7 @@
 #include "relocation/kd_tree.hpp"
 #include <numeric>
 #include <iostream>
+#include <algorithm>
 
 namespace relocation {
 
@@ -78,6 +79,17 @@ namespace relocation {
             } else {
                 right_idx.push_back(i);
             }
+        }
+
+        if (left_idx.empty() || right_idx.empty()) {
+            std::vector<int> sorted_idx = idx_;
+            std::sort(sorted_idx.begin(), sorted_idx.end(), [&](int lhs, int rhs) {
+                return m_Cloud[lhs][max_axis] < m_Cloud[rhs][max_axis];
+            });
+            const size_t mid = sorted_idx.size() / 2;
+            left_idx.assign(sorted_idx.begin(), sorted_idx.begin() + mid);
+            right_idx.assign(sorted_idx.begin() + mid, sorted_idx.end());
+            node_->AxisTh = m_Cloud[sorted_idx[mid]][max_axis];
         }
 
         node_->Left = Insert(left_idx, node_->Left);
