@@ -22,6 +22,8 @@ using namespace relocation;
 
 constexpr float test_resolution = 0.01f;   
 constexpr int test_padding = 150;
+constexpr int test_display_max_width = 1600;
+constexpr int test_display_max_height = 1000;
 constexpr float test_arrow_length = 35.0f;
 constexpr float test_z_min = 0.2f;
 constexpr float test_z_max = 2.5f;
@@ -70,6 +72,7 @@ cv::Mat display_img;
 
 float min_x, max_x, min_y, max_y;
 int global_img_w, global_img_h;
+double current_display_scale = 1.0;
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr global_map_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 pcl::PointCloud<pcl::PointXYZ>::Ptr obstacle_cloud(new pcl::PointCloud<pcl::PointXYZ>);
@@ -101,6 +104,35 @@ float pixel2world_y(int v) {
     return min_y + (global_img_h - test_padding - v) * test_resolution;
 }
 
+void update_display_scale() {
+    if (global_img_w <= 0 || global_img_h <= 0) {
+        current_display_scale = 1.0;
+        return;
+    }
+    double scale_w = static_cast<double>(test_display_max_width) / static_cast<double>(global_img_w);
+    double scale_h = static_cast<double>(test_display_max_height) / static_cast<double>(global_img_h);
+    current_display_scale = std::min(1.0, std::min(scale_w, scale_h));
+}
+
+cv::Point display2pixel(int x, int y) {
+    int u = static_cast<int>(std::lround(x / current_display_scale));
+    int v = static_cast<int>(std::lround(y / current_display_scale));
+    u = std::max(0, std::min(global_img_w - 1, u));
+    v = std::max(0, std::min(global_img_h - 1, v));
+    return cv::Point(u, v);
+}
+
+void show_relocation_window(const cv::Mat& img) {
+    if (current_display_scale >= 0.999) {
+        cv::imshow("Interactive Relocation", img);
+        return;
+    }
+
+    cv::Mat scaled;
+    cv::resize(img, scaled, cv::Size(), current_display_scale, current_display_scale, cv::INTER_AREA);
+    cv::imshow("Interactive Relocation", scaled);
+}
+
 void draw_arrow(cv::Mat& img, float x, float y, float yaw_deg, cv::Scalar color, int length = test_arrow_length) {
     cv::Point center = world2pixel(x, y);
     float rad = yaw_deg * M_PI / 180.0f;
@@ -123,7 +155,7 @@ void redraw_edit_mode() {
     cv::putText(temp, "EDIT MODE: L-Click DELETE | R-Click ADD (with collision check)", cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 0), 2);
     cv::putText(temp, "Press 'S' to SAVE changes, build Location Module and test.", cv::Point(20, 60), cv::FONT_HERSHEY_SIMPLEX, 0.7, cv::Scalar(0, 0, 200), 2);
     display_img = temp.clone();
-    cv::imshow("Interactive Relocation", display_img);
+    show_relocation_window(display_img);
 }
 
 void redraw_test_mode_base() {
@@ -133,7 +165,7 @@ void redraw_test_mode_base() {
     }
     cv::putText(temp, "TEST MODE: Left Click & Drag to set Pose.", cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 0), 2);
     display_img = temp.clone();
-    cv::imshow("Interactive Relocation", display_img);
+    show_relocation_window(display_img);
 }
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr ExtractLocalCloud(float cx, float cy, float yaw_deg) {
@@ -330,7 +362,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
              << ", GicpTried: " << attempted_gicp_count
              << "，但全部 GICP 精定位失败。" << endl;
         cv::putText(temp, "Rejected: all GICP candidates failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
-        cv::imshow("Interactive Relocation", temp);
+        show_relocation_window(temp);
         return;
     }
 
@@ -368,7 +400,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     if (!enough_inliers) {
         cout << "[拒绝] GICP 有效匹配不足。" << endl;
         cv::putText(temp, "Rejected: insufficient GICP inliers", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
-        cv::imshow("Interactive Relocation", temp);
+        show_relocation_window(temp);
         return;
     }
 
@@ -377,7 +409,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         double gicp_gap = gicp_results.size() >= 2 ? gicp_results[1].gicp_error - best.gicp_error : 0.0;
         cout << "[拒绝] 粗匹配和 GICP 均低置信。RoughGap: " << rough_gap << ", GicpGap: " << gicp_gap << endl;
         cv::putText(temp, "Rejected: ambiguous rough and GICP candidates", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
-        cv::imshow("Interactive Relocation", temp);
+        show_relocation_window(temp);
         return;
     }
 
@@ -388,7 +420,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     if (!loc_module.SetPrecisePose(query_cloud, final_R, final_T, final_gicp_error, final_valid_count)) {
         cout << "[拒绝] 最佳候选通过粗 GICP 筛选，但最终精 GICP 失败。" << endl;
         cv::putText(temp, "Rejected: final GICP failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
-        cv::imshow("Interactive Relocation", temp);
+        show_relocation_window(temp);
         return;
     }
 
@@ -411,10 +443,14 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     string info2 = "Iris: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)fine_time) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
     cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
-    cv::imshow("Interactive Relocation", temp);
+    show_relocation_window(temp);
 }
 
 void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
+    cv::Point pixel = display2pixel(x, y);
+    x = pixel.x;
+    y = pixel.y;
+
     if (current_state == EDIT_MODE) {
         if (event == cv::EVENT_LBUTTONDOWN) {
             float wx = pixel2world_x(x);
@@ -473,7 +509,7 @@ void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
         } else if (event == cv::EVENT_MOUSEMOVE && is_dragging) {
             cv::Mat temp = display_img.clone();
             cv::arrowedLine(temp, drag_start, cv::Point(x, y), cv::Scalar(0, 0, 255), 2, 8, 0, 0.2);
-            cv::imshow("Interactive Relocation", temp);
+            show_relocation_window(temp);
         } else if (event == cv::EVENT_LBUTTONUP) {
             is_dragging = false;
             cv::Point drag_end(x, y);
@@ -504,6 +540,11 @@ int main() {
 
     global_img_w = std::ceil((max_x - min_x) / test_resolution) + test_padding * 2;
     global_img_h = std::ceil((max_y - min_y) / test_resolution) + test_padding * 2;
+    update_display_scale();
+    cout << "[可视化] 原始地图图像: " << global_img_w << "x" << global_img_h
+         << ", 显示缩放: " << current_display_scale
+         << ", 窗口约: " << static_cast<int>(global_img_w * current_display_scale)
+         << "x" << static_cast<int>(global_img_h * current_display_scale) << endl;
     global_map_img_base = cv::Mat(global_img_h, global_img_w, CV_8UC3, cv::Scalar(255, 255, 255));
 
     for (const auto& pt : global_map_cloud->points) {
