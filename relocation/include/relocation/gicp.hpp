@@ -10,10 +10,12 @@ namespace relocation {
 
     constexpr int gicp_max_iterations = 20;
     constexpr float gicp_max_corr_dist = 2.0f;
-    constexpr float gicp_voxel_leaf_size = 0.2f;
+    constexpr float gicp_voxel_leaf_size = 0.05f;
     constexpr int gicp_covariance_k = 20;
     constexpr int gicp_correspondence_k = 8;
     constexpr float gicp_covariance_regularization = 1e-3f;
+    constexpr float gicp_plane_eigenvalue = 1.0f;
+    constexpr float gicp_normal_eigenvalue = 1e-3f;
     constexpr float gicp_hessian_min_eigenvalue = 1e-6f;
     constexpr float gicp_hessian_max_condition = 1e6f;
     constexpr float gicp_hessian_damping = 1e-3f;

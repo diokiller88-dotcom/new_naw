@@ -20,7 +20,7 @@
 using namespace std;
 using namespace relocation;
 
-constexpr float test_resolution = 0.05f;   
+constexpr float test_resolution = 0.01f;   
 constexpr int test_padding = 150;
 constexpr float test_arrow_length = 35.0f;
 constexpr float test_z_min = 0.2f;

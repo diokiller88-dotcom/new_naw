@@ -156,10 +156,10 @@ namespace relocation {
             return m_CovarianceRegularization * Eigen::Matrix3f::Identity();
         }
 
-        Eigen::Vector3f evals = solver.eigenvalues();
-        const float max_eval = std::max(evals.maxCoeff(), m_CovarianceRegularization);
-        const float min_eval = std::max(m_CovarianceRegularization, max_eval * 1e-3f);
-        for (int i = 0; i < 3; i++) evals[i] = std::max(evals[i], min_eval);
+        Eigen::Vector3f evals;
+        evals << std::max(gicp_normal_eigenvalue, m_CovarianceRegularization),
+                 std::max(gicp_plane_eigenvalue, m_CovarianceRegularization),
+                 std::max(gicp_plane_eigenvalue, m_CovarianceRegularization);
         return solver.eigenvectors() * evals.asDiagonal() * solver.eigenvectors().transpose();
     }
 
