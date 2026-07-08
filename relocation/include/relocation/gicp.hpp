@@ -14,6 +14,9 @@ namespace relocation {
     constexpr int gicp_covariance_k = 20;
     constexpr int gicp_correspondence_k = 8;
     constexpr float gicp_covariance_regularization = 1e-3f;
+    constexpr float gicp_hessian_min_eigenvalue = 1e-6f;
+    constexpr float gicp_hessian_max_condition = 1e6f;
+    constexpr float gicp_hessian_damping = 1e-3f;
 
     class GICP {
     public:
@@ -34,15 +37,18 @@ namespace relocation {
 
         bool Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                   const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_);
+        bool InitWithTargetCovariances(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
+                                       const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
+                                       const std::vector<Eigen::Matrix3f>& target_covariances);
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
         float GetLastError() const { return m_LastError; }
         int GetLastValidCount() const { return m_LastValidCount; }
+        std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
 
     private:
         static Eigen::Matrix3f Skew(const Eigen::Vector3f& v);
         static Eigen::Matrix3f ExpSO3(const Eigen::Vector3f& w);
 
-        std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
         Eigen::Matrix3f ComputeCovariance(const std::vector<Eigen::Vector3f>& cloud,
                                           const std::vector<int>& indices) const;
 

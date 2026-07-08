@@ -81,6 +81,19 @@ namespace relocation {
             std::cerr << "[location::Init] KDTree failed" << std::endl;
             return false;
         }
+
+        std::vector<Eigen::Vector3f> map_points;
+        map_points.reserve(m_global_map->size());
+        for (const auto& pt : m_global_map->points) {
+            map_points.emplace_back(pt.x, pt.y, pt.z);
+        }
+        GICP covariance_builder;
+        m_global_map_covariances = covariance_builder.EstimateCovariances(map_points);
+        if (m_global_map_covariances.size() != m_global_map->size()) {
+            std::cerr << "[location::Init] Global map covariance precompute failed" << std::endl;
+            m_global_map_covariances.clear();
+            return false;
+        }
         return true;
     }
 
@@ -202,13 +215,22 @@ namespace relocation {
         double coarse_x = T.x();
         double coarse_y = T.y();
         pcl::PointCloud<pcl::PointXYZ>::Ptr target_map(new pcl::PointCloud<pcl::PointXYZ>);
-        for (const auto& pt : m_global_map->points) {
+        std::vector<Eigen::Matrix3f> target_covariances;
+        target_covariances.reserve(m_global_map->size());
+        for (size_t i = 0; i < m_global_map->points.size(); ++i) {
+            const auto& pt = m_global_map->points[i];
             if (pt.z < loc_icp_crop_z_min || pt.z > loc_icp_crop_z_max) continue;
             if (std::abs(pt.x - coarse_x) < loc_icp_crop_xy && std::abs(pt.y - coarse_y) < loc_icp_crop_xy) {
                 target_map->push_back(pt);
+                if (i < m_global_map_covariances.size()) {
+                    target_covariances.push_back(m_global_map_covariances[i]);
+                }
             }
         }
         if (target_map->empty()) return false;
+        if (target_covariances.size() != target_map->size()) {
+            target_covariances.clear();
+        }
         Eigen::Matrix4f init_tf = Eigen::Matrix4f::Identity();
         init_tf.block<3,3>(0,0) = R.cast<float>();
         init_tf.block<3,1>(0,3) = T.cast<float>();
@@ -217,7 +239,10 @@ namespace relocation {
         GICP gicp;
         gicp.SetMaxIterations(max_iterations);
         gicp.SetVoxelLeafSize(voxel_leaf_size);
-        if (gicp.Init(source_aligned, target_map)) {
+        const bool init_ok = target_covariances.empty()
+                                 ? gicp.Init(source_aligned, target_map)
+                                 : gicp.InitWithTargetCovariances(source_aligned, target_map, target_covariances);
+        if (init_ok) {
             Eigen::Matrix3d R_gicp;
             Eigen::Vector3d T_gicp;
             if (gicp.Solve(R_gicp, T_gicp)) {

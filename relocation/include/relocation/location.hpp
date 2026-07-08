@@ -71,6 +71,7 @@ namespace relocation {
         bool LoadDatabase(const std::string& filename);
 
         pcl::PointCloud<pcl::PointXYZ>::Ptr m_global_map;
+        std::vector<Eigen::Matrix3f> m_global_map_covariances;
         std::vector<HistNode> m_history_db;
         std::unique_ptr<ann_kdtree> m_iris_tree;
 

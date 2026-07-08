@@ -74,6 +74,46 @@ namespace relocation {
         return true;
     }
 
+    bool GICP::InitWithTargetCovariances(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
+                                         const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
+                                         const std::vector<Eigen::Matrix3f>& target_covariances) {
+        if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
+        if (targetPC_->size() != target_covariances.size()) return false;
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
+
+        if (m_VoxelLeafSize > 0.0f) {
+            pcl::VoxelGrid<pcl::PointXYZ> filter;
+            filter.setLeafSize(m_VoxelLeafSize, m_VoxelLeafSize, m_VoxelLeafSize);
+            filter.setInputCloud(sourcePC_);
+            filter.filter(*processed_source);
+        } else {
+            processed_source = sourcePC_;
+        }
+
+        if (processed_source->empty()) return false;
+
+        m_SourcePC.resize(processed_source->size());
+        for (size_t i = 0; i < processed_source->size(); i++) {
+            m_SourcePC[i] = processed_source->points[i].getVector3fMap();
+        }
+
+        m_TargetPC.resize(targetPC_->size());
+        for (size_t i = 0; i < targetPC_->size(); i++) {
+            m_TargetPC[i] = targetPC_->points[i].getVector3fMap();
+        }
+
+        m_SourceCov = EstimateCovariances(m_SourcePC);
+        m_TargetCov = target_covariances;
+        m_TargetKDTree.Build(m_TargetPC);
+
+        m_RotatedMatrix = Eigen::Matrix3f::Identity();
+        m_TransVector = Eigen::Vector3f::Zero();
+        m_LastError = std::numeric_limits<float>::max();
+        m_LastValidCount = 0;
+        return true;
+    }
+
     std::vector<Eigen::Matrix3f> GICP::EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud) {
         std::vector<Eigen::Matrix3f> covariances(cloud.size(), Eigen::Matrix3f::Identity());
         if (cloud.empty()) return covariances;
@@ -117,9 +157,9 @@ namespace relocation {
         }
 
         Eigen::Vector3f evals = solver.eigenvalues();
-        for (int i = 0; i < 3; i++) {
-            evals[i] = std::max(evals[i], m_CovarianceRegularization);
-        }
+        const float max_eval = std::max(evals.maxCoeff(), m_CovarianceRegularization);
+        const float min_eval = std::max(m_CovarianceRegularization, max_eval * 1e-3f);
+        for (int i = 0; i < 3; i++) evals[i] = std::max(evals[i], min_eval);
         return solver.eigenvectors() * evals.asDiagonal() * solver.eigenvectors().transpose();
     }
 
@@ -204,7 +244,31 @@ namespace relocation {
                 break;
             }
 
-            Eigen::Matrix<float, 6, 1> dx = -H.ldlt().solve(b);
+            Eigen::Matrix<float, 6, 6> H_solve = H;
+            Eigen::SelfAdjointEigenSolver<Eigen::Matrix<float, 6, 6>> h_solver(H);
+            if (h_solver.info() != Eigen::Success) {
+                std::cerr << "[GICP] Hessian eigen decomposition failed" << std::endl;
+                break;
+            }
+            const auto h_evals = h_solver.eigenvalues();
+            const float min_eval = h_evals.minCoeff();
+            const float max_eval = h_evals.maxCoeff();
+            const float condition = max_eval / std::max(min_eval, gicp_hessian_min_eigenvalue);
+            if (min_eval < gicp_hessian_min_eigenvalue || condition > gicp_hessian_max_condition) {
+                const float damping = std::max(gicp_hessian_damping, max_eval * 1e-6f);
+                H_solve += damping * Eigen::Matrix<float, 6, 6>::Identity();
+                std::cerr << "[GICP] Hessian degenerate, min_eval: " << min_eval
+                          << ", max_eval: " << max_eval
+                          << ", condition: " << condition
+                          << ", damping: " << damping << std::endl;
+            }
+
+            Eigen::LDLT<Eigen::Matrix<float, 6, 6>> ldlt(H_solve);
+            if (ldlt.info() != Eigen::Success) {
+                std::cerr << "[GICP] Hessian LDLT failed" << std::endl;
+                break;
+            }
+            Eigen::Matrix<float, 6, 1> dx = -ldlt.solve(b);
             if (!dx.allFinite()) {
                 std::cerr << "[GICP] Linear solve failed" << std::endl;
                 break;
