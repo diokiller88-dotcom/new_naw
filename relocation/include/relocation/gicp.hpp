@@ -12,6 +12,7 @@ namespace relocation {
     constexpr float gicp_max_corr_dist = 2.0f;
     constexpr float gicp_voxel_leaf_size = 0.2f;
     constexpr int gicp_covariance_k = 20;
+    constexpr int gicp_correspondence_k = 8;
     constexpr float gicp_covariance_regularization = 1e-3f;
 
     class GICP {
@@ -21,12 +22,14 @@ namespace relocation {
               m_MaxCorrespondenceDistance(gicp_max_corr_dist),
               m_VoxelLeafSize(gicp_voxel_leaf_size),
               m_CovarianceK(gicp_covariance_k),
+              m_CorrespondenceK(gicp_correspondence_k),
               m_CovarianceRegularization(gicp_covariance_regularization) {}
 
         void SetMaxIterations(int iterations) { m_MaxIterations = iterations; }
         void SetMaxCorrespondenceDistance(float dist) { m_MaxCorrespondenceDistance = dist; }
         void SetVoxelLeafSize(float size) { m_VoxelLeafSize = size; }
         void SetCovarianceK(int k) { m_CovarianceK = k; }
+        void SetCorrespondenceK(int k) { m_CorrespondenceK = k; }
         void SetCovarianceRegularization(float reg) { m_CovarianceRegularization = reg; }
 
         bool Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
@@ -47,6 +50,7 @@ namespace relocation {
         float m_MaxCorrespondenceDistance;
         float m_VoxelLeafSize;
         int m_CovarianceK;
+        int m_CorrespondenceK;
         float m_CovarianceRegularization;
 
         std::vector<Eigen::Vector3f> m_SourcePC;

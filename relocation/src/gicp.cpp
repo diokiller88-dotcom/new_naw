@@ -134,19 +134,38 @@ namespace relocation {
 
         std::vector<int> nn_indices(N, -1);
         std::vector<float> dists(N, 0.0f);
+        std::vector<float> correspondence_metrics(N, std::numeric_limits<float>::max());
         std::vector<bool> valid_flag(N, false);
 
         for (int iter = 0; iter < m_MaxIterations; iter++) {
             #pragma omp parallel for
             for (int i = 0; i < N; i++) {
-                int nn_idx = m_TargetKDTree.GetNearestIdx(m_SourcePC[i]);
+                const Eigen::Matrix3f source_cov_map =
+                    m_RotatedMatrix * m_SourceCov[i] * m_RotatedMatrix.transpose();
+                double best_metric = std::numeric_limits<double>::max();
+                double best_euclidean_dist = std::numeric_limits<double>::max();
+                int nn_idx = m_TargetKDTree.GetBestIdxWithMetric(
+                    m_SourcePC[i],
+                    std::max(1, m_CorrespondenceK),
+                    [&](int target_idx) {
+                        const Eigen::Vector3f residual = m_SourcePC[i] - m_TargetPC[target_idx];
+                        Eigen::Matrix3f cov = m_TargetCov[target_idx] + source_cov_map;
+                        cov += m_CovarianceRegularization * Eigen::Matrix3f::Identity();
+                        Eigen::Matrix3f info = cov.inverse();
+                        return static_cast<double>(residual.dot(info * residual));
+                    },
+                    m_MaxCorrespondenceDistance,
+                    best_metric,
+                    best_euclidean_dist);
+
                 nn_indices[i] = nn_idx;
                 valid_flag[i] = false;
+                correspondence_metrics[i] = static_cast<float>(best_metric);
 
                 if (nn_idx >= 0) {
-                    float dist = (m_SourcePC[i] - m_TargetPC[nn_idx]).norm();
+                    float dist = static_cast<float>(best_euclidean_dist);
                     dists[i] = dist;
-                    if (dist <= m_MaxCorrespondenceDistance) {
+                    if (dist <= m_MaxCorrespondenceDistance && std::isfinite(best_metric)) {
                         valid_flag[i] = true;
                     }
                 }
@@ -174,7 +193,7 @@ namespace relocation {
 
                 H += J.transpose() * info * J;
                 b += J.transpose() * info * residual;
-                const float mahalanobis_error = residual.dot(info * residual);
+                const float mahalanobis_error = correspondence_metrics[i];
                 current_objective_error += std::sqrt(std::max(0.0f, mahalanobis_error));
                 current_euclidean_error += residual.norm();
                 valid_count++;

@@ -140,4 +140,34 @@ namespace relocation {
         SearchKNearest(point_, 1, idx, dist);
         return idx.empty() ? -1 : idx[0];
     }
+
+    int KDTree::GetBestIdxWithMetric(const Eigen::Vector3f& point_, int candidate_k,
+                                     const std::function<double(int)>& metric_func,
+                                     double max_euclidean_dist,
+                                     double& best_metric,
+                                     double& best_euclidean_dist) {
+        best_metric = std::numeric_limits<double>::max();
+        best_euclidean_dist = std::numeric_limits<double>::max();
+        if (candidate_k <= 0 || !metric_func) return -1;
+
+        std::vector<int> idx;
+        std::vector<double> dist;
+        SearchKNearest(point_, candidate_k, idx, dist);
+
+        int best_idx = -1;
+        for (size_t i = 0; i < idx.size(); ++i) {
+            if (dist[i] > max_euclidean_dist) continue;
+            const double metric = metric_func(idx[i]);
+            if (!std::isfinite(metric)) continue;
+
+            if (metric < best_metric ||
+                (std::abs(metric - best_metric) < 1e-9 && dist[i] < best_euclidean_dist)) {
+                best_metric = metric;
+                best_euclidean_dist = dist[i];
+                best_idx = idx[i];
+            }
+        }
+
+        return best_idx;
+    }
 }

@@ -66,8 +66,19 @@ namespace relocation {
         if (static_cast<int>(query.size()) != m_Dim) return;
 
         std::priority_queue<DistIndex> pq; 
-        int checks = 0;
-        SearchRecursive(query, m_Root.get(), k, pq, checks);
+        for (size_t i = 0; i < m_Cloud.size(); ++i) {
+            int dist = 0;
+            const auto& target = m_Cloud[i];
+            for (int d = 0; d < m_Dim; ++d) {
+                if (target[d] != query[d]) dist++;
+            }
+            if (pq.size() < static_cast<size_t>(k)) {
+                pq.emplace(static_cast<int>(i), dist);
+            } else if (dist < pq.top().dist) {
+                pq.pop();
+                pq.emplace(static_cast<int>(i), dist);
+            }
+        }
         
         out_indices.resize(pq.size()); 
         out_dists.resize(pq.size());

@@ -4,6 +4,7 @@
 #include <memory>
 #include <cmath>
 #include <limits>
+#include <functional>
 #include <Eigen/Dense>
 
 namespace relocation {
@@ -36,6 +37,11 @@ namespace relocation {
         bool Build(const std::vector<Eigen::Vector3f>& cloud_);
         void SearchKNearest(const Eigen::Vector3f& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_);
         int GetNearestIdx(const Eigen::Vector3f& point_);
+        int GetBestIdxWithMetric(const Eigen::Vector3f& point_, int candidate_k,
+                                 const std::function<double(int)>& metric_func,
+                                 double max_euclidean_dist,
+                                 double& best_metric,
+                                 double& best_euclidean_dist);
 
         bool Build(const std::vector<Eigen::Vector3i>& cloud_);
         void SearchKNearest(const Eigen::Vector3i& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_);
