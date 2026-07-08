@@ -178,26 +178,26 @@ namespace relocation {
     bool location::SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud, 
                                   Eigen::Matrix3d& R, Eigen::Vector3d& T) 
     {
-        double icp_error = std::numeric_limits<double>::max();
+        double match_error = std::numeric_limits<double>::max();
         int valid_count = 0;
-        return SetPrecisePose(local_cloud, R, T, icp_error, valid_count);
+        return SetPrecisePose(local_cloud, R, T, match_error, valid_count);
     }
 
     bool location::SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                                   Eigen::Matrix3d& R, Eigen::Vector3d& T,
-                                  double& out_icp_error, int& out_valid_count)
+                                  double& out_match_error, int& out_valid_count)
     {
-        return SetPrecisePose(local_cloud, R, T, out_icp_error, out_valid_count,
-                              icp_p2p_max_iterations, icp_p2p_voxel_leaf_size);
+        return SetPrecisePose(local_cloud, R, T, out_match_error, out_valid_count,
+                              gicp_max_iterations, gicp_voxel_leaf_size);
     }
 
     bool location::SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                                   Eigen::Matrix3d& R, Eigen::Vector3d& T,
-                                  double& out_icp_error, int& out_valid_count,
+                                  double& out_match_error, int& out_valid_count,
                                   int max_iterations, float voxel_leaf_size)
     {
         if (!local_cloud || local_cloud->empty() || !m_global_map) return false;
-        out_icp_error = std::numeric_limits<double>::max();
+        out_match_error = std::numeric_limits<double>::max();
         out_valid_count = 0;
         double coarse_x = T.x();
         double coarse_y = T.y();
@@ -214,17 +214,17 @@ namespace relocation {
         init_tf.block<3,1>(0,3) = T.cast<float>();
         pcl::PointCloud<pcl::PointXYZ>::Ptr source_aligned(new pcl::PointCloud<pcl::PointXYZ>);
         pcl::transformPointCloud(*local_cloud, *source_aligned, init_tf);
-        P2PointICP_SVD icp;
-        icp.SetMaxIterations(max_iterations);
-        icp.SetVoxelLeafSize(voxel_leaf_size);
-        if (icp.Init(source_aligned, target_map)) {
-            Eigen::Matrix3d R_icp;
-            Eigen::Vector3d T_icp;
-            if (icp.Solve(R_icp, T_icp)) {
-                R = R_icp * R;
-                T = R_icp * T + T_icp;
-                out_icp_error = icp.GetLastError();
-                out_valid_count = icp.GetLastValidCount();
+        GICP gicp;
+        gicp.SetMaxIterations(max_iterations);
+        gicp.SetVoxelLeafSize(voxel_leaf_size);
+        if (gicp.Init(source_aligned, target_map)) {
+            Eigen::Matrix3d R_gicp;
+            Eigen::Vector3d T_gicp;
+            if (gicp.Solve(R_gicp, T_gicp)) {
+                R = R_gicp * R;
+                T = R_gicp * T + T_gicp;
+                out_match_error = gicp.GetLastError();
+                out_valid_count = gicp.GetLastValidCount();
                 return true;
             }
         }

@@ -34,6 +34,7 @@ link_directories(${PCL_LIBRARY_DIRS})
 # 1. 编译核心算法库
 add_library(relocation_core SHARED
   src/icp.cpp
+  src/gicp.cpp
   src/kd_tree.cpp
   src/ann_kdtree.cpp
   src/iris.cpp

@@ -1,0 +1,64 @@
+#pragma once
+#include "kd_tree.hpp"
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <Eigen/Dense>
+#include <limits>
+#include <vector>
+
+namespace relocation {
+
+    constexpr int gicp_max_iterations = 20;
+    constexpr float gicp_max_corr_dist = 2.0f;
+    constexpr float gicp_voxel_leaf_size = 0.2f;
+    constexpr int gicp_covariance_k = 20;
+    constexpr float gicp_covariance_regularization = 1e-3f;
+
+    class GICP {
+    public:
+        GICP()
+            : m_MaxIterations(gicp_max_iterations),
+              m_MaxCorrespondenceDistance(gicp_max_corr_dist),
+              m_VoxelLeafSize(gicp_voxel_leaf_size),
+              m_CovarianceK(gicp_covariance_k),
+              m_CovarianceRegularization(gicp_covariance_regularization) {}
+
+        void SetMaxIterations(int iterations) { m_MaxIterations = iterations; }
+        void SetMaxCorrespondenceDistance(float dist) { m_MaxCorrespondenceDistance = dist; }
+        void SetVoxelLeafSize(float size) { m_VoxelLeafSize = size; }
+        void SetCovarianceK(int k) { m_CovarianceK = k; }
+        void SetCovarianceRegularization(float reg) { m_CovarianceRegularization = reg; }
+
+        bool Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
+                  const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_);
+        bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
+        float GetLastError() const { return m_LastError; }
+        int GetLastValidCount() const { return m_LastValidCount; }
+
+    private:
+        static Eigen::Matrix3f Skew(const Eigen::Vector3f& v);
+        static Eigen::Matrix3f ExpSO3(const Eigen::Vector3f& w);
+
+        std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
+        Eigen::Matrix3f ComputeCovariance(const std::vector<Eigen::Vector3f>& cloud,
+                                          const std::vector<int>& indices) const;
+
+        int m_MaxIterations;
+        float m_MaxCorrespondenceDistance;
+        float m_VoxelLeafSize;
+        int m_CovarianceK;
+        float m_CovarianceRegularization;
+
+        std::vector<Eigen::Vector3f> m_SourcePC;
+        std::vector<Eigen::Vector3f> m_TargetPC;
+        std::vector<Eigen::Matrix3f> m_SourceCov;
+        std::vector<Eigen::Matrix3f> m_TargetCov;
+        KDTree m_TargetKDTree;
+
+        Eigen::Matrix3f m_RotatedMatrix;
+        Eigen::Vector3f m_TransVector;
+        float m_LastError = std::numeric_limits<float>::max();
+        int m_LastValidCount = 0;
+    };
+
+}

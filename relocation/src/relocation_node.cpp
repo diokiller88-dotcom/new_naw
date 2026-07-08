@@ -49,21 +49,21 @@ constexpr int pub_queue_size = 10;
 constexpr int sync_queue_size = 10;
 constexpr double reloc_min_rough_score_gap = 0.02;
 constexpr double reloc_min_rough_score_ratio = 1.10;
-constexpr double reloc_min_icp_error_gap = 0.05;
-constexpr double reloc_min_icp_error_ratio = 1.08;
-constexpr int reloc_min_icp_valid_count = 30;
-constexpr double reloc_min_icp_valid_ratio = 0.02;
-constexpr size_t reloc_max_icp_candidates = 3;
-constexpr double reloc_max_rough_score_ratio_for_icp = 1.35;
-constexpr double reloc_early_accept_icp_error = 0.25;
-constexpr int reloc_candidate_icp_max_iterations = 10;
-constexpr float reloc_candidate_icp_voxel_leaf_size = 0.35f;
+constexpr double reloc_min_gicp_error_gap = 0.05;
+constexpr double reloc_min_gicp_error_ratio = 1.08;
+constexpr int reloc_min_gicp_valid_count = 30;
+constexpr double reloc_min_gicp_valid_ratio = 0.02;
+constexpr size_t reloc_max_gicp_candidates = 3;
+constexpr double reloc_max_rough_score_ratio_for_gicp = 1.35;
+constexpr double reloc_early_accept_gicp_error = 0.25;
+constexpr int reloc_candidate_gicp_max_iterations = 10;
+constexpr float reloc_candidate_gicp_voxel_leaf_size = 0.35f;
 
-struct IcpCandidateResult {
+struct GicpCandidateResult {
     RoughPoseCandidate rough;
     Eigen::Matrix3d R = Eigen::Matrix3d::Identity();
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
-    double icp_error = std::numeric_limits<double>::max();
+    double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
 };
 
@@ -115,7 +115,16 @@ bool HasEnoughScoreSeparation(double best, double second, double min_gap, double
 class RelocationNode : public rclcpp::Node
 {
 public:
-    RelocationNode() : Node(node_name), is_relocated_(false), trigger_reloc_(true), map_initialized_(false), has_cached_grid_(false), accumulated_frames_(0), initial_gimbal_yaw_(0.0)
+    RelocationNode()
+        : Node(node_name),
+          map_initialized_(false),
+          has_cached_grid_(false),
+          sim_mode_(false),
+          accumulate_frames_max_(default_accumulate_frames),
+          accumulated_frames_(0),
+          is_relocated_(false),
+          trigger_reloc_(true),
+          initial_gimbal_yaw_(0.0)
     {
         this->declare_parameter<std::string>("pcd_path", default_pcd_path);
         this->declare_parameter<std::string>("db_path", default_db_path);
@@ -530,103 +539,103 @@ private:
 
             std::vector<RoughPoseCandidate> rough_candidates;
             if (loc_system_.GetRoughPoseCandidatesWithPrePose(cloud_body_filtered, prior_x, prior_y, prior_yaw, rough_candidates)) {
-                std::vector<IcpCandidateResult> icp_results;
-                icp_results.reserve(rough_candidates.size());
+                std::vector<GicpCandidateResult> gicp_results;
+                gicp_results.reserve(rough_candidates.size());
                 double best_rough_score = rough_candidates.front().rough_score;
-                size_t attempted_icp_count = 0;
+                size_t attempted_gicp_count = 0;
 
                 for (const auto& candidate : rough_candidates) {
-                    if (attempted_icp_count >= reloc_max_icp_candidates) break;
+                    if (attempted_gicp_count >= reloc_max_gicp_candidates) break;
                     double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
-                    if (attempted_icp_count > 0 && rough_ratio > reloc_max_rough_score_ratio_for_icp) {
+                    if (attempted_gicp_count > 0 && rough_ratio > reloc_max_rough_score_ratio_for_gicp) {
                         break;
                     }
 
-                    attempted_icp_count++;
+                    attempted_gicp_count++;
                     double rough_yaw_rad = candidate.yaw_deg * M_PI / 180.0;
                     Eigen::Matrix3d R_prec = Eigen::AngleAxisd(rough_yaw_rad, Eigen::Vector3d::UnitZ()).toRotationMatrix();
                     Eigen::Vector3d T_prec(candidate.x, candidate.y, odom_msg->pose.pose.position.z);
-                    double icp_error = std::numeric_limits<double>::max();
+                    double gicp_error = std::numeric_limits<double>::max();
                     int valid_count = 0;
 
-                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec, icp_error, valid_count,
-                                                    reloc_candidate_icp_max_iterations,
-                                                    reloc_candidate_icp_voxel_leaf_size)) {
+                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec, gicp_error, valid_count,
+                                                    reloc_candidate_gicp_max_iterations,
+                                                    reloc_candidate_gicp_voxel_leaf_size)) {
                         continue;
                     }
 
-                    IcpCandidateResult result;
+                    GicpCandidateResult result;
                     result.rough = candidate;
                     result.R = R_prec;
                     result.T = T_prec;
-                    result.icp_error = icp_error;
+                    result.gicp_error = gicp_error;
                     result.valid_count = valid_count;
-                    icp_results.push_back(result);
+                    gicp_results.push_back(result);
 
                     double valid_ratio = cloud_body_filtered->empty()
                                              ? 0.0
                                              : static_cast<double>(valid_count) / static_cast<double>(cloud_body_filtered->size());
-                    bool enough_inliers = valid_count >= reloc_min_icp_valid_count &&
-                                          valid_ratio >= reloc_min_icp_valid_ratio;
+                    bool enough_inliers = valid_count >= reloc_min_gicp_valid_count &&
+                                          valid_ratio >= reloc_min_gicp_valid_ratio;
                     bool rough_unique_now = rough_candidates.size() < 2 ||
                                             HasEnoughScoreSeparation(rough_candidates[0].rough_score,
                                                                      rough_candidates[1].rough_score,
                                                                      reloc_min_rough_score_gap,
                                                                      reloc_min_rough_score_ratio);
-                    if (rough_unique_now && enough_inliers && icp_error <= reloc_early_accept_icp_error) {
+                    if (rough_unique_now && enough_inliers && gicp_error <= reloc_early_accept_gicp_error) {
                         break;
                     }
                 }
 
-                if (!icp_results.empty()) {
-                    std::sort(icp_results.begin(), icp_results.end(), [](const auto& lhs, const auto& rhs) {
-                        if (std::abs(lhs.icp_error - rhs.icp_error) > 1e-4) return lhs.icp_error < rhs.icp_error;
+                if (!gicp_results.empty()) {
+                    std::sort(gicp_results.begin(), gicp_results.end(), [](const auto& lhs, const auto& rhs) {
+                        if (std::abs(lhs.gicp_error - rhs.gicp_error) > 1e-4) return lhs.gicp_error < rhs.gicp_error;
                         if (lhs.valid_count != rhs.valid_count) return lhs.valid_count > rhs.valid_count;
                         return lhs.rough.rough_score < rhs.rough.rough_score;
                     });
 
-                    const auto& best = icp_results.front();
+                    const auto& best = gicp_results.front();
                     bool rough_unique = rough_candidates.size() < 2 ||
                                         HasEnoughScoreSeparation(rough_candidates[0].rough_score,
                                                                  rough_candidates[1].rough_score,
                                                                  reloc_min_rough_score_gap,
                                                                  reloc_min_rough_score_ratio);
-                    bool icp_unique = icp_results.size() < 2 ||
-                                      HasEnoughScoreSeparation(best.icp_error,
-                                                               icp_results[1].icp_error,
-                                                               reloc_min_icp_error_gap,
-                                                               reloc_min_icp_error_ratio);
+                    bool gicp_unique = gicp_results.size() < 2 ||
+                                       HasEnoughScoreSeparation(best.gicp_error,
+                                                                gicp_results[1].gicp_error,
+                                                                reloc_min_gicp_error_gap,
+                                                                reloc_min_gicp_error_ratio);
                     double valid_ratio = cloud_body_filtered->empty()
                                              ? 0.0
                                              : static_cast<double>(best.valid_count) / static_cast<double>(cloud_body_filtered->size());
-                    bool enough_inliers = best.valid_count >= reloc_min_icp_valid_count &&
-                                          valid_ratio >= reloc_min_icp_valid_ratio;
+                    bool enough_inliers = best.valid_count >= reloc_min_gicp_valid_count &&
+                                          valid_ratio >= reloc_min_gicp_valid_ratio;
 
                     if (!enough_inliers) {
                         RCLCPP_WARN(this->get_logger(),
-                                    "拒绝重定位：ICP有效匹配不足。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, Valid:%d, Ratio:%.3f, Error:%.4f",
-                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), best.valid_count, valid_ratio, best.icp_error);
+                                    "拒绝重定位：GICP有效匹配不足。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, Valid:%d, Ratio:%.3f, Error:%.4f",
+                                    rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.valid_count, valid_ratio, best.gicp_error);
                         return;
                     }
 
-                    if (!rough_unique && !icp_unique) {
+                    if (!rough_unique && !gicp_unique) {
                         double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
-                        double icp_gap = icp_results.size() >= 2 ? icp_results[1].icp_error - best.icp_error : 0.0;
+                        double gicp_gap = gicp_results.size() >= 2 ? gicp_results[1].gicp_error - best.gicp_error : 0.0;
                         RCLCPP_WARN(this->get_logger(),
-                                    "拒绝重定位：粗匹配和ICP均低置信。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, RoughGap:%.4f, IcpGap:%.4f, BestHist:%d, BestError:%.4f",
-                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), rough_gap, icp_gap, best.rough.hist_index, best.icp_error);
+                                    "拒绝重定位：粗匹配和GICP均低置信。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, RoughGap:%.4f, GicpGap:%.4f, BestHist:%d, BestError:%.4f",
+                                    rough_candidates.size(), attempted_gicp_count, gicp_results.size(), rough_gap, gicp_gap, best.rough.hist_index, best.gicp_error);
                         return;
                     }
 
                     Eigen::Matrix3d final_R = best.R;
                     Eigen::Vector3d final_T = best.T;
-                    double final_icp_error = std::numeric_limits<double>::max();
+                    double final_gicp_error = std::numeric_limits<double>::max();
                     int final_valid_count = 0;
                     if (!loc_system_.SetPrecisePose(cloud_body_filtered, final_R, final_T,
-                                                    final_icp_error, final_valid_count)) {
+                                                    final_gicp_error, final_valid_count)) {
                         RCLCPP_WARN(this->get_logger(),
-                                    "拒绝重定位：最佳候选通过粗ICP筛选，但最终精ICP失败。Candidates:%zu, IcpTried:%zu, IcpOK:%zu, BestHist:%d",
-                                    rough_candidates.size(), attempted_icp_count, icp_results.size(), best.rough.hist_index);
+                                    "拒绝重定位：最佳候选通过粗GICP筛选，但最终精GICP失败。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, BestHist:%d",
+                                    rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index);
                         return;
                     }
 
@@ -643,15 +652,15 @@ private:
                     last_marker_yaw_ = std::atan2(final_R(1, 0), final_R(0, 0));
 
                     RCLCPP_INFO(this->get_logger(),
-                                "重定位成功! 候选数:%zu, IcpTried:%zu, IcpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseICP:%.4f, FinalICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, IcpUnique:%d, Map系下位姿: X:%.2f, Y:%.2f",
-                                rough_candidates.size(), attempted_icp_count, icp_results.size(), best.rough.hist_index, best.rough.rough_score,
-                                best.icp_error, final_icp_error, final_valid_count, valid_ratio, rough_unique, icp_unique, final_T.x(), final_T.y());
+                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, Map系下位姿: X:%.2f, Y:%.2f",
+                                rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index, best.rough.rough_score,
+                                best.gicp_error, final_gicp_error, final_valid_count, valid_ratio, rough_unique, gicp_unique, final_T.x(), final_T.y());
 
                     PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                     PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
                     PublishMatchedCloud2D(cloud_body_filtered, T_map_body, chassis_msg->header.stamp);
                 } else {
-                    RCLCPP_WARN(this->get_logger(), "粗定位候选数: %zu, IcpTried:%zu，但全部 ICP 精定位失败。", rough_candidates.size(), attempted_icp_count);
+                    RCLCPP_WARN(this->get_logger(), "粗定位候选数: %zu, GicpTried:%zu，但全部 GICP 精定位失败。", rough_candidates.size(), attempted_gicp_count);
                 }
             } else {
                 RCLCPP_WARN(this->get_logger(), "粗定位匹配失败，继续尝试...");

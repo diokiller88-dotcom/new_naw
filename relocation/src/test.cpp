@@ -44,21 +44,21 @@ constexpr float test_prior_offset_x = 0.5f;
 constexpr float test_prior_offset_y = -0.8f;
 constexpr double test_min_rough_score_gap = 0.02;
 constexpr double test_min_rough_score_ratio = 1.10;
-constexpr double test_min_icp_error_gap = 0.05;
-constexpr double test_min_icp_error_ratio = 1.08;
-constexpr int test_min_icp_valid_count = 30;
-constexpr double test_min_icp_valid_ratio = 0.02;
-constexpr size_t test_max_icp_candidates = 3;
-constexpr double test_max_rough_score_ratio_for_icp = 1.35;
-constexpr double test_early_accept_icp_error = 0.25;
-constexpr int test_candidate_icp_max_iterations = 10;
-constexpr float test_candidate_icp_voxel_leaf_size = 0.35f;
+constexpr double test_min_gicp_error_gap = 0.05;
+constexpr double test_min_gicp_error_ratio = 1.08;
+constexpr int test_min_gicp_valid_count = 30;
+constexpr double test_min_gicp_valid_ratio = 0.02;
+constexpr size_t test_max_gicp_candidates = 3;
+constexpr double test_max_rough_score_ratio_for_gicp = 1.35;
+constexpr double test_early_accept_gicp_error = 0.25;
+constexpr int test_candidate_gicp_max_iterations = 10;
+constexpr float test_candidate_gicp_voxel_leaf_size = 0.35f;
 
-struct TestIcpCandidateResult {
+struct TestGicpCandidateResult {
     RoughPoseCandidate rough;
     Eigen::Matrix3d R = Eigen::Matrix3d::Identity();
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
-    double icp_error = std::numeric_limits<double>::max();
+    double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
 };
 
@@ -269,47 +269,47 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
          << " (" << coarse_time << "ms)" << endl;
 
     auto t_fine_start = chrono::steady_clock::now();
-    vector<TestIcpCandidateResult> icp_results;
-    icp_results.reserve(rough_candidates.size());
+    vector<TestGicpCandidateResult> gicp_results;
+    gicp_results.reserve(rough_candidates.size());
     double best_rough_score = rough_candidates.front().rough_score;
-    size_t attempted_icp_count = 0;
+    size_t attempted_gicp_count = 0;
 
     for (const auto& candidate : rough_candidates) {
-        if (attempted_icp_count >= test_max_icp_candidates) break;
+        if (attempted_gicp_count >= test_max_gicp_candidates) break;
         double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
-        if (attempted_icp_count > 0 && rough_ratio > test_max_rough_score_ratio_for_icp) {
+        if (attempted_gicp_count > 0 && rough_ratio > test_max_rough_score_ratio_for_gicp) {
             break;
         }
 
-        attempted_icp_count++;
-        Eigen::Matrix3d R_icp = Eigen::AngleAxisd(candidate.yaw_deg * M_PI / 180.0, Eigen::Vector3d::UnitZ()).toRotationMatrix();
-        Eigen::Vector3d T_icp(candidate.x, candidate.y, 0.0);
-        double icp_error = numeric_limits<double>::max();
+        attempted_gicp_count++;
+        Eigen::Matrix3d R_gicp = Eigen::AngleAxisd(candidate.yaw_deg * M_PI / 180.0, Eigen::Vector3d::UnitZ()).toRotationMatrix();
+        Eigen::Vector3d T_gicp(candidate.x, candidate.y, 0.0);
+        double gicp_error = numeric_limits<double>::max();
         int valid_count = 0;
 
-        if (!loc_module.SetPrecisePose(query_cloud, R_icp, T_icp, icp_error, valid_count,
-                                       test_candidate_icp_max_iterations,
-                                       test_candidate_icp_voxel_leaf_size)) {
+        if (!loc_module.SetPrecisePose(query_cloud, R_gicp, T_gicp, gicp_error, valid_count,
+                                       test_candidate_gicp_max_iterations,
+                                       test_candidate_gicp_voxel_leaf_size)) {
             continue;
         }
 
-        TestIcpCandidateResult result;
+        TestGicpCandidateResult result;
         result.rough = candidate;
-        result.R = R_icp;
-        result.T = T_icp;
-        result.icp_error = icp_error;
+        result.R = R_gicp;
+        result.T = T_gicp;
+        result.gicp_error = gicp_error;
         result.valid_count = valid_count;
-        icp_results.push_back(result);
+        gicp_results.push_back(result);
 
         double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(valid_count) / static_cast<double>(query_cloud->size());
-        bool enough_inliers = valid_count >= test_min_icp_valid_count &&
-                              valid_ratio >= test_min_icp_valid_ratio;
+        bool enough_inliers = valid_count >= test_min_gicp_valid_count &&
+                              valid_ratio >= test_min_gicp_valid_ratio;
         bool rough_unique_now = rough_candidates.size() < 2 ||
                                 HasEnoughScoreSeparation(rough_candidates[0].rough_score,
                                                          rough_candidates[1].rough_score,
                                                          test_min_rough_score_gap,
                                                          test_min_rough_score_ratio);
-        if (rough_unique_now && enough_inliers && icp_error <= test_early_accept_icp_error) {
+        if (rough_unique_now && enough_inliers && gicp_error <= test_early_accept_gicp_error) {
             break;
         }
     }
@@ -318,76 +318,76 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     double fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_end - t_fine_start).count();
 
     cv::Mat temp = display_img.clone();
-    size_t display_candidate_count = std::min(attempted_icp_count, rough_candidates.size());
+    size_t display_candidate_count = std::min(attempted_gicp_count, rough_candidates.size());
     for (size_t i = 0; i < display_candidate_count; ++i) {
         const auto& candidate = rough_candidates[i];
         draw_arrow(temp, candidate.x, candidate.y, candidate.yaw_deg, cv::Scalar(0, 165, 255), test_arrow_length / 2);
     }
     draw_arrow(temp, gt_x, gt_y, gt_yaw, cv::Scalar(0, 0, 255));
 
-    if (icp_results.empty()) {
+    if (gicp_results.empty()) {
         cout << "[失败] 粗定位候选数: " << rough_candidates.size()
-             << ", IcpTried: " << attempted_icp_count
-             << "，但全部 ICP 精定位失败。" << endl;
-        cv::putText(temp, "Rejected: all ICP candidates failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+             << ", GicpTried: " << attempted_gicp_count
+             << "，但全部 GICP 精定位失败。" << endl;
+        cv::putText(temp, "Rejected: all GICP candidates failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         cv::imshow("Interactive Relocation", temp);
         return;
     }
 
-    sort(icp_results.begin(), icp_results.end(), [](const auto& lhs, const auto& rhs) {
-        if (abs(lhs.icp_error - rhs.icp_error) > 1e-4) return lhs.icp_error < rhs.icp_error;
+    sort(gicp_results.begin(), gicp_results.end(), [](const auto& lhs, const auto& rhs) {
+        if (abs(lhs.gicp_error - rhs.gicp_error) > 1e-4) return lhs.gicp_error < rhs.gicp_error;
         if (lhs.valid_count != rhs.valid_count) return lhs.valid_count > rhs.valid_count;
         return lhs.rough.rough_score < rhs.rough.rough_score;
     });
 
-    const auto& best = icp_results.front();
+    const auto& best = gicp_results.front();
     bool rough_unique = rough_candidates.size() < 2 ||
                         HasEnoughScoreSeparation(rough_candidates[0].rough_score,
                                                  rough_candidates[1].rough_score,
                                                  test_min_rough_score_gap,
                                                  test_min_rough_score_ratio);
-    bool icp_unique = icp_results.size() < 2 ||
-                      HasEnoughScoreSeparation(best.icp_error,
-                                               icp_results[1].icp_error,
-                                               test_min_icp_error_gap,
-                                               test_min_icp_error_ratio);
+    bool gicp_unique = gicp_results.size() < 2 ||
+                       HasEnoughScoreSeparation(best.gicp_error,
+                                                gicp_results[1].gicp_error,
+                                                test_min_gicp_error_gap,
+                                                test_min_gicp_error_ratio);
     double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(best.valid_count) / static_cast<double>(query_cloud->size());
-    bool enough_inliers = best.valid_count >= test_min_icp_valid_count &&
-                          valid_ratio >= test_min_icp_valid_ratio;
+    bool enough_inliers = best.valid_count >= test_min_gicp_valid_count &&
+                          valid_ratio >= test_min_gicp_valid_ratio;
 
-    cout << "[Stage2: ICP ] IcpTried: " << attempted_icp_count
-         << ", IcpOK: " << icp_results.size()
+    cout << "[Stage2: GICP] GicpTried: " << attempted_gicp_count
+         << ", GicpOK: " << gicp_results.size()
          << ", BestHist: " << best.rough.hist_index
-         << ", Error: " << best.icp_error
+         << ", Error: " << best.gicp_error
          << ", Valid: " << best.valid_count
          << ", Ratio: " << valid_ratio
          << ", RoughUnique: " << rough_unique
-         << ", IcpUnique: " << icp_unique
+         << ", GicpUnique: " << gicp_unique
          << " (" << fine_time << "ms)" << endl;
 
     if (!enough_inliers) {
-        cout << "[拒绝] ICP 有效匹配不足。" << endl;
-        cv::putText(temp, "Rejected: insufficient ICP inliers", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        cout << "[拒绝] GICP 有效匹配不足。" << endl;
+        cv::putText(temp, "Rejected: insufficient GICP inliers", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         cv::imshow("Interactive Relocation", temp);
         return;
     }
 
-    if (!rough_unique && !icp_unique) {
+    if (!rough_unique && !gicp_unique) {
         double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
-        double icp_gap = icp_results.size() >= 2 ? icp_results[1].icp_error - best.icp_error : 0.0;
-        cout << "[拒绝] 粗匹配和 ICP 均低置信。RoughGap: " << rough_gap << ", IcpGap: " << icp_gap << endl;
-        cv::putText(temp, "Rejected: ambiguous rough and ICP candidates", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+        double gicp_gap = gicp_results.size() >= 2 ? gicp_results[1].gicp_error - best.gicp_error : 0.0;
+        cout << "[拒绝] 粗匹配和 GICP 均低置信。RoughGap: " << rough_gap << ", GicpGap: " << gicp_gap << endl;
+        cv::putText(temp, "Rejected: ambiguous rough and GICP candidates", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         cv::imshow("Interactive Relocation", temp);
         return;
     }
 
     Eigen::Matrix3d final_R = best.R;
     Eigen::Vector3d final_T = best.T;
-    double final_icp_error = numeric_limits<double>::max();
+    double final_gicp_error = numeric_limits<double>::max();
     int final_valid_count = 0;
-    if (!loc_module.SetPrecisePose(query_cloud, final_R, final_T, final_icp_error, final_valid_count)) {
-        cout << "[拒绝] 最佳候选通过粗 ICP 筛选，但最终精 ICP 失败。" << endl;
-        cv::putText(temp, "Rejected: final ICP failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
+    if (!loc_module.SetPrecisePose(query_cloud, final_R, final_T, final_gicp_error, final_valid_count)) {
+        cout << "[拒绝] 最佳候选通过粗 GICP 筛选，但最终精 GICP 失败。" << endl;
+        cv::putText(temp, "Rejected: final GICP failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         cv::imshow("Interactive Relocation", temp);
         return;
     }
@@ -401,14 +401,14 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     if (fine_yaw < 0) fine_yaw += 360.0f;
 
     cout << "[接受] X: " << fine_x << ", Y: " << fine_y << ", Yaw: " << fine_yaw
-         << "°, FinalICP: " << final_icp_error
+         << "°, FinalGICP: " << final_gicp_error
          << ", FinalValid: " << final_valid_count << endl;
     cout << "[误差分析] 距离误差: " << sqrt(pow(fine_x - gt_x, 2) + pow(fine_y - gt_y, 2)) << "m" << endl;
 
     draw_arrow(temp, fine_x, fine_y, fine_yaw, cv::Scalar(0, 200, 0));         
     
-    string info1 = "Red: GT | Orange: Iris candidates | Green: accepted ICP";
-    string info2 = "Iris: " + to_string((int)coarse_time) + "ms, ICP: " + to_string((int)fine_time) + "ms, IcpTried: " + to_string((int)attempted_icp_count) + ", IcpOK: " + to_string((int)icp_results.size());
+    string info1 = "Red: GT | Orange: Iris candidates | Green: accepted GICP";
+    string info2 = "Iris: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)fine_time) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
     cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::imshow("Interactive Relocation", temp);

@@ -10,7 +10,7 @@
 
 #include "relocation/iris.hpp"
 #include "relocation/ann_kdtree.hpp"
-#include "relocation/icp.hpp"
+#include "relocation/gicp.hpp"
 
 namespace relocation {
 
@@ -60,10 +60,10 @@ namespace relocation {
                             Eigen::Matrix3d& R, Eigen::Vector3d& T);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                             Eigen::Matrix3d& R, Eigen::Vector3d& T,
-                            double& out_icp_error, int& out_valid_count);
+                            double& out_match_error, int& out_valid_count);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                             Eigen::Matrix3d& R, Eigen::Vector3d& T,
-                            double& out_icp_error, int& out_valid_count,
+                            double& out_match_error, int& out_valid_count,
                             int max_iterations, float voxel_leaf_size);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud);
 
