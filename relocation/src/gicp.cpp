@@ -13,6 +13,88 @@ namespace relocation {
     constexpr float gicp_min_step_norm = 1e-5f;
     constexpr float gicp_min_error_delta = 1e-5f;
 
+    class AndersonAcceleration6 {
+    public:
+        using Vec6 = Eigen::Matrix<float, 6, 1>;
+
+        explicit AndersonAcceleration6(int history_size)
+            : history_size_(std::max(1, history_size)),
+              prev_dF_(6, history_size_),
+              prev_dG_(6, history_size_),
+              scales_(history_size_) {
+            prev_dF_.setZero();
+            prev_dG_.setZero();
+            scales_.setZero();
+        }
+
+        void Init(const Vec6& u0) {
+            current_u_ = u0;
+            prev_dF_.setZero();
+            prev_dG_.setZero();
+            scales_.setZero();
+            iter_ = 0;
+            col_idx_ = 0;
+        }
+
+        void SetCurrent(const Vec6& u) {
+            current_u_ = u;
+        }
+
+        Vec6 Compute(const Vec6& g) {
+            constexpr float eps = 1e-8f;
+            const Vec6 current_F = g - current_u_;
+
+            if (iter_ == 0) {
+                prev_dF_.col(0) = -current_F;
+                prev_dG_.col(0) = -g;
+                current_u_ = g;
+                iter_++;
+                return current_u_;
+            }
+
+            prev_dF_.col(col_idx_) += current_F;
+            prev_dG_.col(col_idx_) += g;
+
+            const float scale = std::max(eps, static_cast<float>(prev_dF_.col(col_idx_).norm()));
+            scales_(col_idx_) = scale;
+            prev_dF_.col(col_idx_) /= scale;
+
+            const int m_k = std::min(history_size_, iter_);
+            Eigen::VectorXf theta = Eigen::VectorXf::Zero(m_k);
+            if (m_k == 1) {
+                const float dF_sqrnorm = static_cast<float>(prev_dF_.col(0).squaredNorm());
+                if (dF_sqrnorm > eps) {
+                    theta(0) = prev_dF_.col(0).dot(current_F) / dF_sqrnorm;
+                }
+            } else {
+                const Eigen::MatrixXf dF = prev_dF_.leftCols(m_k);
+                const Eigen::MatrixXf M = dF.transpose() * dF;
+                theta = M.completeOrthogonalDecomposition().solve(dF.transpose() * current_F);
+            }
+
+            Eigen::VectorXf coeff = theta;
+            for (int i = 0; i < m_k; ++i) {
+                coeff(i) /= std::max(eps, scales_(i));
+            }
+            current_u_ = g - prev_dG_.leftCols(m_k) * coeff;
+
+            col_idx_ = (col_idx_ + 1) % history_size_;
+            prev_dF_.col(col_idx_) = -current_F;
+            prev_dG_.col(col_idx_) = -g;
+            iter_++;
+            return current_u_;
+        }
+
+    private:
+        int history_size_ = 1;
+        int iter_ = 0;
+        int col_idx_ = 0;
+        Vec6 current_u_ = Vec6::Zero();
+        Eigen::MatrixXf prev_dF_;
+        Eigen::MatrixXf prev_dG_;
+        Eigen::VectorXf scales_;
+    };
+
     Eigen::Matrix3f GICP::Skew(const Eigen::Vector3f& v) {
         Eigen::Matrix3f mat;
         mat << 0.0f, -v.z(), v.y(),
@@ -30,6 +112,43 @@ namespace relocation {
         const float a = std::sin(theta) / theta;
         const float b = (1.0f - std::cos(theta)) / (theta * theta);
         return Eigen::Matrix3f::Identity() + a * W + b * W * W;
+    }
+
+    Eigen::Vector3f GICP::LogSO3(const Eigen::Matrix3f& R) {
+        const float cos_theta = std::max(-1.0f, std::min(1.0f, (R.trace() - 1.0f) * 0.5f));
+        const float theta = std::acos(cos_theta);
+        Eigen::Vector3f w;
+        w << R(2, 1) - R(1, 2),
+             R(0, 2) - R(2, 0),
+             R(1, 0) - R(0, 1);
+        if (theta < 1e-6f) {
+            return 0.5f * w;
+        }
+        const float sin_theta = std::sin(theta);
+        if (std::abs(sin_theta) < 1e-6f) {
+            return 0.5f * theta * w.normalized();
+        }
+        return theta / (2.0f * sin_theta) * w;
+    }
+
+    Eigen::Matrix<float, 6, 1> GICP::PoseToDelta(const Eigen::Matrix3f& R, const Eigen::Vector3f& T) {
+        Eigen::Matrix<float, 6, 1> delta;
+        delta.head<3>() = LogSO3(R);
+        delta.tail<3>() = T;
+        return delta;
+    }
+
+    void GICP::DeltaToPose(const Eigen::Matrix<float, 6, 1>& delta,
+                           Eigen::Matrix3f& R,
+                           Eigen::Vector3f& T) {
+        R = ExpSO3(delta.head<3>());
+        T = delta.tail<3>();
+    }
+
+    bool GICP::IsStepWithinAALimit(const Eigen::Matrix<float, 6, 1>& step) {
+        const float rot_deg = step.head<3>().norm() * 180.0f / static_cast<float>(M_PI);
+        const float trans = step.tail<3>().norm();
+        return trans <= gicp_aa_max_translation_step && rot_deg <= gicp_aa_max_rotation_step_deg;
     }
 
     Eigen::Matrix<float, 6, 1> GICP::ApplyXicpConstraint(
@@ -64,7 +183,7 @@ namespace relocation {
         }
 
         if (constrained) {
-            std::cerr << "[GICP-XICP] Localizability constrained update, eigen scales: "
+            std::cerr << "[GICP-XICP] Triggered localizability constrained update, eigen scales: "
                       << scales.transpose() << std::endl;
         }
 
@@ -96,6 +215,7 @@ namespace relocation {
         for (size_t i = 0; i < processed_source->size(); i++) {
             m_SourcePC[i] = processed_source->points[i].getVector3fMap();
         }
+        m_SourceOriginalPC = m_SourcePC;
 
         m_TargetPC.resize(processed_target->size());
         for (size_t i = 0; i < processed_target->size(); i++) {
@@ -110,6 +230,7 @@ namespace relocation {
         m_TransVector = Eigen::Vector3f::Zero();
         m_LastError = std::numeric_limits<float>::max();
         m_LastValidCount = 0;
+        m_LastXicpTriggered = false;
         return true;
     }
 
@@ -136,6 +257,7 @@ namespace relocation {
         for (size_t i = 0; i < processed_source->size(); i++) {
             m_SourcePC[i] = processed_source->points[i].getVector3fMap();
         }
+        m_SourceOriginalPC = m_SourcePC;
 
         m_TargetPC.resize(targetPC_->size());
         for (size_t i = 0; i < targetPC_->size(); i++) {
@@ -150,6 +272,7 @@ namespace relocation {
         m_TransVector = Eigen::Vector3f::Zero();
         m_LastError = std::numeric_limits<float>::max();
         m_LastValidCount = 0;
+        m_LastXicpTriggered = false;
         return true;
     }
 
@@ -202,6 +325,51 @@ namespace relocation {
         return solver.eigenvectors() * evals.asDiagonal() * solver.eigenvectors().transpose();
     }
 
+    void GICP::UpdateTransformedSource(const Eigen::Matrix3f& R, const Eigen::Vector3f& T) {
+        if (m_SourcePC.size() != m_SourceOriginalPC.size()) {
+            m_SourcePC.resize(m_SourceOriginalPC.size());
+        }
+
+        #pragma omp parallel for
+        for (int i = 0; i < static_cast<int>(m_SourceOriginalPC.size()); i++) {
+            m_SourcePC[i] = R * m_SourceOriginalPC[i] + T;
+        }
+    }
+
+    float GICP::EvaluatePoseErrorWithFixedCorrespondences(
+        const Eigen::Matrix3f& R,
+        const Eigen::Vector3f& T,
+        const std::vector<int>& nn_indices,
+        const std::vector<bool>& valid_flag,
+        int& valid_count) const {
+        valid_count = 0;
+        if (m_SourceOriginalPC.empty() || m_TargetPC.empty() ||
+            nn_indices.size() != m_SourceOriginalPC.size() ||
+            valid_flag.size() != m_SourceOriginalPC.size()) {
+            return std::numeric_limits<float>::max();
+        }
+
+        float euclidean_error = 0.0f;
+        for (size_t i = 0; i < m_SourceOriginalPC.size(); ++i) {
+            if (!valid_flag[i]) continue;
+            const int nn_idx = nn_indices[i];
+            if (nn_idx < 0 || nn_idx >= static_cast<int>(m_TargetPC.size())) continue;
+
+            const Eigen::Vector3f source_pt = R * m_SourceOriginalPC[i] + T;
+            const float dist = (source_pt - m_TargetPC[nn_idx]).norm();
+            if (!std::isfinite(dist) || dist > m_MaxCorrespondenceDistance) {
+                continue;
+            }
+            euclidean_error += dist;
+            valid_count++;
+        }
+
+        if (valid_count == 0) {
+            return std::numeric_limits<float>::max();
+        }
+        return euclidean_error / static_cast<float>(valid_count);
+    }
+
     bool GICP::Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_) {
         const int N = static_cast<int>(m_SourcePC.size());
         if (N == 0 || m_TargetPC.empty()) return false;
@@ -215,6 +383,8 @@ namespace relocation {
         std::vector<float> dists(N, 0.0f);
         std::vector<float> correspondence_metrics(N, std::numeric_limits<float>::max());
         std::vector<bool> valid_flag(N, false);
+        AndersonAcceleration6 aa(gicp_aa_history_size);
+        bool aa_initialized = false;
 
         for (int iter = 0; iter < m_MaxIterations; iter++) {
             #pragma omp parallel for
@@ -319,26 +489,104 @@ namespace relocation {
                 std::cerr << "[GICP-XICP] Constrained update failed" << std::endl;
                 break;
             }
+            m_LastXicpTriggered = m_LastXicpTriggered || hessian_degenerate;
 
             const Eigen::Vector3f delta_rot = dx.head<3>();
             const Eigen::Vector3f delta_trans = dx.tail<3>();
             const Eigen::Matrix3f dR = ExpSO3(delta_rot);
 
-            m_RotatedMatrix = dR * m_RotatedMatrix;
-            m_TransVector = dR * m_TransVector + delta_trans;
+            Eigen::Matrix3f plain_R = dR * m_RotatedMatrix;
+            Eigen::Vector3f plain_T = dR * m_TransVector + delta_trans;
+            int plain_valid_count = 0;
+            float plain_error = EvaluatePoseErrorWithFixedCorrespondences(
+                plain_R, plain_T, nn_indices, valid_flag, plain_valid_count);
 
-            #pragma omp parallel for
-            for (int i = 0; i < N; i++) {
-                m_SourcePC[i] = dR * m_SourcePC[i] + delta_trans;
+            Eigen::Matrix3f accepted_R = plain_R;
+            Eigen::Vector3f accepted_T = plain_T;
+            float accepted_error = plain_error;
+            int accepted_valid_count = plain_valid_count;
+            Eigen::Matrix<float, 6, 1> accepted_step = dx;
+
+            if (m_UseAA) {
+                const Eigen::Matrix<float, 6, 1> plain_total_delta = PoseToDelta(plain_R, plain_T);
+                if (!aa_initialized) {
+                    aa.Init(plain_total_delta);
+                    aa_initialized = true;
+                } else if (iter < gicp_aa_start_iteration) {
+                    aa.Compute(plain_total_delta);
+                    aa.SetCurrent(plain_total_delta);
+                } else if (aa_initialized && iter >= gicp_aa_start_iteration) {
+                    const Eigen::Matrix<float, 6, 1> current_total_delta =
+                        PoseToDelta(m_RotatedMatrix, m_TransVector);
+                    Eigen::Matrix<float, 6, 1> aa_total_delta = aa.Compute(plain_total_delta);
+                    Eigen::Matrix<float, 6, 1> aa_step = aa_total_delta - current_total_delta;
+
+                    aa_step = ApplyXicpConstraint(aa_step, h_solver, max_eval, hessian_degenerate);
+                    const bool aa_step_ok = aa_step.allFinite() && IsStepWithinAALimit(aa_step);
+                    if (aa_step_ok) {
+                        aa_total_delta = current_total_delta + aa_step;
+
+                        Eigen::Matrix3f aa_R;
+                        Eigen::Vector3f aa_T;
+                        DeltaToPose(aa_total_delta, aa_R, aa_T);
+
+                        int aa_valid_count = 0;
+                        const float aa_error = EvaluatePoseErrorWithFixedCorrespondences(
+                            aa_R, aa_T, nn_indices, valid_flag, aa_valid_count);
+                        const bool enough_aa_inliers = aa_valid_count >= gicp_min_valid_correspondences;
+                        const bool improves_or_matches =
+                            std::isfinite(aa_error) && aa_error <= plain_error * gicp_aa_error_reject_ratio;
+
+                        if (enough_aa_inliers && improves_or_matches) {
+                            accepted_R = aa_R;
+                            accepted_T = aa_T;
+                            accepted_error = aa_error;
+                            accepted_valid_count = aa_valid_count;
+                            accepted_step = aa_step;
+                            aa.SetCurrent(aa_total_delta);
+                            if (gicp_aa_verbose) {
+                                std::cerr << "[GICP-AA] Accepted AA update, plain_error: " << plain_error
+                                          << ", aa_error: " << aa_error
+                                          << ", valid: " << aa_valid_count << std::endl;
+                            }
+                        } else {
+                            aa.SetCurrent(plain_total_delta);
+                            if (gicp_aa_verbose) {
+                                std::cerr << "[GICP-AA] Rejected AA update, plain_error: " << plain_error
+                                          << ", aa_error: " << aa_error
+                                          << ", aa_valid: " << aa_valid_count << std::endl;
+                            }
+                        }
+                    } else {
+                        aa.SetCurrent(plain_total_delta);
+                        if (gicp_aa_verbose) {
+                            std::cerr << "[GICP-AA] Rejected AA update by step limit, trans: "
+                                      << aa_step.tail<3>().norm()
+                                      << ", rot_deg: "
+                                      << aa_step.head<3>().norm() * 180.0f / static_cast<float>(M_PI)
+                                      << std::endl;
+                        }
+                    }
+                }
+            }
+
+            m_RotatedMatrix = accepted_R;
+            m_TransVector = accepted_T;
+            UpdateTransformedSource(m_RotatedMatrix, m_TransVector);
+
+            if (accepted_valid_count < gicp_min_valid_correspondences || !std::isfinite(accepted_error)) {
+                std::cerr << "[GICP] Accepted update has too few correspondences: "
+                          << accepted_valid_count << std::endl;
+                break;
             }
 
             current_objective_error /= static_cast<float>(valid_count);
             current_euclidean_error /= static_cast<float>(valid_count);
-            final_error = current_euclidean_error;
-            final_valid_count = valid_count;
+            final_error = accepted_error;
+            final_valid_count = accepted_valid_count;
             has_valid_solution = true;
 
-            if (dx.norm() < gicp_min_step_norm ||
+            if (accepted_step.norm() < gicp_min_step_norm ||
                 std::abs(prev_objective_error - current_objective_error) < gicp_min_error_delta) {
                 break;
             }

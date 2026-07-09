@@ -62,6 +62,7 @@ struct TestGicpCandidateResult {
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
+    bool xicp_triggered = false;
 };
 
 enum AppState { EDIT_MODE, TEST_MODE };
@@ -331,6 +332,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         result.T = T_gicp;
         result.gicp_error = gicp_error;
         result.valid_count = valid_count;
+        result.xicp_triggered = loc_module.WasLastXicpTriggered();
         gicp_results.push_back(result);
 
         double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(valid_count) / static_cast<double>(query_cloud->size());
@@ -395,6 +397,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
          << ", Ratio: " << valid_ratio
          << ", RoughUnique: " << rough_unique
          << ", GicpUnique: " << gicp_unique
+         << ", CoarseXICP: " << best.xicp_triggered
          << " (" << fine_time << "ms)" << endl;
 
     if (!enough_inliers) {
@@ -423,6 +426,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         show_relocation_window(temp);
         return;
     }
+    const bool final_xicp_triggered = loc_module.WasLastXicpTriggered();
 
     auto t_fine_final_end = chrono::steady_clock::now();
     fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_final_end - t_fine_start).count();
@@ -434,15 +438,20 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
 
     cout << "[接受] X: " << fine_x << ", Y: " << fine_y << ", Yaw: " << fine_yaw
          << "°, FinalGICP: " << final_gicp_error
-         << ", FinalValid: " << final_valid_count << endl;
+         << ", FinalValid: " << final_valid_count
+         << ", CoarseXICP: " << best.xicp_triggered
+         << ", FinalXICP: " << final_xicp_triggered << endl;
     cout << "[误差分析] 距离误差: " << sqrt(pow(fine_x - gt_x, 2) + pow(fine_y - gt_y, 2)) << "m" << endl;
 
     draw_arrow(temp, fine_x, fine_y, fine_yaw, cv::Scalar(0, 200, 0));         
     
     string info1 = "Red: GT | Orange: Iris candidates | Green: accepted GICP";
     string info2 = "Iris: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)fine_time) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
+    string info3 = string("XICP: coarse ") + (best.xicp_triggered ? "ON" : "OFF") + ", final " + (final_xicp_triggered ? "ON" : "OFF");
     cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
+    cv::putText(temp, info3, cv::Point(20, 110), cv::FONT_HERSHEY_SIMPLEX, 0.8,
+                final_xicp_triggered || best.xicp_triggered ? cv::Scalar(0, 0, 200) : cv::Scalar(50, 50, 50), 2);
     show_relocation_window(temp);
 }
 

@@ -209,6 +209,7 @@ namespace relocation {
                                   double& out_match_error, int& out_valid_count,
                                   int max_iterations, float voxel_leaf_size)
     {
+        m_last_xicp_triggered = false;
         if (!local_cloud || local_cloud->empty() || !m_global_map) return false;
         out_match_error = std::numeric_limits<double>::max();
         out_valid_count = 0;
@@ -250,6 +251,7 @@ namespace relocation {
                 T = R_gicp * T + T_gicp;
                 out_match_error = gicp.GetLastError();
                 out_valid_count = gicp.GetLastValidCount();
+                m_last_xicp_triggered = gicp.WasLastXicpTriggered();
                 return true;
             }
         }

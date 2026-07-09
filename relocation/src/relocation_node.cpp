@@ -65,6 +65,7 @@ struct GicpCandidateResult {
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
+    bool xicp_triggered = false;
 };
 
 std::string StripPackagePrefix(const std::filesystem::path& path)
@@ -570,6 +571,7 @@ private:
                     result.T = T_prec;
                     result.gicp_error = gicp_error;
                     result.valid_count = valid_count;
+                    result.xicp_triggered = loc_system_.WasLastXicpTriggered();
                     gicp_results.push_back(result);
 
                     double valid_ratio = cloud_body_filtered->empty()
@@ -638,6 +640,7 @@ private:
                                     rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index);
                         return;
                     }
+                    const bool final_xicp_triggered = loc_system_.WasLastXicpTriggered();
 
                     is_relocated_ = true;
                     trigger_reloc_ = false; 
@@ -652,9 +655,10 @@ private:
                     last_marker_yaw_ = std::atan2(final_R(1, 0), final_R(0, 0));
 
                     RCLCPP_INFO(this->get_logger(),
-                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, Map系下位姿: X:%.2f, Y:%.2f",
+                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, CoarseXICP:%d, FinalXICP:%d, Map系下位姿: X:%.2f, Y:%.2f",
                                 rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index, best.rough.rough_score,
-                                best.gicp_error, final_gicp_error, final_valid_count, valid_ratio, rough_unique, gicp_unique, final_T.x(), final_T.y());
+                                best.gicp_error, final_gicp_error, final_valid_count, valid_ratio, rough_unique, gicp_unique,
+                                best.xicp_triggered, final_xicp_triggered, final_T.x(), final_T.y());
 
                     PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                     PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
@@ -674,6 +678,10 @@ private:
                 T_map_body.linear() = R_guess;
                 T_map_body.translation() = T_guess;
                 T_map_lio_ = T_map_body * T_lio_world_body.inverse();
+                if (loc_system_.WasLastXicpTriggered()) {
+                    RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
+                                         "局部定位 GICP 触发 X-ICP 退化约束。");
+                }
 
                 last_marker_x_ = T_guess.x();
                 last_marker_y_ = T_guess.y();

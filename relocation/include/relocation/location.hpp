@@ -66,6 +66,7 @@ namespace relocation {
                             double& out_match_error, int& out_valid_count,
                             int max_iterations, float voxel_leaf_size);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud);
+        bool WasLastXicpTriggered() const { return m_last_xicp_triggered; }
 
     private:
         bool LoadDatabase(const std::string& filename);
@@ -79,6 +80,7 @@ namespace relocation {
         double m_pre_x = 0.0;
         double m_pre_y = 0.0;
         double m_pre_yaw = 0.0;
+        bool m_last_xicp_triggered = false;
     };
 
 }

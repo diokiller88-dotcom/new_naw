@@ -11,7 +11,7 @@ namespace relocation {
 
     constexpr int gicp_max_iterations = 20;
     constexpr float gicp_max_corr_dist = 2.0f;
-    constexpr float gicp_voxel_leaf_size = 0.05f;
+    constexpr float gicp_voxel_leaf_size = 0.2f;
     constexpr int gicp_covariance_k = 20;
     constexpr int gicp_correspondence_k = 8;
     constexpr float gicp_covariance_regularization = 1e-3f;
@@ -23,6 +23,13 @@ namespace relocation {
     constexpr float gicp_xicp_unobservable_eigen_ratio = 1e-6f;
     constexpr float gicp_xicp_partial_eigen_ratio = 1e-4f;
     constexpr float gicp_xicp_partial_min_scale = 0.2f;
+    constexpr bool gicp_use_aa = true;
+    constexpr int gicp_aa_history_size = 5;
+    constexpr int gicp_aa_start_iteration = 2;
+    constexpr float gicp_aa_max_translation_step = 0.5f;
+    constexpr float gicp_aa_max_rotation_step_deg = 5.0f;
+    constexpr float gicp_aa_error_reject_ratio = 1.0f;
+    constexpr bool gicp_aa_verbose = false;
 
     class GICP {
     public:
@@ -40,6 +47,7 @@ namespace relocation {
         void SetCovarianceK(int k) { m_CovarianceK = k; }
         void SetCorrespondenceK(int k) { m_CorrespondenceK = k; }
         void SetCovarianceRegularization(float reg) { m_CovarianceRegularization = reg; }
+        void SetUseAA(bool use_aa) { m_UseAA = use_aa; }
 
         bool Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                   const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_);
@@ -49,11 +57,18 @@ namespace relocation {
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
         float GetLastError() const { return m_LastError; }
         int GetLastValidCount() const { return m_LastValidCount; }
+        bool WasLastXicpTriggered() const { return m_LastXicpTriggered; }
         std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
 
     private:
         static Eigen::Matrix3f Skew(const Eigen::Vector3f& v);
         static Eigen::Matrix3f ExpSO3(const Eigen::Vector3f& w);
+        static Eigen::Vector3f LogSO3(const Eigen::Matrix3f& R);
+        static Eigen::Matrix<float, 6, 1> PoseToDelta(const Eigen::Matrix3f& R, const Eigen::Vector3f& T);
+        static void DeltaToPose(const Eigen::Matrix<float, 6, 1>& delta,
+                                Eigen::Matrix3f& R,
+                                Eigen::Vector3f& T);
+        static bool IsStepWithinAALimit(const Eigen::Matrix<float, 6, 1>& step);
         static Eigen::Matrix<float, 6, 1> ApplyXicpConstraint(
             const Eigen::Matrix<float, 6, 1>& dx,
             const Eigen::SelfAdjointEigenSolver<Eigen::Matrix<float, 6, 6>>& h_solver,
@@ -62,6 +77,13 @@ namespace relocation {
 
         Eigen::Matrix3f ComputeCovariance(const std::vector<Eigen::Vector3f>& cloud,
                                           const std::vector<int>& indices) const;
+        void UpdateTransformedSource(const Eigen::Matrix3f& R, const Eigen::Vector3f& T);
+        float EvaluatePoseErrorWithFixedCorrespondences(
+            const Eigen::Matrix3f& R,
+            const Eigen::Vector3f& T,
+            const std::vector<int>& nn_indices,
+            const std::vector<bool>& valid_flag,
+            int& valid_count) const;
 
         int m_MaxIterations;
         float m_MaxCorrespondenceDistance;
@@ -69,7 +91,9 @@ namespace relocation {
         int m_CovarianceK;
         int m_CorrespondenceK;
         float m_CovarianceRegularization;
+        bool m_UseAA = gicp_use_aa;
 
+        std::vector<Eigen::Vector3f> m_SourceOriginalPC;
         std::vector<Eigen::Vector3f> m_SourcePC;
         std::vector<Eigen::Vector3f> m_TargetPC;
         std::vector<Eigen::Matrix3f> m_SourceCov;
@@ -80,6 +104,7 @@ namespace relocation {
         Eigen::Vector3f m_TransVector;
         float m_LastError = std::numeric_limits<float>::max();
         int m_LastValidCount = 0;
+        bool m_LastXicpTriggered = false;
     };
 
 }
