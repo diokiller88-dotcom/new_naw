@@ -3,6 +3,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
 #include <limits>
 #include <vector>
 
@@ -19,6 +20,9 @@ namespace relocation {
     constexpr float gicp_hessian_min_eigenvalue = 1e-6f;
     constexpr float gicp_hessian_max_condition = 1e6f;
     constexpr float gicp_hessian_damping = 1e-3f;
+    constexpr float gicp_xicp_unobservable_eigen_ratio = 1e-6f;
+    constexpr float gicp_xicp_partial_eigen_ratio = 1e-4f;
+    constexpr float gicp_xicp_partial_min_scale = 0.2f;
 
     class GICP {
     public:
@@ -50,6 +54,11 @@ namespace relocation {
     private:
         static Eigen::Matrix3f Skew(const Eigen::Vector3f& v);
         static Eigen::Matrix3f ExpSO3(const Eigen::Vector3f& w);
+        static Eigen::Matrix<float, 6, 1> ApplyXicpConstraint(
+            const Eigen::Matrix<float, 6, 1>& dx,
+            const Eigen::SelfAdjointEigenSolver<Eigen::Matrix<float, 6, 6>>& h_solver,
+            float max_eval,
+            bool hessian_degenerate);
 
         Eigen::Matrix3f ComputeCovariance(const std::vector<Eigen::Vector3f>& cloud,
                                           const std::vector<int>& indices) const;

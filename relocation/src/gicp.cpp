@@ -32,6 +32,45 @@ namespace relocation {
         return Eigen::Matrix3f::Identity() + a * W + b * W * W;
     }
 
+    Eigen::Matrix<float, 6, 1> GICP::ApplyXicpConstraint(
+        const Eigen::Matrix<float, 6, 1>& dx,
+        const Eigen::SelfAdjointEigenSolver<Eigen::Matrix<float, 6, 6>>& h_solver,
+        float max_eval,
+        bool hessian_degenerate) {
+        if (!hessian_degenerate || max_eval <= gicp_hessian_min_eigenvalue || !dx.allFinite()) {
+            return dx;
+        }
+
+        const Eigen::Matrix<float, 6, 6> eig_vecs = h_solver.eigenvectors();
+        const Eigen::Matrix<float, 6, 1> eig_vals = h_solver.eigenvalues();
+        Eigen::Matrix<float, 6, 1> dx_eigen = eig_vecs.transpose() * dx;
+        Eigen::Matrix<float, 6, 1> scales = Eigen::Matrix<float, 6, 1>::Ones();
+        bool constrained = false;
+
+        for (int i = 0; i < 6; ++i) {
+            const float eval = std::max(0.0f, eig_vals[i]);
+            const float ratio = eval / max_eval;
+            if (eval < gicp_hessian_min_eigenvalue || ratio < gicp_xicp_unobservable_eigen_ratio) {
+                scales[i] = 0.0f;
+            } else if (ratio < gicp_xicp_partial_eigen_ratio) {
+                const float linear_scale = ratio / gicp_xicp_partial_eigen_ratio;
+                scales[i] = std::max(gicp_xicp_partial_min_scale, std::min(1.0f, linear_scale));
+            }
+
+            if (scales[i] < 1.0f) {
+                constrained = true;
+                dx_eigen[i] *= scales[i];
+            }
+        }
+
+        if (constrained) {
+            std::cerr << "[GICP-XICP] Localizability constrained update, eigen scales: "
+                      << scales.transpose() << std::endl;
+        }
+
+        return eig_vecs * dx_eigen;
+    }
+
     bool GICP::Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                     const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_) {
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
@@ -254,7 +293,9 @@ namespace relocation {
             const float min_eval = h_evals.minCoeff();
             const float max_eval = h_evals.maxCoeff();
             const float condition = max_eval / std::max(min_eval, gicp_hessian_min_eigenvalue);
-            if (min_eval < gicp_hessian_min_eigenvalue || condition > gicp_hessian_max_condition) {
+            const bool hessian_degenerate =
+                min_eval < gicp_hessian_min_eigenvalue || condition > gicp_hessian_max_condition;
+            if (hessian_degenerate) {
                 const float damping = std::max(gicp_hessian_damping, max_eval * 1e-6f);
                 H_solve += damping * Eigen::Matrix<float, 6, 6>::Identity();
                 std::cerr << "[GICP] Hessian degenerate, min_eval: " << min_eval
@@ -271,6 +312,11 @@ namespace relocation {
             Eigen::Matrix<float, 6, 1> dx = -ldlt.solve(b);
             if (!dx.allFinite()) {
                 std::cerr << "[GICP] Linear solve failed" << std::endl;
+                break;
+            }
+            dx = ApplyXicpConstraint(dx, h_solver, max_eval, hessian_degenerate);
+            if (!dx.allFinite()) {
+                std::cerr << "[GICP-XICP] Constrained update failed" << std::endl;
                 break;
             }
 
