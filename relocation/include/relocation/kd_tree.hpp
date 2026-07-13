@@ -15,8 +15,8 @@ namespace relocation {
         int CloudIdx = -1;
         int Axis = -1;
         float AxisTh = 0.0f; 
-        KDNode* Left = nullptr;
-        KDNode* Right = nullptr;
+        std::unique_ptr<KDNode> Left;
+        std::unique_ptr<KDNode> Right;
     };
 
     class Distance4Node {
@@ -51,7 +51,7 @@ namespace relocation {
 
     protected:
         void Reset();
-        KDNode* Insert(const std::vector<int>& idx_, KDNode* node_);
+        std::unique_ptr<KDNode> Insert(const std::vector<int>& idx_);
         void SearchKNearestRecursive(const Eigen::Vector3f& point_, const KDNode* node_, int k, std::priority_queue<Distance4Node>& result_);
         
         inline double CalculateDistance(const Eigen::Vector3f& p1, const Eigen::Vector3f& p2) const {
@@ -60,7 +60,7 @@ namespace relocation {
 
     private:
         std::vector<Eigen::Vector3f> m_Cloud;
-        std::shared_ptr<KDNode> m_Root = nullptr;
+        std::unique_ptr<KDNode> m_Root;
         int m_NodeNum = 0;
     };
 

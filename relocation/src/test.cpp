@@ -62,6 +62,7 @@ struct TestGicpCandidateResult {
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
+    int source_point_count = 0;
     bool xicp_triggered = false;
 };
 
@@ -332,10 +333,13 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         result.T = T_gicp;
         result.gicp_error = gicp_error;
         result.valid_count = valid_count;
+        result.source_point_count = loc_module.GetLastSourcePointCount();
         result.xicp_triggered = loc_module.WasLastXicpTriggered();
         gicp_results.push_back(result);
 
-        double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(valid_count) / static_cast<double>(query_cloud->size());
+        double valid_ratio = result.source_point_count <= 0
+                                 ? 0.0
+                                 : static_cast<double>(valid_count) / static_cast<double>(result.source_point_count);
         bool enough_inliers = valid_count >= test_min_gicp_valid_count &&
                               valid_ratio >= test_min_gicp_valid_ratio;
         bool rough_unique_now = rough_candidates.size() < 2 ||
@@ -385,7 +389,9 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
                                                 gicp_results[1].gicp_error,
                                                 test_min_gicp_error_gap,
                                                 test_min_gicp_error_ratio);
-    double valid_ratio = query_cloud->empty() ? 0.0 : static_cast<double>(best.valid_count) / static_cast<double>(query_cloud->size());
+    double valid_ratio = best.source_point_count <= 0
+                             ? 0.0
+                             : static_cast<double>(best.valid_count) / static_cast<double>(best.source_point_count);
     bool enough_inliers = best.valid_count >= test_min_gicp_valid_count &&
                           valid_ratio >= test_min_gicp_valid_ratio;
 
@@ -394,6 +400,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
          << ", BestHist: " << best.rough.hist_index
          << ", Error: " << best.gicp_error
          << ", Valid: " << best.valid_count
+         << ", Source: " << best.source_point_count
          << ", Ratio: " << valid_ratio
          << ", RoughUnique: " << rough_unique
          << ", GicpUnique: " << gicp_unique

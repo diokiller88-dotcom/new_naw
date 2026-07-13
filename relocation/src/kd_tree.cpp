@@ -30,13 +30,13 @@ namespace relocation {
         m_Cloud = cloud_;
         std::vector<int> temp_index(m_Cloud.size());
         std::iota(temp_index.begin(), temp_index.end(), 0);
-        m_Root.reset(Insert(temp_index, nullptr));
+        m_Root = Insert(temp_index);
         return true;
     }
 
     void KDTree::Clear() {
         m_Cloud.clear();
-        m_Root = nullptr;
+        m_Root.reset();
         m_NodeNum = 0;
     }
 
@@ -44,9 +44,9 @@ namespace relocation {
         m_NodeNum = 0;
     }
 
-    KDNode* KDTree::Insert(const std::vector<int>& idx_, KDNode* node_) {
+    std::unique_ptr<KDNode> KDTree::Insert(const std::vector<int>& idx_) {
         if (idx_.empty()) return nullptr;
-        node_ = new KDNode();
+        auto node_ = std::make_unique<KDNode>();
         node_->TreeNodeIdx = m_NodeNum++;
 
         if (idx_.size() == 1) {
@@ -92,8 +92,8 @@ namespace relocation {
             node_->AxisTh = m_Cloud[sorted_idx[mid]][max_axis];
         }
 
-        node_->Left = Insert(left_idx, node_->Left);
-        node_->Right = Insert(right_idx, node_->Right);
+        node_->Left = Insert(left_idx);
+        node_->Right = Insert(right_idx);
         return node_;
     }
 
@@ -111,8 +111,12 @@ namespace relocation {
             return;
         }
 
-        KDNode* first_branch = (point_[node_->Axis] < node_->AxisTh) ? node_->Left : node_->Right;
-        KDNode* second_branch = (point_[node_->Axis] < node_->AxisTh) ? node_->Right : node_->Left;
+        const KDNode* first_branch = (point_[node_->Axis] < node_->AxisTh)
+                                         ? node_->Left.get()
+                                         : node_->Right.get();
+        const KDNode* second_branch = (point_[node_->Axis] < node_->AxisTh)
+                                          ? node_->Right.get()
+                                          : node_->Left.get();
 
         SearchKNearestRecursive(point_, first_branch, k, result_);
 

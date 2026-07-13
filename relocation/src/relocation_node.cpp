@@ -65,6 +65,7 @@ struct GicpCandidateResult {
     Eigen::Vector3d T = Eigen::Vector3d::Zero();
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
+    int source_point_count = 0;
     bool xicp_triggered = false;
 };
 
@@ -571,12 +572,13 @@ private:
                     result.T = T_prec;
                     result.gicp_error = gicp_error;
                     result.valid_count = valid_count;
+                    result.source_point_count = loc_system_.GetLastSourcePointCount();
                     result.xicp_triggered = loc_system_.WasLastXicpTriggered();
                     gicp_results.push_back(result);
 
-                    double valid_ratio = cloud_body_filtered->empty()
+                    double valid_ratio = result.source_point_count <= 0
                                              ? 0.0
-                                             : static_cast<double>(valid_count) / static_cast<double>(cloud_body_filtered->size());
+                                             : static_cast<double>(valid_count) / static_cast<double>(result.source_point_count);
                     bool enough_inliers = valid_count >= reloc_min_gicp_valid_count &&
                                           valid_ratio >= reloc_min_gicp_valid_ratio;
                     bool rough_unique_now = rough_candidates.size() < 2 ||
@@ -607,16 +609,17 @@ private:
                                                                 gicp_results[1].gicp_error,
                                                                 reloc_min_gicp_error_gap,
                                                                 reloc_min_gicp_error_ratio);
-                    double valid_ratio = cloud_body_filtered->empty()
+                    double valid_ratio = best.source_point_count <= 0
                                              ? 0.0
-                                             : static_cast<double>(best.valid_count) / static_cast<double>(cloud_body_filtered->size());
+                                             : static_cast<double>(best.valid_count) / static_cast<double>(best.source_point_count);
                     bool enough_inliers = best.valid_count >= reloc_min_gicp_valid_count &&
                                           valid_ratio >= reloc_min_gicp_valid_ratio;
 
                     if (!enough_inliers) {
                         RCLCPP_WARN(this->get_logger(),
-                                    "拒绝重定位：GICP有效匹配不足。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, Valid:%d, Ratio:%.3f, Error:%.4f",
-                                    rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.valid_count, valid_ratio, best.gicp_error);
+                                    "拒绝重定位：GICP有效匹配不足。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, Valid:%d, Source:%d, Ratio:%.3f, Error:%.4f",
+                                    rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.valid_count,
+                                    best.source_point_count, valid_ratio, best.gicp_error);
                         return;
                     }
 
@@ -655,9 +658,9 @@ private:
                     last_marker_yaw_ = std::atan2(final_R(1, 0), final_R(0, 0));
 
                     RCLCPP_INFO(this->get_logger(),
-                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, CoarseXICP:%d, FinalXICP:%d, Map系下位姿: X:%.2f, Y:%.2f",
+                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, CoarseSource:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, CoarseXICP:%d, FinalXICP:%d, Map系下位姿: X:%.2f, Y:%.2f",
                                 rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index, best.rough.rough_score,
-                                best.gicp_error, final_gicp_error, final_valid_count, valid_ratio, rough_unique, gicp_unique,
+                                best.gicp_error, final_gicp_error, final_valid_count, best.source_point_count, valid_ratio, rough_unique, gicp_unique,
                                 best.xicp_triggered, final_xicp_triggered, final_T.x(), final_T.y());
 
                     PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);

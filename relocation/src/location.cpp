@@ -209,6 +209,7 @@ namespace relocation {
                                   double& out_match_error, int& out_valid_count,
                                   int max_iterations, float voxel_leaf_size)
     {
+        m_last_source_point_count = 0;
         m_last_xicp_triggered = false;
         if (!local_cloud || local_cloud->empty() || !m_global_map) return false;
         out_match_error = std::numeric_limits<double>::max();
@@ -244,6 +245,7 @@ namespace relocation {
                                  ? gicp.Init(source_aligned, target_map)
                                  : gicp.InitWithTargetCovariances(source_aligned, target_map, target_covariances);
         if (init_ok) {
+            m_last_source_point_count = gicp.GetSourcePointCount();
             Eigen::Matrix3d R_gicp;
             Eigen::Vector3d T_gicp;
             if (gicp.Solve(R_gicp, T_gicp)) {

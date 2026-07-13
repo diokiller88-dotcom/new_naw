@@ -20,7 +20,7 @@ find_package(pcl_conversions REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(custom_msgs REQUIRED) # 自定义消息包
 # [新增] 查找 visualization_msgs
-find_package(visualization_msgs REQUIRED) 
+find_package(visualization_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
 # 查找第三方包
@@ -39,6 +39,7 @@ add_library(relocation_core SHARED
   src/ann_kdtree.cpp
   src/iris.cpp
   src/location.cpp
+  src/scan_context.cpp
 )
 
 target_include_directories(relocation_core PUBLIC
@@ -51,12 +52,15 @@ target_include_directories(relocation_core PUBLIC
 target_link_libraries(relocation_core
   ${OpenCV_LIBS}
   ${PCL_LIBRARIES}
-  OpenMP::OpenMP_CXX 
+  OpenMP::OpenMP_CXX
 )
 
 # 2. 编译测试节点
 add_executable(test_node src/test.cpp)
 target_link_libraries(test_node relocation_core)
+
+add_executable(scan_context_test src/scan_context_test.cpp)
+target_link_libraries(scan_context_test relocation_core)
 
 # 3. 编译重定位 ROS 2 节点
 add_executable(relocation_node src/relocation_node.cpp)
@@ -78,7 +82,7 @@ ament_target_dependencies(relocation_node
 target_link_libraries(relocation_node relocation_core ${PCL_LIBRARIES})
 
 # 安装规则
-install(TARGETS relocation_core test_node relocation_node
+install(TARGETS relocation_core test_node scan_context_test relocation_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -92,7 +96,13 @@ install(DIRECTORY PCD/
   DESTINATION share/${PROJECT_NAME}/PCD
 )
 
+install(FILES Readme.md SCAN_CONTEXT_PLUS_PLUS.md
+  DESTINATION share/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
+  enable_testing()
+  add_test(NAME scan_context_standalone COMMAND scan_context_test)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)

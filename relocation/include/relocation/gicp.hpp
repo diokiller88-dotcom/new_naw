@@ -57,6 +57,7 @@ namespace relocation {
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
         float GetLastError() const { return m_LastError; }
         int GetLastValidCount() const { return m_LastValidCount; }
+        int GetSourcePointCount() const { return static_cast<int>(m_SourcePC.size()); }
         bool WasLastXicpTriggered() const { return m_LastXicpTriggered; }
         std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
 
