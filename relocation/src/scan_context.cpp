@@ -1,7 +1,10 @@
 #include "relocation/scan_context.hpp"
 #include <pcl/filters/voxel_grid.h>
 #include <algorithm>
+#include <cstdint>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
 #include <limits>
 #include <stdexcept>
 #include <unordered_set>
@@ -14,6 +17,42 @@ namespace {
 constexpr float kPi = 3.14159265358979323846f;
 constexpr float kTwoPi = 2.0f * kPi;
 constexpr float kNormEpsilon = 1e-6f;
+constexpr char kDatabaseMagic[8] = {'S', 'C', 'D', 'B', '0', '0', '1', '\0'};
+constexpr std::uint32_t kDatabaseVersion = 1;
+
+template<typename T>
+bool WriteBinary(std::ostream& stream, const T& value) {
+    stream.write(reinterpret_cast<const char*>(&value), sizeof(T));
+    return stream.good();
+}
+
+template<typename T>
+bool ReadBinary(std::istream& stream, T& value) {
+    stream.read(reinterpret_cast<char*>(&value), sizeof(T));
+    return stream.good();
+}
+
+bool NearlyEqual(float lhs, float rhs) {
+    return std::abs(lhs - rhs) <= 1e-6f;
+}
+
+bool DescriptorConfigMatches(const ScanContextConfig& lhs, const ScanContextConfig& rhs) {
+    return lhs.type == rhs.type &&
+           lhs.rows == rhs.rows &&
+           lhs.columns == rhs.columns &&
+           NearlyEqual(lhs.min_radius, rhs.min_radius) &&
+           NearlyEqual(lhs.max_radius, rhs.max_radius) &&
+           NearlyEqual(lhs.min_x, rhs.min_x) &&
+           NearlyEqual(lhs.max_x, rhs.max_x) &&
+           NearlyEqual(lhs.min_y, rhs.min_y) &&
+           NearlyEqual(lhs.max_y, rhs.max_y) &&
+           NearlyEqual(lhs.min_z, rhs.min_z) &&
+           NearlyEqual(lhs.max_z, rhs.max_z) &&
+           NearlyEqual(lhs.height_offset, rhs.height_offset) &&
+           NearlyEqual(lhs.voxel_leaf_size, rhs.voxel_leaf_size) &&
+           lhs.enable_augmentation == rhs.enable_augmentation &&
+           NearlyEqual(lhs.polar_lateral_augmentation, rhs.polar_lateral_augmentation);
+}
 
 int WrapIndex(int index, int size) {
     index %= size;
@@ -45,6 +84,12 @@ Eigen::VectorXf CircularShiftVector(const Eigen::VectorXf& vector, int shift) {
 }
 
 } // namespace
+
+std::string MakeScanContextDatabasePath(const std::string& iris_database_path) {
+    const std::filesystem::path iris_path(iris_database_path);
+    const std::string stem = iris_path.stem().empty() ? "history_db" : iris_path.stem().string();
+    return (iris_path.parent_path() / (stem + "_sc.bin")).string();
+}
 
 struct ScanContextPlusPlus::KeyIndexNode {
     int descriptor_index = -1;
@@ -404,6 +449,174 @@ void ScanContextPlusPlus::AddDescriptor(const ScanContextDescriptor& descriptor)
     m_IndexDirty = true;
 }
 
+bool ScanContextPlusPlus::SaveDatabase(const std::string& filename) const {
+    if (filename.empty() || m_Descriptors.empty()) {
+        return false;
+    }
+
+    std::ofstream output(filename, std::ios::binary | std::ios::trunc);
+    if (!output.is_open()) {
+        return false;
+    }
+
+    output.write(kDatabaseMagic, sizeof(kDatabaseMagic));
+    const std::int32_t type = static_cast<std::int32_t>(m_Config.type);
+    const std::int32_t rows = m_Config.rows;
+    const std::int32_t columns = m_Config.columns;
+    const std::int32_t candidate_count = m_Config.candidate_count;
+    const std::int32_t alignment_radius = m_Config.alignment_search_radius;
+    const std::uint8_t augmentation = m_Config.enable_augmentation ? 1 : 0;
+    const std::uint64_t descriptor_count = m_Descriptors.size();
+    if (!WriteBinary(output, kDatabaseVersion) ||
+        !WriteBinary(output, type) ||
+        !WriteBinary(output, rows) ||
+        !WriteBinary(output, columns) ||
+        !WriteBinary(output, m_Config.min_radius) ||
+        !WriteBinary(output, m_Config.max_radius) ||
+        !WriteBinary(output, m_Config.min_x) ||
+        !WriteBinary(output, m_Config.max_x) ||
+        !WriteBinary(output, m_Config.min_y) ||
+        !WriteBinary(output, m_Config.max_y) ||
+        !WriteBinary(output, m_Config.min_z) ||
+        !WriteBinary(output, m_Config.max_z) ||
+        !WriteBinary(output, m_Config.height_offset) ||
+        !WriteBinary(output, m_Config.voxel_leaf_size) ||
+        !WriteBinary(output, candidate_count) ||
+        !WriteBinary(output, alignment_radius) ||
+        !WriteBinary(output, m_Config.distance_threshold) ||
+        !WriteBinary(output, augmentation) ||
+        !WriteBinary(output, m_Config.polar_lateral_augmentation) ||
+        !WriteBinary(output, descriptor_count)) {
+        return false;
+    }
+
+    for (const auto& descriptor : m_Descriptors) {
+        const std::int32_t place_id = descriptor.place_id;
+        const std::int32_t variant = static_cast<std::int32_t>(descriptor.variant);
+        const std::int32_t matrix_rows = descriptor.matrix.rows();
+        const std::int32_t matrix_columns = descriptor.matrix.cols();
+        if (!WriteBinary(output, place_id) ||
+            !WriteBinary(output, variant) ||
+            !WriteBinary(output, descriptor.virtual_lateral_shift) ||
+            !WriteBinary(output, descriptor.heading_offset_rad) ||
+            !WriteBinary(output, matrix_rows) ||
+            !WriteBinary(output, matrix_columns)) {
+            return false;
+        }
+        for (int row = 0; row < matrix_rows; ++row) {
+            for (int column = 0; column < matrix_columns; ++column) {
+                if (!WriteBinary(output, descriptor.matrix(row, column))) {
+                    return false;
+                }
+            }
+        }
+    }
+    return output.good();
+}
+
+bool ScanContextPlusPlus::LoadDatabase(const std::string& filename) {
+    std::ifstream input(filename, std::ios::binary);
+    if (!input.is_open()) {
+        return false;
+    }
+
+    char magic[sizeof(kDatabaseMagic)]{};
+    input.read(magic, sizeof(magic));
+    if (!input.good() || !std::equal(std::begin(magic), std::end(magic), std::begin(kDatabaseMagic))) {
+        return false;
+    }
+
+    std::uint32_t version = 0;
+    std::int32_t type = 0;
+    std::int32_t rows = 0;
+    std::int32_t columns = 0;
+    std::int32_t candidate_count = 0;
+    std::int32_t alignment_radius = 0;
+    std::uint8_t augmentation = 0;
+    std::uint64_t descriptor_count = 0;
+    ScanContextConfig file_config;
+    if (!ReadBinary(input, version) ||
+        !ReadBinary(input, type) ||
+        !ReadBinary(input, rows) ||
+        !ReadBinary(input, columns) ||
+        !ReadBinary(input, file_config.min_radius) ||
+        !ReadBinary(input, file_config.max_radius) ||
+        !ReadBinary(input, file_config.min_x) ||
+        !ReadBinary(input, file_config.max_x) ||
+        !ReadBinary(input, file_config.min_y) ||
+        !ReadBinary(input, file_config.max_y) ||
+        !ReadBinary(input, file_config.min_z) ||
+        !ReadBinary(input, file_config.max_z) ||
+        !ReadBinary(input, file_config.height_offset) ||
+        !ReadBinary(input, file_config.voxel_leaf_size) ||
+        !ReadBinary(input, candidate_count) ||
+        !ReadBinary(input, alignment_radius) ||
+        !ReadBinary(input, file_config.distance_threshold) ||
+        !ReadBinary(input, augmentation) ||
+        !ReadBinary(input, file_config.polar_lateral_augmentation) ||
+        !ReadBinary(input, descriptor_count)) {
+        return false;
+    }
+    file_config.type = static_cast<ScanContextType>(type);
+    file_config.rows = rows;
+    file_config.columns = columns;
+    file_config.candidate_count = candidate_count;
+    file_config.alignment_search_radius = alignment_radius;
+    file_config.enable_augmentation = augmentation != 0;
+    if (version != kDatabaseVersion ||
+        descriptor_count == 0 ||
+        descriptor_count > 100000000 ||
+        !DescriptorConfigMatches(file_config, m_Config)) {
+        return false;
+    }
+
+    Clear();
+    try {
+        for (std::uint64_t i = 0; i < descriptor_count; ++i) {
+            std::int32_t place_id = -1;
+            std::int32_t variant = 0;
+            std::int32_t matrix_rows = 0;
+            std::int32_t matrix_columns = 0;
+            float lateral_shift = 0.0f;
+            float heading_offset = 0.0f;
+            if (!ReadBinary(input, place_id) ||
+                !ReadBinary(input, variant) ||
+                !ReadBinary(input, lateral_shift) ||
+                !ReadBinary(input, heading_offset) ||
+                !ReadBinary(input, matrix_rows) ||
+                !ReadBinary(input, matrix_columns) ||
+                matrix_rows != m_Config.rows ||
+                matrix_columns != m_Config.columns ||
+                variant < static_cast<std::int32_t>(ScanContextVariant::Original) ||
+                variant > static_cast<std::int32_t>(ScanContextVariant::CartesianDoubleFlip)) {
+                Clear();
+                return false;
+            }
+
+            Eigen::MatrixXf matrix(matrix_rows, matrix_columns);
+            for (int row = 0; row < matrix_rows; ++row) {
+                for (int column = 0; column < matrix_columns; ++column) {
+                    if (!ReadBinary(input, matrix(row, column))) {
+                        Clear();
+                        return false;
+                    }
+                }
+            }
+            AddDescriptor(MakeDescriptorFromMatrix(
+                matrix,
+                place_id,
+                static_cast<ScanContextVariant>(variant),
+                lateral_shift,
+                heading_offset));
+        }
+    } catch (const std::exception&) {
+        Clear();
+        return false;
+    }
+    BuildIndex();
+    return true;
+}
+
 std::unique_ptr<ScanContextPlusPlus::KeyIndexNode>
 ScanContextPlusPlus::BuildIndexRecursive(
     std::vector<int>& indices,
@@ -519,11 +732,13 @@ void ScanContextPlusPlus::SearchIndex(
 }
 
 std::vector<ScanContextPlusPlus::KeyNeighbor>
-ScanContextPlusPlus::RetrieveCandidates(const Eigen::VectorXf& query_key) const {
+ScanContextPlusPlus::RetrieveCandidates(
+    const Eigen::VectorXf& query_key,
+    int place_count) const {
     const int variants_per_place = m_Config.type == ScanContextType::Polar ? 3 : 2;
     const int probe_count = std::min(
         static_cast<int>(m_Descriptors.size()),
-        std::max(m_Config.candidate_count, m_Config.candidate_count * variants_per_place * 2));
+        std::max(place_count, place_count * variants_per_place * 2));
     std::vector<KeyNeighbor> nearest;
     SearchIndex(query_key, probe_count, nearest);
 
@@ -533,7 +748,7 @@ ScanContextPlusPlus::RetrieveCandidates(const Eigen::VectorXf& query_key) const 
         const int place_id = m_Descriptors[neighbor.descriptor_index].place_id;
         if (seen_places.insert(place_id).second) {
             selected_places.push_back(place_id);
-            if (static_cast<int>(selected_places.size()) >= m_Config.candidate_count) {
+            if (static_cast<int>(selected_places.size()) >= place_count) {
                 break;
             }
         }
@@ -605,20 +820,72 @@ ScanContextMatch ScanContextPlusPlus::Query(
 
 ScanContextMatch ScanContextPlusPlus::QueryDescriptor(
     const ScanContextDescriptor& query) {
+    const auto candidates = QueryCandidates(query, m_Config.candidate_count);
+    if (candidates.empty()) {
+        return ScanContextMatch{};
+    }
+    return candidates.front();
+}
+
+std::vector<ScanContextMatch> ScanContextPlusPlus::QueryCandidates(
+    const ScanContextDescriptor& query,
+    int place_count) {
     ValidateDescriptor(query);
     if (m_IndexDirty) {
         BuildIndex();
     }
-    if (m_Descriptors.empty()) {
-        ScanContextMatch empty_match;
-        return empty_match;
+    if (m_Descriptors.empty() || place_count <= 0) {
+        return {};
+    }
+
+    std::unordered_map<int, ScanContextMatch> best_by_place;
+    for (const auto& candidate : RetrieveCandidates(query.retrieval_key, place_count)) {
+        ScanContextMatch match = CompareCandidate(
+            query, candidate.descriptor_index, candidate.squared_distance);
+        const auto iter = best_by_place.find(match.place_id);
+        if (iter == best_by_place.end() ||
+            match.distance < iter->second.distance ||
+            (match.distance == iter->second.distance &&
+             match.retrieval_key_distance < iter->second.retrieval_key_distance)) {
+            best_by_place[match.place_id] = match;
+        }
+    }
+
+    std::vector<ScanContextMatch> matches;
+    matches.reserve(best_by_place.size());
+    for (const auto& entry : best_by_place) {
+        matches.push_back(entry.second);
+    }
+    std::sort(matches.begin(), matches.end(), [](const auto& lhs, const auto& rhs) {
+        if (lhs.distance != rhs.distance) return lhs.distance < rhs.distance;
+        if (lhs.retrieval_key_distance != rhs.retrieval_key_distance) {
+            return lhs.retrieval_key_distance < rhs.retrieval_key_distance;
+        }
+        return lhs.place_id < rhs.place_id;
+    });
+    if (static_cast<int>(matches.size()) > place_count) {
+        matches.resize(place_count);
+    }
+    return matches;
+}
+
+ScanContextMatch ScanContextPlusPlus::ComparePlace(
+    const ScanContextDescriptor& query,
+    int place_id) const {
+    ValidateDescriptor(query);
+    const auto place_iter = m_PlaceToDescriptors.find(place_id);
+    if (place_iter == m_PlaceToDescriptors.end()) {
+        return ScanContextMatch{};
     }
 
     ScanContextMatch best_match;
     best_match.distance = std::numeric_limits<float>::max();
-    for (const auto& candidate : RetrieveCandidates(query.retrieval_key)) {
-        ScanContextMatch match = CompareCandidate(
-            query, candidate.descriptor_index, candidate.squared_distance);
+    for (int descriptor_index : place_iter->second) {
+        const float retrieval_distance = SquaredDistance(
+            query.retrieval_key,
+            m_Descriptors[descriptor_index].retrieval_key);
+        const ScanContextMatch match = CompareCandidate(
+            query, descriptor_index, retrieval_distance);
         if (match.distance < best_match.distance ||
             (match.distance == best_match.distance &&
              match.retrieval_key_distance < best_match.retrieval_key_distance)) {

@@ -1,8 +1,9 @@
-# Standalone Scan Context++
+# Scan Context++ and IRIS Fusion
 
 This module implements the Scan Context++ descriptor and search pipeline as an
-independent part of `relocation_core`. It is intentionally not connected to the
-existing IRIS/GICP relocation path, ROS topics, or `history_db.txt`.
+independent part of `relocation_core`. The relocation rough-search path now uses
+IRIS exact-Hamming Top-80 and SC++ Top-20 candidate union, dual-descriptor
+ranking, and the existing GICP verification stage.
 
 ## Implemented features
 
@@ -45,6 +46,9 @@ if (match.matched) {
 }
 ```
 
+`QueryCandidates()` returns Top-K unique places, while `ComparePlace()` performs
+an exact comparison against every augmented descriptor of one place.
+
 `AddPlace()` stores the original descriptor and the enabled augmentation
 variants under one place id. `Query()` creates only the original query
 descriptor and searches the combined original/augmented map index.
@@ -86,8 +90,10 @@ auto pc = relocation::ScanContextConfig::PaperPolar();
 auto cc = relocation::ScanContextConfig::PaperCartesian();
 ```
 
-The IRIS-compatible values are still not wired into relocation and require
-offline validation before use.
+The full relocation test stores SC++ descriptors in `history_db_sc.bin`. The
+sidecar is versioned and validated against the descriptor configuration. If it
+is absent, `location` falls back to IRIS-only retrieval; the interactive test
+generates or refreshes it automatically from the current history database.
 
 ## Test
 
@@ -98,4 +104,11 @@ ros2 run relocation scan_context_test
 ```
 
 The standalone test covers polar rotation invariance, yaw estimation, A-PC
-generation, Cartesian double-flip matching, database indexing, and clearing.
+generation, Cartesian double-flip matching, Top-K/direct-place comparison,
+database serialization, indexing, and clearing.
+
+The complete IRIS/SC++/GICP pipeline can also run without a display:
+
+```bash
+ros2 run relocation test_node --headless-smoke
+```

@@ -1,6 +1,7 @@
 #include "relocation/scan_context.hpp"
 #include <Eigen/Geometry>
 #include <cmath>
+#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -94,11 +95,29 @@ void TestPolarRotationAndRetrieval() {
     scan_context.AddPlace(map_cloud, 10);
     scan_context.BuildIndex();
     const auto match = scan_context.Query(rotated_query);
+    std::cout << "SC++ signed yaw +60 point rotation: "
+              << match.relative_yaw_rad * 180.0f / kPi << " deg\n";
     Require(match.matched, "Polar query was rejected");
     Require(match.place_id == 10, "Polar query retrieved the wrong place");
     Require(
-        std::abs(std::abs(match.relative_yaw_rad) - 60.0f * kPi / 180.0f) < 0.11f,
-        "Polar relative yaw estimate is outside one column");
+        std::abs(match.relative_yaw_rad - 60.0f * kPi / 180.0f) < 0.12f,
+        "Positive point rotation produced an incorrect signed relative yaw");
+
+    const auto negative_query = RotateCloud(map_cloud, -45.0f * kPi / 180.0f);
+    const auto negative_match = scan_context.Query(negative_query);
+    std::cout << "SC++ signed yaw -45 point rotation: "
+              << negative_match.relative_yaw_rad * 180.0f / kPi << " deg\n";
+    Require(negative_match.matched, "Negative-rotation polar query was rejected");
+    Require(
+        std::abs(negative_match.relative_yaw_rad + 45.0f * kPi / 180.0f) < 0.11f,
+        "Negative point rotation produced an incorrect signed relative yaw");
+
+    const auto candidates = scan_context.QueryCandidates(query_descriptor, 2);
+    Require(candidates.size() == 2, "SC++ Top-K query did not return two places");
+    Require(candidates.front().place_id == 10, "SC++ Top-K query returned the wrong best place");
+    const auto direct_match = scan_context.ComparePlace(query_descriptor, 10);
+    Require(direct_match.place_id == 10, "SC++ direct place comparison failed");
+    Require(direct_match.distance < 1e-5f, "SC++ direct place comparison distance is incorrect");
 }
 
 void TestCartesianDoubleFlip() {
@@ -162,6 +181,27 @@ void TestIrisCompatibleConfig() {
             "IRIS-compatible CC bounds are incorrect");
 }
 
+void TestDatabaseRoundTrip() {
+    auto config = relocation::ScanContextConfig::PaperPolar();
+    config.voxel_leaf_size = 0.0f;
+    config.candidate_count = 2;
+    config.distance_threshold = 0.01f;
+    relocation::ScanContextPlusPlus source(config);
+    source.AddPlace(MakePolarScene(false), 1);
+    source.AddPlace(MakePolarScene(true), 2);
+
+    const auto path = std::filesystem::temp_directory_path() / "relocation_scan_context_test.bin";
+    Require(source.SaveDatabase(path.string()), "SC++ database save failed");
+
+    relocation::ScanContextPlusPlus restored(config);
+    Require(restored.LoadDatabase(path.string()), "SC++ database load failed");
+    Require(restored.PlaceCount() == 2, "SC++ restored place count is incorrect");
+    Require(restored.DescriptorCount() == 6, "SC++ restored descriptor count is incorrect");
+    const auto match = restored.Query(MakePolarScene(false));
+    Require(match.matched && match.place_id == 1, "SC++ restored database query failed");
+    std::filesystem::remove(path);
+}
+
 } // namespace
 
 int main() {
@@ -170,6 +210,7 @@ int main() {
         TestCartesianDoubleFlip();
         TestIndexMaintenance();
         TestIrisCompatibleConfig();
+        TestDatabaseRoundTrip();
     } catch (const std::exception& exception) {
         std::cerr << "SC++ test failed: " << exception.what() << '\n';
         return 1;

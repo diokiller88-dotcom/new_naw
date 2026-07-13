@@ -191,8 +191,14 @@ namespace relocation {
             return 1.0f; 
         }
 
-        if (std::isnan(dis1)) return dis2;
-        if (std::isnan(dis2)) return dis1;
+        if (std::isnan(dis1)) {
+            if (bias) *bias = (bias2 + 180) % 360;
+            return dis2;
+        }
+        if (std::isnan(dis2)) {
+            if (bias) *bias = bias1;
+            return dis1;
+        }
 
         if (dis1 < dis2) {
             if (bias) *bias = bias1;

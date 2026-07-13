@@ -2,12 +2,56 @@
 #include <pcl/filters/voxel_grid.h>
 #include <Eigen/Eigenvalues>
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <iostream>
 #include <limits>
 #include <omp.h>
 
 namespace relocation {
+
+    namespace {
+        float FilterSourceCloud(
+            const pcl::PointCloud<pcl::PointXYZ>::Ptr& input,
+            float requested_leaf_size,
+            pcl::PointCloud<pcl::PointXYZ>& output)
+        {
+            if (requested_leaf_size <= 0.0f) {
+                output = *input;
+                return 0.0f;
+            }
+
+            float effective_leaf_size = requested_leaf_size;
+            for (int attempt = 0; attempt < 5; ++attempt) {
+                pcl::VoxelGrid<pcl::PointXYZ> filter;
+                filter.setLeafSize(
+                    effective_leaf_size, effective_leaf_size, effective_leaf_size);
+                filter.setInputCloud(input);
+                filter.filter(output);
+                if (output.size() <= static_cast<std::size_t>(gicp_max_source_points)) {
+                    return effective_leaf_size;
+                }
+
+                const float point_ratio = static_cast<float>(output.size()) /
+                                          static_cast<float>(gicp_max_source_points);
+                effective_leaf_size *= std::max(1.10f, std::cbrt(point_ratio));
+            }
+
+            if (output.size() > static_cast<std::size_t>(gicp_max_source_points)) {
+                pcl::PointCloud<pcl::PointXYZ> limited;
+                limited.reserve(gicp_max_source_points);
+                const double stride = static_cast<double>(output.size()) /
+                                      static_cast<double>(gicp_max_source_points);
+                for (int i = 0; i < gicp_max_source_points; ++i) {
+                    const std::size_t index = std::min(
+                        static_cast<std::size_t>(i * stride), output.size() - 1);
+                    limited.push_back(output[index]);
+                }
+                output.swap(limited);
+            }
+            return effective_leaf_size;
+        }
+    }
 
     constexpr int gicp_min_valid_correspondences = 10;
     constexpr float gicp_min_step_norm = 1e-5f;
@@ -192,21 +236,24 @@ namespace relocation {
 
     bool GICP::Init(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                     const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_) {
+        const auto init_start = std::chrono::steady_clock::now();
+        m_LastInitTimeMs = 0.0;
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
 
         pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
         pcl::PointCloud<pcl::PointXYZ>::Ptr processed_target(new pcl::PointCloud<pcl::PointXYZ>());
 
         if (m_VoxelLeafSize > 0.0f) {
+            m_LastEffectiveVoxelLeafSize = FilterSourceCloud(
+                sourcePC_, m_VoxelLeafSize, *processed_source);
             pcl::VoxelGrid<pcl::PointXYZ> filter;
             filter.setLeafSize(m_VoxelLeafSize, m_VoxelLeafSize, m_VoxelLeafSize);
-            filter.setInputCloud(sourcePC_);
-            filter.filter(*processed_source);
             filter.setInputCloud(targetPC_);
             filter.filter(*processed_target);
         } else {
             processed_source = sourcePC_;
             processed_target = targetPC_;
+            m_LastEffectiveVoxelLeafSize = 0.0f;
         }
 
         if (processed_source->empty() || processed_target->empty()) return false;
@@ -230,25 +277,30 @@ namespace relocation {
         m_TransVector = Eigen::Vector3f::Zero();
         m_LastError = std::numeric_limits<float>::max();
         m_LastValidCount = 0;
+        m_LastIterations = 0;
+        m_LastSolveTimeMs = 0.0;
         m_LastXicpTriggered = false;
+        m_LastInitTimeMs = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - init_start).count();
         return true;
     }
 
     bool GICP::InitWithTargetCovariances(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                                          const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
                                          const std::vector<Eigen::Matrix3f>& target_covariances) {
+        const auto init_start = std::chrono::steady_clock::now();
+        m_LastInitTimeMs = 0.0;
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
         if (targetPC_->size() != target_covariances.size()) return false;
 
         pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
 
         if (m_VoxelLeafSize > 0.0f) {
-            pcl::VoxelGrid<pcl::PointXYZ> filter;
-            filter.setLeafSize(m_VoxelLeafSize, m_VoxelLeafSize, m_VoxelLeafSize);
-            filter.setInputCloud(sourcePC_);
-            filter.filter(*processed_source);
+            m_LastEffectiveVoxelLeafSize = FilterSourceCloud(
+                sourcePC_, m_VoxelLeafSize, *processed_source);
         } else {
             processed_source = sourcePC_;
+            m_LastEffectiveVoxelLeafSize = 0.0f;
         }
 
         if (processed_source->empty()) return false;
@@ -272,7 +324,11 @@ namespace relocation {
         m_TransVector = Eigen::Vector3f::Zero();
         m_LastError = std::numeric_limits<float>::max();
         m_LastValidCount = 0;
+        m_LastIterations = 0;
+        m_LastSolveTimeMs = 0.0;
         m_LastXicpTriggered = false;
+        m_LastInitTimeMs = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - init_start).count();
         return true;
     }
 
@@ -371,8 +427,18 @@ namespace relocation {
     }
 
     bool GICP::Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_) {
+        const auto solve_start = std::chrono::steady_clock::now();
+        m_LastIterations = 0;
+        m_LastSolveTimeMs = 0.0;
+        const auto record_solve_time = [&]() {
+            m_LastSolveTimeMs = std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - solve_start).count();
+        };
         const int N = static_cast<int>(m_SourcePC.size());
-        if (N == 0 || m_TargetPC.empty()) return false;
+        if (N == 0 || m_TargetPC.empty()) {
+            record_solve_time();
+            return false;
+        }
 
         float prev_objective_error = std::numeric_limits<float>::max();
         float final_error = std::numeric_limits<float>::max();
@@ -387,6 +453,7 @@ namespace relocation {
         bool aa_initialized = false;
 
         for (int iter = 0; iter < m_MaxIterations; iter++) {
+            m_LastIterations = iter + 1;
             #pragma omp parallel for
             for (int i = 0; i < N; i++) {
                 const Eigen::Matrix3f source_cov_map =
@@ -595,12 +662,14 @@ namespace relocation {
 
         if (!has_valid_solution) {
             std::cerr << "[GICP] Solve failed, no valid iteration." << std::endl;
+            record_solve_time();
             return false;
         }
 
         if (final_error > m_MaxCorrespondenceDistance) {
             std::cerr << "[GICP] Solve rejected, error: " << final_error
                       << ", valid correspondences: " << final_valid_count << std::endl;
+            record_solve_time();
             return false;
         }
 
@@ -608,6 +677,7 @@ namespace relocation {
         m_LastValidCount = final_valid_count;
         R_result_ = m_RotatedMatrix.cast<double>();
         T_result_ = m_TransVector.cast<double>();
+        record_solve_time();
         return true;
     }
 

@@ -64,9 +64,10 @@ IRIS 参考：[LiDAR-Iris](https://github.com/JoestarK/LiDAR-Iris)，本代码�
 ros2 run relocation relocation_node
 ```
 
-## 独立 Scan Context++ 模块
+## Scan Context++ 与 IRIS 融合
 
-仓库包含尚未接入重定位主链路的独立 SC++ 实现，使用说明见
+粗定位使用 IRIS Top-80 与 SC++ Top-20 候选并集和双描述子融合排序，
+再沿用原有 GICP 候选验证。完整测试会自动生成 `history_db_sc.bin`，使用说明见
 [`SCAN_CONTEXT_PLUS_PLUS.md`](SCAN_CONTEXT_PLUS_PLUS.md)。
 
 ### 运行模式

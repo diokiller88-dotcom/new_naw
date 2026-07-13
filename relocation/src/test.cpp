@@ -6,6 +6,8 @@
 #include <cmath>
 #include <chrono>
 #include <exception>
+#include <filesystem>
+#include <iomanip>
 #include <limits>
 
 #include <pcl/io/pcd_io.h>
@@ -53,8 +55,10 @@ constexpr double test_min_gicp_valid_ratio = 0.02;
 constexpr size_t test_max_gicp_candidates = 3;
 constexpr double test_max_rough_score_ratio_for_gicp = 1.35;
 constexpr double test_early_accept_gicp_error = 0.25;
-constexpr int test_candidate_gicp_max_iterations = 10;
-constexpr float test_candidate_gicp_voxel_leaf_size = 0.35f;
+constexpr int test_candidate_gicp_max_iterations = 6;
+constexpr float test_candidate_gicp_voxel_leaf_size = 0.5f;
+constexpr double test_same_solution_translation = 0.5;
+constexpr double test_same_solution_yaw_deg = 5.0;
 
 struct TestGicpCandidateResult {
     RoughPoseCandidate rough;
@@ -63,7 +67,14 @@ struct TestGicpCandidateResult {
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
     int source_point_count = 0;
+    int target_point_count = 0;
+    int iterations = 0;
+    double crop_time_ms = 0.0;
+    double init_time_ms = 0.0;
+    double solve_time_ms = 0.0;
+    float effective_voxel_leaf_size = 0.0f;
     bool xicp_triggered = false;
+    bool final_quality = false;
 };
 
 enum AppState { EDIT_MODE, TEST_MODE };
@@ -82,6 +93,7 @@ pcl::KdTreeFLANN<pcl::PointXYZ>::Ptr obstacle_kdtree(new pcl::KdTreeFLANN<pcl::P
 
 // GUI 交互时用于维护的本地数据库库
 vector<HistNode> history_db; 
+bool sc_database_dirty = false;
 
 // 【重构核心】高内聚定位模块，掌管一切！
 relocation::location loc_module;
@@ -89,6 +101,17 @@ relocation::location loc_module;
 bool is_dragging = false;
 cv::Point drag_start;
 bool trigger_relocation = false;
+bool headless_mode = false;
+bool benchmark_mode = false;
+bool ambiguous_benchmark_mode = false;
+bool last_pipeline_success = false;
+double last_pipeline_time_ms = 0.0;
+double last_gicp_time_ms = 0.0;
+double last_position_error_m = 0.0;
+int last_gicp_source_points = 0;
+int last_gicp_target_points = 0;
+int last_gicp_iterations = 0;
+float last_gicp_effective_voxel_leaf_size = 0.0f;
 float test_gt_x = 0, test_gt_y = 0, test_gt_yaw = 0;
 
 // ======================= 坐标转换与渲染 =======================
@@ -125,6 +148,7 @@ cv::Point display2pixel(int x, int y) {
 }
 
 void show_relocation_window(const cv::Mat& img) {
+    if (headless_mode) return;
     if (current_display_scale >= 0.999) {
         cv::imshow("Interactive Relocation", img);
         return;
@@ -147,6 +171,56 @@ bool HasEnoughScoreSeparation(double best, double second, double min_gap, double
     double gap = second - best;
     double ratio = second / std::max(best, 1e-6);
     return gap >= min_gap || ratio >= min_ratio;
+}
+
+bool HasEnoughFusionDescriptorSeparation(
+    const vector<RoughPoseCandidate>& candidates,
+    double min_gap,
+    double min_ratio) {
+    if (candidates.empty() || !candidates.front().sc_matched) return false;
+
+    const auto& best = candidates.front();
+    double second_iris_score = numeric_limits<double>::max();
+    double second_sc_score = numeric_limits<double>::max();
+    for (size_t i = 1; i < candidates.size(); ++i) {
+        second_iris_score = min(second_iris_score, candidates[i].iris_score);
+        if (candidates[i].sc_available) {
+            second_sc_score = min(second_sc_score, candidates[i].sc_score);
+        }
+    }
+
+    const bool iris_unique = isfinite(second_iris_score) &&
+                             HasEnoughScoreSeparation(
+                                 best.iris_score, second_iris_score, min_gap, min_ratio);
+    const bool sc_unique = isfinite(second_sc_score) &&
+                           HasEnoughScoreSeparation(
+                               best.sc_score, second_sc_score, min_gap, min_ratio);
+    return iris_unique && sc_unique &&
+           best.descriptor_yaw_diff_deg <= loc_fusion_yaw_consistency_limit_deg;
+}
+
+bool IsSameGicpSolution(
+    const TestGicpCandidateResult& lhs,
+    const TestGicpCandidateResult& rhs) {
+    const double translation_difference =
+        (lhs.T.head<2>() - rhs.T.head<2>()).norm();
+    const double lhs_yaw = atan2(lhs.R(1, 0), lhs.R(0, 0));
+    const double rhs_yaw = atan2(rhs.R(1, 0), rhs.R(0, 0));
+    const double yaw_difference_deg =
+        abs(remainder(lhs_yaw - rhs_yaw, 2.0 * M_PI)) * 180.0 / M_PI;
+    return translation_difference <= test_same_solution_translation &&
+           yaw_difference_deg <= test_same_solution_yaw_deg;
+}
+
+const TestGicpCandidateResult* FindCompetingGicpSolution(
+    const vector<TestGicpCandidateResult>& results) {
+    if (results.empty()) return nullptr;
+    for (size_t i = 1; i < results.size(); ++i) {
+        if (!IsSameGicpSolution(results.front(), results[i])) {
+            return &results[i];
+        }
+    }
+    return nullptr;
 }
 
 void redraw_edit_mode() {
@@ -272,7 +346,82 @@ bool LoadDatabase(const string& filename, vector<HistNode>& db) {
     in.close(); return true;
 }
 
+const char* ScanContextVariantName(ScanContextVariant variant) {
+    switch (variant) {
+        case ScanContextVariant::Original: return "original";
+        case ScanContextVariant::PolarLeftShift: return "left";
+        case ScanContextVariant::PolarRightShift: return "right";
+        case ScanContextVariant::CartesianDoubleFlip: return "double_flip";
+    }
+    return "unknown";
+}
+
+bool EnsureScanContextDatabase(const string& iris_database_path, const vector<HistNode>& db) {
+    if (db.empty()) return false;
+    const string sc_database_path = MakeScanContextDatabasePath(iris_database_path);
+    std::error_code time_error;
+    const bool files_exist = std::filesystem::exists(iris_database_path) &&
+                             std::filesystem::exists(sc_database_path);
+    std::filesystem::file_time_type sc_write_time;
+    std::filesystem::file_time_type iris_write_time;
+    if (files_exist) {
+        sc_write_time = std::filesystem::last_write_time(sc_database_path, time_error);
+        if (!time_error) {
+            iris_write_time = std::filesystem::last_write_time(iris_database_path, time_error);
+        }
+    }
+    const bool sidecar_is_current = files_exist && !time_error &&
+                                    sc_write_time >= iris_write_time;
+    if (!sc_database_dirty && sidecar_is_current) {
+        ScanContextPlusPlus existing(ScanContextConfig::IrisPolar());
+        if (existing.LoadDatabase(sc_database_path) && existing.PlaceCount() == db.size()) {
+            cout << "[SC++数据库] 使用已有文件: " << sc_database_path
+                 << ", Places: " << existing.PlaceCount()
+                 << ", Descriptors: " << existing.DescriptorCount() << endl;
+            return true;
+        }
+    }
+
+    const auto start = chrono::steady_clock::now();
+    ScanContextPlusPlus scan_context(ScanContextConfig::IrisPolar());
+    for (size_t i = 0; i < db.size(); ++i) {
+        auto local_cloud = ExtractLocalCloud(db[i].x, db[i].y, db[i].yaw);
+        if (!local_cloud || local_cloud->empty()) {
+            cerr << "[SC++数据库] Hist " << i << " 无法生成局部点云。" << endl;
+            return false;
+        }
+        try {
+            scan_context.AddPlace(local_cloud, static_cast<int>(i));
+        } catch (const exception& error) {
+            cerr << "[SC++数据库] Hist " << i << " 描述子生成失败: "
+                 << error.what() << endl;
+            return false;
+        }
+    }
+    scan_context.BuildIndex();
+    if (!scan_context.SaveDatabase(sc_database_path)) {
+        cerr << "[SC++数据库] 保存失败: " << sc_database_path << endl;
+        return false;
+    }
+    const auto end = chrono::steady_clock::now();
+    const double elapsed_ms = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    sc_database_dirty = false;
+    cout << "[SC++数据库] 已生成: " << sc_database_path
+         << ", Places: " << scan_context.PlaceCount()
+         << ", Descriptors: " << scan_context.DescriptorCount()
+         << ", Time: " << elapsed_ms << "ms" << endl;
+    return true;
+}
+
 void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
+    last_pipeline_success = false;
+    last_pipeline_time_ms = 0.0;
+    last_gicp_time_ms = 0.0;
+    last_position_error_m = 0.0;
+    last_gicp_source_points = 0;
+    last_gicp_target_points = 0;
+    last_gicp_iterations = 0;
+    last_gicp_effective_voxel_leaf_size = 0.0f;
     cout << "\n=================================================" << endl;
     cout << "[GT 真实位姿] X: " << gt_x << ", Y: " << gt_y << ", Yaw: " << gt_yaw << "°" << endl;
 
@@ -295,35 +444,78 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         cout << "[失败] 粗定位未能找到有效匹配（可能超出先验范围）。" << endl;
         return;
     }
-    cout << "[Stage1: Iris] 候选数: " << rough_candidates.size()
+    const bool fusion_active = rough_candidates.front().fusion_active;
+    cout << "[Stage1: IRIS+SC++] Mode: "
+         << (fusion_active ? "fusion" : "IRIS-only")
+         << ", 候选数: " << rough_candidates.size()
          << ", Best X: " << rough_candidates.front().x
          << ", Y: " << rough_candidates.front().y
          << ", Yaw: " << rough_candidates.front().yaw_deg
          << "°, Score: " << rough_candidates.front().rough_score
          << " (" << coarse_time << "ms)" << endl;
+    if (!benchmark_mode) {
+        cout << fixed << setprecision(4);
+        cout << "  Rank Hist Src     X       Y    Fused    IRIS      SC"
+                "   Yaw-I   Yaw-S   YawDiff  Shift Variant" << endl;
+        for (size_t i = 0; i < rough_candidates.size(); ++i) {
+            const auto& candidate = rough_candidates[i];
+            const string source = candidate.iris_retrieved && candidate.sc_retrieved
+                                      ? "I+S"
+                                      : candidate.sc_retrieved ? "SC" : "IRIS";
+            cout << "  " << setw(4) << i
+                 << " " << setw(4) << candidate.hist_index
+                 << " " << setw(4) << source
+                 << " " << setw(7) << candidate.x
+                 << " " << setw(7) << candidate.y
+                 << " " << setw(8) << candidate.rough_score
+                 << " " << setw(8) << candidate.iris_score
+                 << " " << setw(8) << candidate.sc_score
+                 << " " << setw(7) << candidate.iris_yaw_deg
+                 << " " << setw(7) << candidate.sc_yaw_deg
+                 << " " << setw(8) << candidate.descriptor_yaw_diff_deg
+                 << " " << setw(6) << candidate.sc_lateral_shift
+                 << " " << ScanContextVariantName(candidate.sc_variant) << endl;
+        }
+        cout << defaultfloat;
+    }
 
     auto t_fine_start = chrono::steady_clock::now();
     vector<TestGicpCandidateResult> gicp_results;
     gicp_results.reserve(rough_candidates.size());
     double best_rough_score = rough_candidates.front().rough_score;
     size_t attempted_gicp_count = 0;
+    const bool fusion_descriptor_unique = fusion_active &&
+        HasEnoughFusionDescriptorSeparation(
+            rough_candidates,
+            test_min_rough_score_gap,
+            test_min_rough_score_ratio);
 
     for (const auto& candidate : rough_candidates) {
         if (attempted_gicp_count >= test_max_gicp_candidates) break;
         double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
-        if (attempted_gicp_count > 0 && rough_ratio > test_max_rough_score_ratio_for_gicp) {
+        if (!fusion_active && attempted_gicp_count > 0 &&
+            rough_ratio > test_max_rough_score_ratio_for_gicp) {
             break;
         }
 
+        const bool use_final_quality =
+            fusion_descriptor_unique && attempted_gicp_count == 0;
         attempted_gicp_count++;
         Eigen::Matrix3d R_gicp = Eigen::AngleAxisd(candidate.yaw_deg * M_PI / 180.0, Eigen::Vector3d::UnitZ()).toRotationMatrix();
         Eigen::Vector3d T_gicp(candidate.x, candidate.y, 0.0);
         double gicp_error = numeric_limits<double>::max();
         int valid_count = 0;
 
-        if (!loc_module.SetPrecisePose(query_cloud, R_gicp, T_gicp, gicp_error, valid_count,
+        const bool gicp_ok = use_final_quality
+                                 ? loc_module.SetPrecisePose(
+                                       query_cloud, R_gicp, T_gicp,
+                                       gicp_error, valid_count)
+                                 : loc_module.SetPrecisePose(
+                                       query_cloud, R_gicp, T_gicp,
+                                       gicp_error, valid_count,
                                        test_candidate_gicp_max_iterations,
-                                       test_candidate_gicp_voxel_leaf_size)) {
+                                       test_candidate_gicp_voxel_leaf_size);
+        if (!gicp_ok) {
             continue;
         }
 
@@ -334,7 +526,15 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
         result.gicp_error = gicp_error;
         result.valid_count = valid_count;
         result.source_point_count = loc_module.GetLastSourcePointCount();
+        result.target_point_count = loc_module.GetLastTargetPointCount();
+        result.iterations = loc_module.GetLastGicpIterations();
+        result.crop_time_ms = loc_module.GetLastGicpCropTimeMs();
+        result.init_time_ms = loc_module.GetLastGicpInitTimeMs();
+        result.solve_time_ms = loc_module.GetLastGicpSolveTimeMs();
+        result.effective_voxel_leaf_size =
+            loc_module.GetLastGicpEffectiveVoxelLeafSize();
         result.xicp_triggered = loc_module.WasLastXicpTriggered();
+        result.final_quality = use_final_quality;
         gicp_results.push_back(result);
 
         double valid_ratio = result.source_point_count <= 0
@@ -342,11 +542,15 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
                                  : static_cast<double>(valid_count) / static_cast<double>(result.source_point_count);
         bool enough_inliers = valid_count >= test_min_gicp_valid_count &&
                               valid_ratio >= test_min_gicp_valid_ratio;
-        bool rough_unique_now = rough_candidates.size() < 2 ||
-                                HasEnoughScoreSeparation(rough_candidates[0].rough_score,
-                                                         rough_candidates[1].rough_score,
-                                                         test_min_rough_score_gap,
-                                                         test_min_rough_score_ratio);
+        bool rough_unique_now = fusion_active
+                                    ? attempted_gicp_count == 1 &&
+                                          fusion_descriptor_unique
+                                    : rough_candidates.size() < 2 ||
+                                          HasEnoughScoreSeparation(
+                                              rough_candidates[0].rough_score,
+                                              rough_candidates[1].rough_score,
+                                              test_min_rough_score_gap,
+                                              test_min_rough_score_ratio);
         if (rough_unique_now && enough_inliers && gicp_error <= test_early_accept_gicp_error) {
             break;
         }
@@ -356,12 +560,21 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     double fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_end - t_fine_start).count();
 
     cv::Mat temp = display_img.clone();
-    size_t display_candidate_count = std::min(attempted_gicp_count, rough_candidates.size());
-    for (size_t i = 0; i < display_candidate_count; ++i) {
-        const auto& candidate = rough_candidates[i];
-        draw_arrow(temp, candidate.x, candidate.y, candidate.yaw_deg, cv::Scalar(0, 165, 255), test_arrow_length / 2);
+    for (const auto& candidate : rough_candidates) {
+        cv::Scalar color(0, 165, 255);
+        if (candidate.iris_retrieved && candidate.sc_retrieved) {
+            color = cv::Scalar(255, 0, 255);
+        } else if (candidate.sc_retrieved) {
+            color = cv::Scalar(255, 255, 0);
+        }
+        draw_arrow(temp, candidate.x, candidate.y, candidate.yaw_deg,
+                   color, test_arrow_length / 2);
     }
     draw_arrow(temp, gt_x, gt_y, gt_yaw, cv::Scalar(0, 0, 255));
+    cv::putText(temp,
+                "Red: GT | Orange: IRIS | Cyan: SC++ | Magenta: both",
+                cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7,
+                cv::Scalar(50, 50, 50), 2);
 
     if (gicp_results.empty()) {
         cout << "[失败] 粗定位候选数: " << rough_candidates.size()
@@ -379,16 +592,25 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     });
 
     const auto& best = gicp_results.front();
-    bool rough_unique = rough_candidates.size() < 2 ||
-                        HasEnoughScoreSeparation(rough_candidates[0].rough_score,
-                                                 rough_candidates[1].rough_score,
-                                                 test_min_rough_score_gap,
-                                                 test_min_rough_score_ratio);
-    bool gicp_unique = gicp_results.size() < 2 ||
-                       HasEnoughScoreSeparation(best.gicp_error,
-                                                gicp_results[1].gicp_error,
-                                                test_min_gicp_error_gap,
-                                                test_min_gicp_error_ratio);
+    const bool gicp_best_is_rough_best =
+        best.rough.hist_index == rough_candidates.front().hist_index;
+    bool rough_unique = gicp_best_is_rough_best &&
+                        (fusion_active
+                             ? fusion_descriptor_unique
+                             : rough_candidates.size() < 2 ||
+                                   HasEnoughScoreSeparation(
+                                       rough_candidates[0].rough_score,
+                                       rough_candidates[1].rough_score,
+                                       test_min_rough_score_gap,
+                                       test_min_rough_score_ratio));
+    const TestGicpCandidateResult* competing_solution =
+        FindCompetingGicpSolution(gicp_results);
+    bool gicp_unique = competing_solution == nullptr ||
+                       HasEnoughScoreSeparation(
+                           best.gicp_error,
+                           competing_solution->gicp_error,
+                           test_min_gicp_error_gap,
+                           test_min_gicp_error_ratio);
     double valid_ratio = best.source_point_count <= 0
                              ? 0.0
                              : static_cast<double>(best.valid_count) / static_cast<double>(best.source_point_count);
@@ -406,6 +628,13 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
          << ", GicpUnique: " << gicp_unique
          << ", CoarseXICP: " << best.xicp_triggered
          << " (" << fine_time << "ms)" << endl;
+    cout << "[GICP内部] Crop: " << best.crop_time_ms
+         << "ms, Init: " << best.init_time_ms
+         << "ms, Solve: " << best.solve_time_ms
+         << "ms, Source: " << best.source_point_count
+         << ", Target: " << best.target_point_count
+         << ", Iter: " << best.iterations
+         << ", Leaf: " << best.effective_voxel_leaf_size << "m" << endl;
 
     if (!enough_inliers) {
         cout << "[拒绝] GICP 有效匹配不足。" << endl;
@@ -416,7 +645,9 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
 
     if (!rough_unique && !gicp_unique) {
         double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
-        double gicp_gap = gicp_results.size() >= 2 ? gicp_results[1].gicp_error - best.gicp_error : 0.0;
+        double gicp_gap = competing_solution
+                              ? competing_solution->gicp_error - best.gicp_error
+                              : 0.0;
         cout << "[拒绝] 粗匹配和 GICP 均低置信。RoughGap: " << rough_gap << ", GicpGap: " << gicp_gap << endl;
         cv::putText(temp, "Rejected: ambiguous rough and GICP candidates", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         show_relocation_window(temp);
@@ -425,18 +656,39 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
 
     Eigen::Matrix3d final_R = best.R;
     Eigen::Vector3d final_T = best.T;
-    double final_gicp_error = numeric_limits<double>::max();
-    int final_valid_count = 0;
-    if (!loc_module.SetPrecisePose(query_cloud, final_R, final_T, final_gicp_error, final_valid_count)) {
+    double final_gicp_error = best.gicp_error;
+    int final_valid_count = best.valid_count;
+    bool final_xicp_triggered = best.xicp_triggered;
+    bool final_gicp_ok = true;
+    double final_gicp_time = 0.0;
+    int final_source_point_count = best.source_point_count;
+    int final_target_point_count = best.target_point_count;
+    int final_iterations = best.iterations;
+    float final_effective_voxel_leaf_size = best.effective_voxel_leaf_size;
+    auto t_final_gicp_end = t_fine_end;
+    if (!best.final_quality) {
+        const auto t_final_gicp_start = chrono::steady_clock::now();
+        final_gicp_ok = loc_module.SetPrecisePose(
+            query_cloud, final_R, final_T, final_gicp_error, final_valid_count);
+        t_final_gicp_end = chrono::steady_clock::now();
+        final_gicp_time = chrono::duration<double, milli>(
+            t_final_gicp_end - t_final_gicp_start).count();
+        final_xicp_triggered = loc_module.WasLastXicpTriggered();
+        final_source_point_count = loc_module.GetLastSourcePointCount();
+        final_target_point_count = loc_module.GetLastTargetPointCount();
+        final_iterations = loc_module.GetLastGicpIterations();
+        final_effective_voxel_leaf_size =
+            loc_module.GetLastGicpEffectiveVoxelLeafSize();
+    }
+    if (!final_gicp_ok) {
         cout << "[拒绝] 最佳候选通过粗 GICP 筛选，但最终精 GICP 失败。" << endl;
         cv::putText(temp, "Rejected: final GICP failed", cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(0, 0, 200), 2);
         show_relocation_window(temp);
         return;
     }
-    const bool final_xicp_triggered = loc_module.WasLastXicpTriggered();
 
-    auto t_fine_final_end = chrono::steady_clock::now();
-    fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_final_end - t_fine_start).count();
+    const double relocation_time = chrono::duration<double, milli>(
+        t_final_gicp_end - t_coarse_start).count();
 
     float fine_x = final_T.x();
     float fine_y = final_T.y();
@@ -448,17 +700,31 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
          << ", FinalValid: " << final_valid_count
          << ", CoarseXICP: " << best.xicp_triggered
          << ", FinalXICP: " << final_xicp_triggered << endl;
-    cout << "[误差分析] 距离误差: " << sqrt(pow(fine_x - gt_x, 2) + pow(fine_y - gt_y, 2)) << "m" << endl;
+    cout << "[耗时] Rough: " << coarse_time
+         << "ms, CandidateGICP: " << fine_time
+         << "ms, FinalGICP: " << final_gicp_time
+         << "ms, Total: " << relocation_time << "ms" << endl;
+    const double position_error = std::hypot(fine_x - gt_x, fine_y - gt_y);
+    cout << "[误差分析] 距离误差: " << position_error << "m" << endl;
+
+    last_pipeline_time_ms = relocation_time;
+    last_gicp_time_ms = fine_time + final_gicp_time;
+    last_position_error_m = position_error;
+    last_gicp_source_points = final_source_point_count;
+    last_gicp_target_points = final_target_point_count;
+    last_gicp_iterations = final_iterations;
+    last_gicp_effective_voxel_leaf_size = final_effective_voxel_leaf_size;
 
     draw_arrow(temp, fine_x, fine_y, fine_yaw, cv::Scalar(0, 200, 0));         
     
-    string info1 = "Red: GT | Orange: Iris candidates | Green: accepted GICP";
-    string info2 = "Iris: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)fine_time) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
+    string info1 = "Red: GT | Orange: IRIS | Cyan: SC++ | Magenta: both | Green: GICP";
+    string info2 = "Fusion: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)(fine_time + final_gicp_time)) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
     string info3 = string("XICP: coarse ") + (best.xicp_triggered ? "ON" : "OFF") + ", final " + (final_xicp_triggered ? "ON" : "OFF");
     cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info3, cv::Point(20, 110), cv::FONT_HERSHEY_SIMPLEX, 0.8,
                 final_xicp_triggered || best.xicp_triggered ? cv::Scalar(0, 0, 200) : cv::Scalar(50, 50, 50), 2);
+    last_pipeline_success = true;
     show_relocation_window(temp);
 }
 
@@ -482,6 +748,7 @@ void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
             }
             if (best_idx != -1) {
                 history_db.erase(history_db.begin() + best_idx);
+                sc_database_dirty = true;
                 redraw_edit_mode(); 
             }
         } 
@@ -515,6 +782,7 @@ void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
             new_node.binary_vec = iris::IrisToBinaryVec(iris_img);
 
             history_db.push_back(new_node);
+            sc_database_dirty = true;
             redraw_edit_mode();
         }
 
@@ -544,7 +812,12 @@ void onMouse(int event, int x, int y, int /*flags*/, void* /*userdata*/) {
     }
 }
 
-int main() {
+int main(int argc, char** argv) {
+    const string run_mode = argc > 1 ? string(argv[1]) : string();
+    ambiguous_benchmark_mode = run_mode == "--headless-ambiguous-benchmark";
+    benchmark_mode = run_mode == "--headless-benchmark" ||
+                     ambiguous_benchmark_mode;
+    headless_mode = run_mode == "--headless-smoke" || benchmark_mode;
     string pcd_path = "relocation/PCD/1.pcd";
     string db_path = "history_db.txt";
 
@@ -616,10 +889,108 @@ int main() {
                 node.binary_vec = iris::IrisToBinaryVec(iris_img);
                 
                 history_db.push_back(node);
+                sc_database_dirty = true;
                 sampled_count++;
             }
         }
         SaveDatabase(db_path, history_db);
+    }
+
+    if (!EnsureScanContextDatabase(db_path, history_db)) {
+        cerr << "[错误] 启动完整测试前无法准备 SC++ 数据库。" << endl;
+        return -1;
+    }
+
+    if (headless_mode) {
+        if (!loc_module.Init(db_path, global_map_cloud)) {
+            cerr << "[Headless] Location 模块初始化失败。" << endl;
+            return -1;
+        }
+        display_img = global_map_img_base.clone();
+        if (benchmark_mode) {
+            size_t success_count = 0;
+            size_t accurate_count = 0;
+            double total_position_error = 0.0;
+            double max_pipeline_time = 0.0;
+            double max_gicp_time = 0.0;
+            double max_position_error = 0.0;
+            size_t max_pipeline_index = 0;
+            size_t max_gicp_index = 0;
+            size_t max_error_index = 0;
+            const size_t benchmark_count = ambiguous_benchmark_mode
+                                               ? history_db.size() - 1
+                                               : history_db.size();
+            for (size_t i = 0; i < benchmark_count; ++i) {
+                const auto& sample = history_db[i];
+                float benchmark_x = sample.x;
+                float benchmark_y = sample.y;
+                float benchmark_base_yaw = sample.yaw;
+                if (ambiguous_benchmark_mode) {
+                    const auto& next = history_db[i + 1];
+                    benchmark_x = 0.5f * (sample.x + next.x);
+                    benchmark_y = 0.5f * (sample.y + next.y);
+                    benchmark_base_yaw = static_cast<float>(
+                        sample.yaw + 0.5 * std::remainder(
+                                               static_cast<double>(next.yaw - sample.yaw),
+                                               360.0));
+                }
+                const float benchmark_yaw = std::fmod(
+                    benchmark_base_yaw + 405.0f, 360.0f);
+                RunRelocationPipeline(benchmark_x, benchmark_y, benchmark_yaw);
+                cout << "[Benchmark] Hist:" << i
+                     << " Success:" << last_pipeline_success
+                     << " Total:" << last_pipeline_time_ms
+                     << "ms GICP:" << last_gicp_time_ms
+                     << "ms Error:" << last_position_error_m
+                     << "m"
+                     << " Source:" << last_gicp_source_points
+                     << " Target:" << last_gicp_target_points
+                     << " Iter:" << last_gicp_iterations
+                     << " Leaf:" << last_gicp_effective_voxel_leaf_size
+                     << "m" << endl;
+                if (!last_pipeline_success) continue;
+                success_count++;
+                total_position_error += last_position_error_m;
+                if (last_position_error_m <= 0.5) {
+                    accurate_count++;
+                }
+                if (last_pipeline_time_ms > max_pipeline_time) {
+                    max_pipeline_time = last_pipeline_time_ms;
+                    max_pipeline_index = i;
+                }
+                if (last_gicp_time_ms > max_gicp_time) {
+                    max_gicp_time = last_gicp_time_ms;
+                    max_gicp_index = i;
+                }
+                if (last_position_error_m > max_position_error) {
+                    max_position_error = last_position_error_m;
+                    max_error_index = i;
+                }
+            }
+            cout << "[BenchmarkSummary] Success:" << success_count
+                 << "/" << benchmark_count
+                 << " Accurate:" << accurate_count
+                 << "/" << benchmark_count
+                 << " MeanError:"
+                 << (success_count == 0
+                         ? 0.0
+                         : total_position_error / static_cast<double>(success_count))
+                 << "m"
+                 << " Mode:"
+                 << (ambiguous_benchmark_mode ? "midpoint" : "history")
+                 << " MaxTotal:" << max_pipeline_time
+                 << "ms@Hist" << max_pipeline_index
+                 << " MaxGICP:" << max_gicp_time
+                 << "ms@Hist" << max_gicp_index
+                 << " MaxError:" << max_position_error
+                 << "m@Hist" << max_error_index << endl;
+            return success_count == benchmark_count ? 0 : 1;
+        }
+        const auto& sample = history_db.front();
+        const float smoke_yaw = std::fmod(sample.yaw + 45.0f, 360.0f);
+        cout << "[Headless] 使用 Hist 0 位置和 +45deg 航向执行完整融合与 GICP 测试。" << endl;
+        RunRelocationPipeline(sample.x, sample.y, smoke_yaw);
+        return last_pipeline_success ? 0 : 1;
     }
 
     cv::namedWindow("Interactive Relocation", cv::WINDOW_AUTOSIZE);
@@ -636,8 +1007,14 @@ int main() {
         }
 
         if (current_state == EDIT_MODE && (key == 's' || key == 'S')) {
-            SaveDatabase(db_path, history_db);
-            
+            if (sc_database_dirty) {
+                SaveDatabase(db_path, history_db);
+            }
+            if (!EnsureScanContextDatabase(db_path, history_db)) {
+                cout << "[错误] SC++ 数据库生成失败，保留在编辑模式。" << endl;
+                continue;
+            }
+
             if (loc_module.Init(db_path, global_map_cloud)) {
                 current_state = TEST_MODE;
                 redraw_test_mode_base();

@@ -1,6 +1,8 @@
 esdf/PCD/*.pcd
 history_db*.txt
 **/history_db*.txt
+history_db*_sc.bin
+**/history_db*_sc.bin
 build/
 install/
 log/

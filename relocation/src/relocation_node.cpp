@@ -56,8 +56,11 @@ constexpr double reloc_min_gicp_valid_ratio = 0.02;
 constexpr size_t reloc_max_gicp_candidates = 3;
 constexpr double reloc_max_rough_score_ratio_for_gicp = 1.35;
 constexpr double reloc_early_accept_gicp_error = 0.25;
-constexpr int reloc_candidate_gicp_max_iterations = 10;
-constexpr float reloc_candidate_gicp_voxel_leaf_size = 0.35f;
+constexpr int reloc_candidate_gicp_max_iterations = 6;
+constexpr float reloc_candidate_gicp_voxel_leaf_size = 0.5f;
+constexpr double reloc_same_solution_translation = 0.5;
+constexpr double reloc_same_solution_yaw_deg = 5.0;
+constexpr double reloc_slow_gicp_threshold_ms = 500.0;
 
 struct GicpCandidateResult {
     RoughPoseCandidate rough;
@@ -66,7 +69,14 @@ struct GicpCandidateResult {
     double gicp_error = std::numeric_limits<double>::max();
     int valid_count = 0;
     int source_point_count = 0;
+    int target_point_count = 0;
+    int iterations = 0;
+    double crop_time_ms = 0.0;
+    double init_time_ms = 0.0;
+    double solve_time_ms = 0.0;
+    float effective_voxel_leaf_size = 0.0f;
     bool xicp_triggered = false;
+    bool final_quality = false;
 };
 
 std::string StripPackagePrefix(const std::filesystem::path& path)
@@ -112,6 +122,59 @@ bool HasEnoughScoreSeparation(double best, double second, double min_gap, double
     double gap = second - best;
     double ratio = second / std::max(best, 1e-6);
     return gap >= min_gap || ratio >= min_ratio;
+}
+
+bool HasEnoughFusionDescriptorSeparation(
+    const std::vector<RoughPoseCandidate>& candidates,
+    double min_gap,
+    double min_ratio)
+{
+    if (candidates.empty() || !candidates.front().sc_matched) return false;
+
+    const auto& best = candidates.front();
+    double second_iris_score = std::numeric_limits<double>::max();
+    double second_sc_score = std::numeric_limits<double>::max();
+    for (std::size_t i = 1; i < candidates.size(); ++i) {
+        second_iris_score = std::min(second_iris_score, candidates[i].iris_score);
+        if (candidates[i].sc_available) {
+            second_sc_score = std::min(second_sc_score, candidates[i].sc_score);
+        }
+    }
+
+    const bool iris_unique = std::isfinite(second_iris_score) &&
+                             HasEnoughScoreSeparation(
+                                 best.iris_score, second_iris_score, min_gap, min_ratio);
+    const bool sc_unique = std::isfinite(second_sc_score) &&
+                           HasEnoughScoreSeparation(
+                               best.sc_score, second_sc_score, min_gap, min_ratio);
+    return iris_unique && sc_unique &&
+           best.descriptor_yaw_diff_deg <= loc_fusion_yaw_consistency_limit_deg;
+}
+
+bool IsSameGicpSolution(
+    const GicpCandidateResult& lhs,
+    const GicpCandidateResult& rhs)
+{
+    const double translation_difference =
+        (lhs.T.head<2>() - rhs.T.head<2>()).norm();
+    const double lhs_yaw = std::atan2(lhs.R(1, 0), lhs.R(0, 0));
+    const double rhs_yaw = std::atan2(rhs.R(1, 0), rhs.R(0, 0));
+    const double yaw_difference_deg =
+        std::abs(std::remainder(lhs_yaw - rhs_yaw, 2.0 * M_PI)) * 180.0 / M_PI;
+    return translation_difference <= reloc_same_solution_translation &&
+           yaw_difference_deg <= reloc_same_solution_yaw_deg;
+}
+
+const GicpCandidateResult* FindCompetingGicpSolution(
+    const std::vector<GicpCandidateResult>& results)
+{
+    if (results.empty()) return nullptr;
+    for (std::size_t i = 1; i < results.size(); ++i) {
+        if (!IsSameGicpSolution(results.front(), results[i])) {
+            return &results[i];
+        }
+    }
+    return nullptr;
 }
 
 class RelocationNode : public rclcpp::Node
@@ -539,20 +602,47 @@ private:
                 }
             }
 
+            const auto relocation_start = std::chrono::steady_clock::now();
             std::vector<RoughPoseCandidate> rough_candidates;
-            if (loc_system_.GetRoughPoseCandidatesWithPrePose(cloud_body_filtered, prior_x, prior_y, prior_yaw, rough_candidates)) {
+            const bool rough_ok = loc_system_.GetRoughPoseCandidatesWithPrePose(
+                cloud_body_filtered, prior_x, prior_y, prior_yaw, rough_candidates);
+            const auto rough_end = std::chrono::steady_clock::now();
+            const double rough_time_ms = std::chrono::duration<double, std::milli>(
+                rough_end - relocation_start).count();
+            if (rough_ok) {
+                const auto& rough_best = rough_candidates.front();
+                const bool fusion_active = rough_best.fusion_active;
+                RCLCPP_INFO(this->get_logger(),
+                            "粗定位模式:%s Candidates:%zu BestHist:%d Fused:%.4f IRIS:%.4f SC:%.4f Src:%s%s Yaw:%.2f IRISYaw:%.2f SCYaw:%.2f YawDiff:%.2f Shift:%.2f Variant:%d",
+                            fusion_active ? "IRIS+SC++" : "IRIS-only",
+                            rough_candidates.size(), rough_best.hist_index,
+                            rough_best.rough_score, rough_best.iris_score, rough_best.sc_score,
+                            rough_best.iris_retrieved ? "I" : "",
+                            rough_best.sc_retrieved ? "S" : "",
+                            rough_best.yaw_deg, rough_best.iris_yaw_deg, rough_best.sc_yaw_deg,
+                            rough_best.descriptor_yaw_diff_deg, rough_best.sc_lateral_shift,
+                            static_cast<int>(rough_best.sc_variant));
                 std::vector<GicpCandidateResult> gicp_results;
                 gicp_results.reserve(rough_candidates.size());
                 double best_rough_score = rough_candidates.front().rough_score;
                 size_t attempted_gicp_count = 0;
+                const bool fusion_descriptor_unique = fusion_active &&
+                    HasEnoughFusionDescriptorSeparation(
+                        rough_candidates,
+                        reloc_min_rough_score_gap,
+                        reloc_min_rough_score_ratio);
+                const auto candidate_gicp_start = std::chrono::steady_clock::now();
 
                 for (const auto& candidate : rough_candidates) {
                     if (attempted_gicp_count >= reloc_max_gicp_candidates) break;
                     double rough_ratio = candidate.rough_score / std::max(best_rough_score, 1e-6);
-                    if (attempted_gicp_count > 0 && rough_ratio > reloc_max_rough_score_ratio_for_gicp) {
+                    if (!fusion_active && attempted_gicp_count > 0 &&
+                        rough_ratio > reloc_max_rough_score_ratio_for_gicp) {
                         break;
                     }
 
+                    const bool use_final_quality =
+                        fusion_descriptor_unique && attempted_gicp_count == 0;
                     attempted_gicp_count++;
                     double rough_yaw_rad = candidate.yaw_deg * M_PI / 180.0;
                     Eigen::Matrix3d R_prec = Eigen::AngleAxisd(rough_yaw_rad, Eigen::Vector3d::UnitZ()).toRotationMatrix();
@@ -560,9 +650,16 @@ private:
                     double gicp_error = std::numeric_limits<double>::max();
                     int valid_count = 0;
 
-                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, R_prec, T_prec, gicp_error, valid_count,
-                                                    reloc_candidate_gicp_max_iterations,
-                                                    reloc_candidate_gicp_voxel_leaf_size)) {
+                    const bool gicp_ok = use_final_quality
+                                             ? loc_system_.SetPrecisePose(
+                                                   cloud_body_filtered, R_prec, T_prec,
+                                                   gicp_error, valid_count)
+                                             : loc_system_.SetPrecisePose(
+                                                   cloud_body_filtered, R_prec, T_prec,
+                                                   gicp_error, valid_count,
+                                                   reloc_candidate_gicp_max_iterations,
+                                                   reloc_candidate_gicp_voxel_leaf_size);
+                    if (!gicp_ok) {
                         continue;
                     }
 
@@ -573,23 +670,52 @@ private:
                     result.gicp_error = gicp_error;
                     result.valid_count = valid_count;
                     result.source_point_count = loc_system_.GetLastSourcePointCount();
+                    result.target_point_count = loc_system_.GetLastTargetPointCount();
+                    result.iterations = loc_system_.GetLastGicpIterations();
+                    result.crop_time_ms = loc_system_.GetLastGicpCropTimeMs();
+                    result.init_time_ms = loc_system_.GetLastGicpInitTimeMs();
+                    result.solve_time_ms = loc_system_.GetLastGicpSolveTimeMs();
+                    result.effective_voxel_leaf_size =
+                        loc_system_.GetLastGicpEffectiveVoxelLeafSize();
                     result.xicp_triggered = loc_system_.WasLastXicpTriggered();
+                    result.final_quality = use_final_quality;
                     gicp_results.push_back(result);
+
+                    const double gicp_internal_time_ms =
+                        result.crop_time_ms + result.init_time_ms + result.solve_time_ms;
+                    if (gicp_internal_time_ms >= reloc_slow_gicp_threshold_ms) {
+                        RCLCPP_WARN(
+                            this->get_logger(),
+                            "GICP耗时过长: %.1fms [Crop:%.1f Init:%.1f Solve:%.1f], Source:%d Target:%d Iter:%d Leaf:%.3fm FinalQuality:%d Hist:%d",
+                            gicp_internal_time_ms, result.crop_time_ms, result.init_time_ms,
+                            result.solve_time_ms, result.source_point_count,
+                            result.target_point_count, result.iterations,
+                            result.effective_voxel_leaf_size,
+                            result.final_quality, result.rough.hist_index);
+                    }
 
                     double valid_ratio = result.source_point_count <= 0
                                              ? 0.0
                                              : static_cast<double>(valid_count) / static_cast<double>(result.source_point_count);
                     bool enough_inliers = valid_count >= reloc_min_gicp_valid_count &&
                                           valid_ratio >= reloc_min_gicp_valid_ratio;
-                    bool rough_unique_now = rough_candidates.size() < 2 ||
-                                            HasEnoughScoreSeparation(rough_candidates[0].rough_score,
-                                                                     rough_candidates[1].rough_score,
-                                                                     reloc_min_rough_score_gap,
-                                                                     reloc_min_rough_score_ratio);
+                    bool rough_unique_now = fusion_active
+                                                ? attempted_gicp_count == 1 &&
+                                                      fusion_descriptor_unique
+                                                : rough_candidates.size() < 2 ||
+                                                      HasEnoughScoreSeparation(
+                                                          rough_candidates[0].rough_score,
+                                                          rough_candidates[1].rough_score,
+                                                          reloc_min_rough_score_gap,
+                                                          reloc_min_rough_score_ratio);
                     if (rough_unique_now && enough_inliers && gicp_error <= reloc_early_accept_gicp_error) {
                         break;
                     }
                 }
+                const auto candidate_gicp_end = std::chrono::steady_clock::now();
+                const double candidate_gicp_time_ms =
+                    std::chrono::duration<double, std::milli>(
+                        candidate_gicp_end - candidate_gicp_start).count();
 
                 if (!gicp_results.empty()) {
                     std::sort(gicp_results.begin(), gicp_results.end(), [](const auto& lhs, const auto& rhs) {
@@ -599,16 +725,25 @@ private:
                     });
 
                     const auto& best = gicp_results.front();
-                    bool rough_unique = rough_candidates.size() < 2 ||
-                                        HasEnoughScoreSeparation(rough_candidates[0].rough_score,
-                                                                 rough_candidates[1].rough_score,
-                                                                 reloc_min_rough_score_gap,
-                                                                 reloc_min_rough_score_ratio);
-                    bool gicp_unique = gicp_results.size() < 2 ||
-                                       HasEnoughScoreSeparation(best.gicp_error,
-                                                                gicp_results[1].gicp_error,
-                                                                reloc_min_gicp_error_gap,
-                                                                reloc_min_gicp_error_ratio);
+                    const bool gicp_best_is_rough_best =
+                        best.rough.hist_index == rough_candidates.front().hist_index;
+                    bool rough_unique = gicp_best_is_rough_best &&
+                                        (fusion_active
+                                             ? fusion_descriptor_unique
+                                             : rough_candidates.size() < 2 ||
+                                                   HasEnoughScoreSeparation(
+                                                       rough_candidates[0].rough_score,
+                                                       rough_candidates[1].rough_score,
+                                                       reloc_min_rough_score_gap,
+                                                       reloc_min_rough_score_ratio));
+                    const GicpCandidateResult* competing_solution =
+                        FindCompetingGicpSolution(gicp_results);
+                    bool gicp_unique = competing_solution == nullptr ||
+                                       HasEnoughScoreSeparation(
+                                           best.gicp_error,
+                                           competing_solution->gicp_error,
+                                           reloc_min_gicp_error_gap,
+                                           reloc_min_gicp_error_ratio);
                     double valid_ratio = best.source_point_count <= 0
                                              ? 0.0
                                              : static_cast<double>(best.valid_count) / static_cast<double>(best.source_point_count);
@@ -625,7 +760,9 @@ private:
 
                     if (!rough_unique && !gicp_unique) {
                         double rough_gap = rough_candidates[1].rough_score - rough_candidates[0].rough_score;
-                        double gicp_gap = gicp_results.size() >= 2 ? gicp_results[1].gicp_error - best.gicp_error : 0.0;
+                        double gicp_gap = competing_solution
+                                              ? competing_solution->gicp_error - best.gicp_error
+                                              : 0.0;
                         RCLCPP_WARN(this->get_logger(),
                                     "拒绝重定位：粗匹配和GICP均低置信。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, RoughGap:%.4f, GicpGap:%.4f, BestHist:%d, BestError:%.4f",
                                     rough_candidates.size(), attempted_gicp_count, gicp_results.size(), rough_gap, gicp_gap, best.rough.hist_index, best.gicp_error);
@@ -634,16 +771,44 @@ private:
 
                     Eigen::Matrix3d final_R = best.R;
                     Eigen::Vector3d final_T = best.T;
-                    double final_gicp_error = std::numeric_limits<double>::max();
-                    int final_valid_count = 0;
-                    if (!loc_system_.SetPrecisePose(cloud_body_filtered, final_R, final_T,
-                                                    final_gicp_error, final_valid_count)) {
+                    double final_gicp_error = best.gicp_error;
+                    int final_valid_count = best.valid_count;
+                    bool final_xicp_triggered = best.xicp_triggered;
+                    bool final_gicp_ok = true;
+                    double final_gicp_time_ms = 0.0;
+                    int final_source_point_count = best.source_point_count;
+                    int final_target_point_count = best.target_point_count;
+                    int final_iterations = best.iterations;
+                    double final_crop_time_ms = best.crop_time_ms;
+                    double final_init_time_ms = best.init_time_ms;
+                    double final_solve_time_ms = best.solve_time_ms;
+                    float final_effective_voxel_leaf_size =
+                        best.effective_voxel_leaf_size;
+                    auto final_gicp_end = candidate_gicp_end;
+                    if (!best.final_quality) {
+                        const auto final_gicp_start = std::chrono::steady_clock::now();
+                        final_gicp_ok = loc_system_.SetPrecisePose(
+                            cloud_body_filtered, final_R, final_T,
+                            final_gicp_error, final_valid_count);
+                        final_gicp_end = std::chrono::steady_clock::now();
+                        final_gicp_time_ms = std::chrono::duration<double, std::milli>(
+                            final_gicp_end - final_gicp_start).count();
+                        final_xicp_triggered = loc_system_.WasLastXicpTriggered();
+                        final_source_point_count = loc_system_.GetLastSourcePointCount();
+                        final_target_point_count = loc_system_.GetLastTargetPointCount();
+                        final_iterations = loc_system_.GetLastGicpIterations();
+                        final_crop_time_ms = loc_system_.GetLastGicpCropTimeMs();
+                        final_init_time_ms = loc_system_.GetLastGicpInitTimeMs();
+                        final_solve_time_ms = loc_system_.GetLastGicpSolveTimeMs();
+                        final_effective_voxel_leaf_size =
+                            loc_system_.GetLastGicpEffectiveVoxelLeafSize();
+                    }
+                    if (!final_gicp_ok) {
                         RCLCPP_WARN(this->get_logger(),
                                     "拒绝重定位：最佳候选通过粗GICP筛选，但最终精GICP失败。Candidates:%zu, GicpTried:%zu, GicpOK:%zu, BestHist:%d",
                                     rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index);
                         return;
                     }
-                    const bool final_xicp_triggered = loc_system_.WasLastXicpTriggered();
 
                     is_relocated_ = true;
                     trigger_reloc_ = false; 
@@ -657,11 +822,32 @@ private:
                     last_marker_y_ = final_T.y();
                     last_marker_yaw_ = std::atan2(final_R(1, 0), final_R(0, 0));
 
+                    const double relocation_time_ms =
+                        std::chrono::duration<double, std::milli>(
+                            final_gicp_end - relocation_start).count();
+                    if (candidate_gicp_time_ms + final_gicp_time_ms >=
+                        reloc_slow_gicp_threshold_ms) {
+                        RCLCPP_WARN(
+                            this->get_logger(),
+                            "GICP总耗时过长: %.1fms, Tried:%zu, FinalQualityReused:%d",
+                            candidate_gicp_time_ms + final_gicp_time_ms,
+                            attempted_gicp_count, best.final_quality);
+                    }
+
                     RCLCPP_INFO(this->get_logger(),
-                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, CoarseSource:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, CoarseXICP:%d, FinalXICP:%d, Map系下位姿: X:%.2f, Y:%.2f",
+                                "重定位成功! 候选数:%zu, GicpTried:%zu, GicpOK:%zu, Hist:%d, RoughScore:%.4f, CoarseGICP:%.4f, FinalGICP:%.4f, FinalValid:%d, CoarseSource:%d, Ratio:%.3f, RoughUnique:%d, GicpUnique:%d, CoarseXICP:%d, FinalXICP:%d, TimeMs[Rough:%.1f CandidateGICP:%.1f FinalGICP:%.1f Total:%.1f], Map系下位姿: X:%.2f, Y:%.2f",
                                 rough_candidates.size(), attempted_gicp_count, gicp_results.size(), best.rough.hist_index, best.rough.rough_score,
                                 best.gicp_error, final_gicp_error, final_valid_count, best.source_point_count, valid_ratio, rough_unique, gicp_unique,
-                                best.xicp_triggered, final_xicp_triggered, final_T.x(), final_T.y());
+                                best.xicp_triggered, final_xicp_triggered, rough_time_ms,
+                                candidate_gicp_time_ms, final_gicp_time_ms, relocation_time_ms,
+                                final_T.x(), final_T.y());
+                    RCLCPP_INFO(
+                        this->get_logger(),
+                        "最终GICP内部耗时: Crop:%.1fms Init:%.1fms Solve:%.1fms, Source:%d Target:%d Iter:%d Leaf:%.3fm Reused:%d",
+                        final_crop_time_ms, final_init_time_ms, final_solve_time_ms,
+                        final_source_point_count, final_target_point_count,
+                        final_iterations, final_effective_voxel_leaf_size,
+                        best.final_quality);
 
                     PublishVehicleState(T_map_body, chassis_msg->speed, chassis_msg->gimbal_yaw, chassis_msg->header.stamp);
                     PublishPoseForRViz(T_map_body, chassis_msg->header.stamp);
@@ -677,7 +863,28 @@ private:
             Eigen::Matrix3d R_guess = T_map_body_guess.linear();
             Eigen::Vector3d T_guess = T_map_body_guess.translation();
 
-            if (loc_system_.SetPrecisePose(cloud_body_filtered, R_guess, T_guess)) {
+            const auto tracking_gicp_start = std::chrono::steady_clock::now();
+            const bool tracking_gicp_ok =
+                loc_system_.SetPrecisePose(cloud_body_filtered, R_guess, T_guess);
+            const double tracking_gicp_time_ms =
+                std::chrono::duration<double, std::milli>(
+                    std::chrono::steady_clock::now() - tracking_gicp_start).count();
+            if (tracking_gicp_time_ms >= reloc_slow_gicp_threshold_ms) {
+                RCLCPP_WARN(
+                    this->get_logger(),
+                    "追踪GICP耗时过长: %.1fms [Crop:%.1f Init:%.1f Solve:%.1f], Source:%d Target:%d Iter:%d Leaf:%.3fm Success:%d",
+                    tracking_gicp_time_ms,
+                    loc_system_.GetLastGicpCropTimeMs(),
+                    loc_system_.GetLastGicpInitTimeMs(),
+                    loc_system_.GetLastGicpSolveTimeMs(),
+                    loc_system_.GetLastSourcePointCount(),
+                    loc_system_.GetLastTargetPointCount(),
+                    loc_system_.GetLastGicpIterations(),
+                    loc_system_.GetLastGicpEffectiveVoxelLeafSize(),
+                    tracking_gicp_ok);
+            }
+
+            if (tracking_gicp_ok) {
                 T_map_body.linear() = R_guess;
                 T_map_body.translation() = T_guess;
                 T_map_lio_ = T_map_body * T_lio_world_body.inverse();

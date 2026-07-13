@@ -4,6 +4,8 @@
 #include <cmath>
 #include <limits>
 #include <chrono>
+#include <unordered_map>
+#include <unordered_set>
 #include <pcl/common/transforms.h>
 
 namespace relocation {
@@ -18,6 +20,17 @@ namespace relocation {
         double AngleDiffDeg(double a, double b) {
             double diff = std::abs(NormalizeAngleDeg(a) - NormalizeAngleDeg(b));
             return std::min(diff, 360.0 - diff);
+        }
+
+        double CircularMeanDeg(double first, double second, double first_weight) {
+            const double second_weight = 1.0 - first_weight;
+            const double first_rad = first * M_PI / 180.0;
+            const double second_rad = second * M_PI / 180.0;
+            const double sine = first_weight * std::sin(first_rad) +
+                                second_weight * std::sin(second_rad);
+            const double cosine = first_weight * std::cos(first_rad) +
+                                  second_weight * std::cos(second_rad);
+            return NormalizeAngleDeg(std::atan2(sine, cosine) * 180.0 / M_PI);
         }
     }
 
@@ -82,6 +95,20 @@ namespace relocation {
             return false;
         }
 
+        auto scan_context = std::make_unique<ScanContextPlusPlus>(ScanContextConfig::IrisPolar());
+        const std::string sc_database_path = MakeScanContextDatabasePath(db_path);
+        if (scan_context->LoadDatabase(sc_database_path) &&
+            scan_context->PlaceCount() == m_history_db.size()) {
+            m_scan_context = std::move(scan_context);
+            std::cout << "[location::Init] SC++ database loaded: "
+                      << sc_database_path << ", places=" << m_scan_context->PlaceCount()
+                      << ", descriptors=" << m_scan_context->DescriptorCount() << std::endl;
+        } else {
+            m_scan_context.reset();
+            std::cerr << "[location::Init] SC++ database unavailable or incompatible: "
+                      << sc_database_path << ". Falling back to IRIS-only retrieval." << std::endl;
+        }
+
         std::vector<Eigen::Vector3f> map_points;
         map_points.reserve(m_global_map->size());
         for (const auto& pt : m_global_map->points) {
@@ -107,29 +134,13 @@ namespace relocation {
     bool location::SetRoughPose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud, 
                                 double& out_x, double& out_y, double& out_yaw) 
     {
-        if (!local_cloud || local_cloud->empty()) return false;
-        cv::Mat1b query_iris = iris::GetIris(*local_cloud);
-        auto query_desc = iris::GetFeature(query_iris);
-        auto query_binary = iris::IrisToBinaryVec(query_iris);
-        std::vector<int> out_indices;
-        std::vector<int> out_dists;
-        m_iris_tree->SearchKNearest(query_binary, loc_rough_k_candidates, out_indices, out_dists);
-        int best_match_idx = -1;
-        float best_score = std::numeric_limits<float>::max();
-        int best_yaw_bias = 0;
-        for (int idx : out_indices) {
-            int bias = 0;
-            float score = iris::Compare(query_desc, m_history_db[idx].desc, &bias);
-            if (score < best_score) {
-                best_score = score;
-                best_match_idx = idx;
-                best_yaw_bias = bias;
-            }
+        std::vector<RoughPoseCandidate> candidates;
+        if (!GetRoughPoseCandidatesWithPrePose(local_cloud, 0.0, 0.0, 0.0, candidates)) {
+            return false;
         }
-        if (best_match_idx == -1) return false;
-        out_x = m_history_db[best_match_idx].x;
-        out_y = m_history_db[best_match_idx].y;
-        out_yaw = NormalizeAngleDeg(m_history_db[best_match_idx].yaw + best_yaw_bias);
+        out_x = candidates.front().x;
+        out_y = candidates.front().y;
+        out_yaw = candidates.front().yaw_deg;
         return true;
     }
 
@@ -154,33 +165,180 @@ namespace relocation {
         cv::Mat1b query_iris = iris::GetIris(*local_cloud);
         auto query_desc = iris::GetFeature(query_iris);
         auto query_binary = iris::IrisToBinaryVec(query_iris);
-        std::vector<int> out_indices;
-        std::vector<int> out_dists;
-        m_iris_tree->SearchKNearest(query_binary, loc_rough_k_candidates, out_indices, out_dists);
-        for (int idx : out_indices) {
-            float cand_x = m_history_db[idx].x;
-            float cand_y = m_history_db[idx].y;
-            float dist_to_prior = std::hypot(cand_x - pre_x, cand_y - pre_y);
+
+        std::vector<int> iris_indices;
+        std::vector<int> iris_distances;
+        m_iris_tree->SearchKNearest(
+            query_binary, loc_rough_k_candidates, iris_indices, iris_distances);
+
+        std::vector<int> candidate_indices;
+        std::unordered_set<int> candidate_set;
+        std::unordered_set<int> iris_retrieved;
+        for (int idx : iris_indices) {
+            if (idx < 0 || idx >= static_cast<int>(m_history_db.size())) continue;
+            iris_retrieved.insert(idx);
+            if (candidate_set.insert(idx).second) {
+                candidate_indices.push_back(idx);
+            }
+        }
+
+        ScanContextDescriptor query_sc;
+        bool sc_query_valid = false;
+        std::unordered_map<int, ScanContextMatch> sc_retrieved;
+        if (m_scan_context) {
+            try {
+                query_sc = m_scan_context->MakeDescriptor(local_cloud);
+                sc_query_valid = true;
+                for (const auto& match : m_scan_context->QueryCandidates(
+                         query_sc, loc_sc_rough_k_candidates)) {
+                    if (match.place_id < 0 ||
+                        match.place_id >= static_cast<int>(m_history_db.size()) ||
+                        !match.matched ||
+                        !std::isfinite(match.distance)) {
+                        continue;
+                    }
+                    sc_retrieved[match.place_id] = match;
+                    if (candidate_set.insert(match.place_id).second) {
+                        candidate_indices.push_back(match.place_id);
+                    }
+                }
+            } catch (const std::exception& exception) {
+                std::cerr << "[location] SC++ query failed: " << exception.what()
+                          << ". Using IRIS-only candidates." << std::endl;
+                sc_query_valid = false;
+            }
+        }
+
+        const double pre_yaw_deg = pre_yaw * 180.0 / M_PI;
+        bool has_valid_sc_match = false;
+        for (int idx : candidate_indices) {
+            const auto& history = m_history_db[idx];
             int bias = 0;
-            float score = iris::Compare(query_desc, m_history_db[idx].desc, &bias);
-            double cand_yaw = NormalizeAngleDeg(m_history_db[idx].yaw + bias);
-            double pre_yaw_deg = pre_yaw * 180.0 / M_PI;
-            double yaw_diff = AngleDiffDeg(cand_yaw, pre_yaw_deg);
+            const float iris_score = iris::Compare(query_desc, history.desc, &bias);
+            const double iris_yaw = NormalizeAngleDeg(history.yaw + bias);
 
             RoughPoseCandidate candidate;
-            candidate.x = cand_x;
-            candidate.y = cand_y;
-            candidate.yaw_deg = cand_yaw;
-            candidate.rough_score = score;
-            candidate.dist_to_prior = dist_to_prior;
-            candidate.yaw_diff_deg = yaw_diff;
+            candidate.x = history.x;
+            candidate.y = history.y;
+            candidate.yaw_deg = iris_yaw;
+            candidate.rough_score = iris_score;
+            candidate.iris_score = iris_score;
+            candidate.iris_yaw_deg = iris_yaw;
+            candidate.iris_retrieved = iris_retrieved.count(idx) != 0;
+            candidate.sc_retrieved = sc_retrieved.count(idx) != 0;
             candidate.hist_index = idx;
+
+            if (sc_query_valid) {
+                const auto retrieved_iter = sc_retrieved.find(idx);
+                const ScanContextMatch sc_match = retrieved_iter != sc_retrieved.end()
+                                                      ? retrieved_iter->second
+                                                      : m_scan_context->ComparePlace(query_sc, idx);
+                if (sc_match.place_id == idx && std::isfinite(sc_match.distance)) {
+                    candidate.sc_available = true;
+                    candidate.sc_score = sc_match.distance;
+
+                    if (sc_match.matched) {
+                        candidate.sc_matched = true;
+                        has_valid_sc_match = true;
+                        candidate.sc_lateral_shift = sc_match.relative_lateral_m;
+                        candidate.sc_variant = sc_match.variant;
+                        candidate.sc_yaw_deg = NormalizeAngleDeg(
+                            history.yaw - sc_match.relative_yaw_rad * 180.0 / M_PI);
+                        candidate.descriptor_yaw_diff_deg = AngleDiffDeg(
+                            candidate.iris_yaw_deg, candidate.sc_yaw_deg);
+                    }
+
+                    if (candidate.sc_matched &&
+                        candidate.descriptor_yaw_diff_deg <=
+                            loc_fusion_yaw_consistency_limit_deg) {
+                        const double history_yaw_rad = history.yaw * M_PI / 180.0;
+                        candidate.x -= std::sin(history_yaw_rad) * candidate.sc_lateral_shift;
+                        candidate.y += std::cos(history_yaw_rad) * candidate.sc_lateral_shift;
+                    }
+                }
+            }
             candidates.push_back(candidate);
         }
 
         if (candidates.empty()) return false;
+
+        if (has_valid_sc_match) {
+            std::vector<std::size_t> iris_order(candidates.size());
+            std::vector<std::size_t> sc_order;
+            sc_order.reserve(candidates.size());
+            for (std::size_t i = 0; i < candidates.size(); ++i) {
+                iris_order[i] = i;
+                candidates[i].fusion_active = true;
+                if (candidates[i].sc_matched) {
+                    sc_order.push_back(i);
+                }
+            }
+            std::sort(iris_order.begin(), iris_order.end(), [&](std::size_t lhs, std::size_t rhs) {
+                return candidates[lhs].iris_score < candidates[rhs].iris_score;
+            });
+            std::sort(sc_order.begin(), sc_order.end(), [&](std::size_t lhs, std::size_t rhs) {
+                return candidates[lhs].sc_score < candidates[rhs].sc_score;
+            });
+
+            std::vector<std::size_t> iris_rank(candidates.size());
+            std::vector<std::size_t> sc_rank(candidates.size(), candidates.size());
+            for (std::size_t rank = 0; rank < candidates.size(); ++rank) {
+                iris_rank[iris_order[rank]] = rank;
+            }
+            for (std::size_t rank = 0; rank < sc_order.size(); ++rank) {
+                sc_rank[sc_order[rank]] = rank;
+            }
+
+            const double rank_denominator = std::max(1.0, static_cast<double>(candidates.size() - 1));
+            for (std::size_t i = 0; i < candidates.size(); ++i) {
+                auto& candidate = candidates[i];
+                const double iris_rank_cost = static_cast<double>(iris_rank[i]) / rank_denominator;
+                if (candidate.sc_matched) {
+                    const double sc_rank_cost =
+                        static_cast<double>(sc_rank[i]) / rank_denominator;
+                    const double yaw_penalty = std::min(
+                        candidate.descriptor_yaw_diff_deg /
+                            loc_fusion_yaw_consistency_limit_deg,
+                        1.0);
+                    candidate.rough_score = loc_fusion_base_score +
+                                            loc_fusion_iris_weight * iris_rank_cost +
+                                            loc_fusion_sc_weight * sc_rank_cost +
+                                            loc_fusion_yaw_weight * yaw_penalty;
+
+                    if (candidate.descriptor_yaw_diff_deg <=
+                        loc_fusion_yaw_mean_limit_deg) {
+                        candidate.yaw_deg = CircularMeanDeg(
+                            candidate.iris_yaw_deg,
+                            candidate.sc_yaw_deg,
+                            loc_fusion_iris_weight);
+                    } else if (candidate.descriptor_yaw_diff_deg <=
+                                   loc_fusion_yaw_consistency_limit_deg &&
+                               sc_rank[i] < iris_rank[i]) {
+                        candidate.yaw_deg = candidate.sc_yaw_deg;
+                    } else {
+                        candidate.yaw_deg = candidate.iris_yaw_deg;
+                    }
+                } else {
+                    // SC++ rejected this place. Keep its IRIS rank on the same
+                    // [base, base + 1] scale without using the rejected SC score.
+                    candidate.rough_score = loc_fusion_base_score + iris_rank_cost;
+                    candidate.yaw_deg = candidate.iris_yaw_deg;
+                }
+                candidate.dist_to_prior = std::hypot(
+                    candidate.x - pre_x, candidate.y - pre_y);
+                candidate.yaw_diff_deg = AngleDiffDeg(candidate.yaw_deg, pre_yaw_deg);
+            }
+        } else {
+            for (auto& candidate : candidates) {
+                candidate.dist_to_prior = std::hypot(
+                    candidate.x - pre_x, candidate.y - pre_y);
+                candidate.yaw_diff_deg = AngleDiffDeg(candidate.yaw_deg, pre_yaw_deg);
+            }
+        }
+
         std::sort(candidates.begin(), candidates.end(), [](const auto& lhs, const auto& rhs) {
-            return lhs.rough_score < rhs.rough_score;
+            if (lhs.rough_score != rhs.rough_score) return lhs.rough_score < rhs.rough_score;
+            return lhs.iris_score < rhs.iris_score;
         });
         if (candidates.size() > loc_max_rough_pose_candidates) {
             candidates.resize(loc_max_rough_pose_candidates);
@@ -210,6 +368,12 @@ namespace relocation {
                                   int max_iterations, float voxel_leaf_size)
     {
         m_last_source_point_count = 0;
+        m_last_target_point_count = 0;
+        m_last_gicp_iterations = 0;
+        m_last_gicp_crop_time_ms = 0.0;
+        m_last_gicp_init_time_ms = 0.0;
+        m_last_gicp_solve_time_ms = 0.0;
+        m_last_gicp_effective_voxel_leaf_size = 0.0f;
         m_last_xicp_triggered = false;
         if (!local_cloud || local_cloud->empty() || !m_global_map) return false;
         out_match_error = std::numeric_limits<double>::max();
@@ -219,6 +383,7 @@ namespace relocation {
         pcl::PointCloud<pcl::PointXYZ>::Ptr target_map(new pcl::PointCloud<pcl::PointXYZ>);
         std::vector<Eigen::Matrix3f> target_covariances;
         target_covariances.reserve(m_global_map->size());
+        const auto crop_start = std::chrono::steady_clock::now();
         for (size_t i = 0; i < m_global_map->points.size(); ++i) {
             const auto& pt = m_global_map->points[i];
             if (pt.z < loc_icp_crop_z_min || pt.z > loc_icp_crop_z_max) continue;
@@ -229,6 +394,8 @@ namespace relocation {
                 }
             }
         }
+        m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - crop_start).count();
         if (target_map->empty()) return false;
         if (target_covariances.size() != target_map->size()) {
             target_covariances.clear();
@@ -244,11 +411,18 @@ namespace relocation {
         const bool init_ok = target_covariances.empty()
                                  ? gicp.Init(source_aligned, target_map)
                                  : gicp.InitWithTargetCovariances(source_aligned, target_map, target_covariances);
+        m_last_source_point_count = gicp.GetSourcePointCount();
+        m_last_target_point_count = gicp.GetTargetPointCount();
+        m_last_gicp_init_time_ms = gicp.GetLastInitTimeMs();
+        m_last_gicp_effective_voxel_leaf_size =
+            gicp.GetLastEffectiveVoxelLeafSize();
         if (init_ok) {
-            m_last_source_point_count = gicp.GetSourcePointCount();
             Eigen::Matrix3d R_gicp;
             Eigen::Vector3d T_gicp;
-            if (gicp.Solve(R_gicp, T_gicp)) {
+            const bool solve_ok = gicp.Solve(R_gicp, T_gicp);
+            m_last_gicp_iterations = gicp.GetLastIterations();
+            m_last_gicp_solve_time_ms = gicp.GetLastSolveTimeMs();
+            if (solve_ok) {
                 R = R_gicp * R;
                 T = R_gicp * T + T_gicp;
                 out_match_error = gicp.GetLastError();

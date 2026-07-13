@@ -9,7 +9,7 @@
 
 namespace relocation {
 
-    constexpr int gicp_max_iterations = 20;
+    constexpr int gicp_max_iterations = 15;
     constexpr float gicp_max_corr_dist = 2.0f;
     constexpr float gicp_voxel_leaf_size = 0.2f;
     constexpr int gicp_covariance_k = 20;
@@ -30,6 +30,7 @@ namespace relocation {
     constexpr float gicp_aa_max_rotation_step_deg = 5.0f;
     constexpr float gicp_aa_error_reject_ratio = 1.0f;
     constexpr bool gicp_aa_verbose = false;
+    constexpr int gicp_max_source_points = 8000;
 
     class GICP {
     public:
@@ -58,6 +59,11 @@ namespace relocation {
         float GetLastError() const { return m_LastError; }
         int GetLastValidCount() const { return m_LastValidCount; }
         int GetSourcePointCount() const { return static_cast<int>(m_SourcePC.size()); }
+        int GetTargetPointCount() const { return static_cast<int>(m_TargetPC.size()); }
+        int GetLastIterations() const { return m_LastIterations; }
+        double GetLastInitTimeMs() const { return m_LastInitTimeMs; }
+        double GetLastSolveTimeMs() const { return m_LastSolveTimeMs; }
+        float GetLastEffectiveVoxelLeafSize() const { return m_LastEffectiveVoxelLeafSize; }
         bool WasLastXicpTriggered() const { return m_LastXicpTriggered; }
         std::vector<Eigen::Matrix3f> EstimateCovariances(const std::vector<Eigen::Vector3f>& cloud);
 
@@ -105,6 +111,10 @@ namespace relocation {
         Eigen::Vector3f m_TransVector;
         float m_LastError = std::numeric_limits<float>::max();
         int m_LastValidCount = 0;
+        int m_LastIterations = 0;
+        double m_LastInitTimeMs = 0.0;
+        double m_LastSolveTimeMs = 0.0;
+        float m_LastEffectiveVoxelLeafSize = 0.0f;
         bool m_LastXicpTriggered = false;
     };
 

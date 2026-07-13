@@ -4,10 +4,13 @@
 #include <pcl/point_types.h>
 #include <cstddef>
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
 namespace relocation {
+
+std::string MakeScanContextDatabasePath(const std::string& iris_database_path);
 
 enum class ScanContextType {
     Polar,
@@ -100,9 +103,17 @@ public:
     void AddDescriptor(const ScanContextDescriptor& descriptor);
     void BuildIndex();
     void Clear();
+    bool SaveDatabase(const std::string& filename) const;
+    bool LoadDatabase(const std::string& filename);
 
     ScanContextMatch Query(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr& cloud);
     ScanContextMatch QueryDescriptor(const ScanContextDescriptor& query);
+    std::vector<ScanContextMatch> QueryCandidates(
+        const ScanContextDescriptor& query,
+        int place_count);
+    ScanContextMatch ComparePlace(
+        const ScanContextDescriptor& query,
+        int place_id) const;
 
     std::size_t DescriptorCount() const { return m_Descriptors.size(); }
     std::size_t PlaceCount() const;
@@ -148,7 +159,9 @@ private:
         const Eigen::VectorXf& query,
         int candidate_count,
         std::vector<KeyNeighbor>& heap) const;
-    std::vector<KeyNeighbor> RetrieveCandidates(const Eigen::VectorXf& query_key) const;
+    std::vector<KeyNeighbor> RetrieveCandidates(
+        const Eigen::VectorXf& query_key,
+        int place_count) const;
     ScanContextMatch CompareCandidate(
         const ScanContextDescriptor& query,
         int descriptor_index,
