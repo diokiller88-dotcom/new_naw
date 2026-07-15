@@ -4,6 +4,7 @@
 #include <pcl/point_types.h>
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
+#include <cstdint>
 #include <limits>
 #include <vector>
 
@@ -30,7 +31,8 @@ namespace relocation {
     constexpr float gicp_aa_max_rotation_step_deg = 5.0f;
     constexpr float gicp_aa_error_reject_ratio = 1.0f;
     constexpr bool gicp_aa_verbose = false;
-    constexpr int gicp_max_source_points = 8000;
+    constexpr int gicp_max_source_points = 7000;
+    constexpr int gicp_max_parallel_threads = 24;
 
     class GICP {
     public:
@@ -89,7 +91,7 @@ namespace relocation {
             const Eigen::Matrix3f& R,
             const Eigen::Vector3f& T,
             const std::vector<int>& nn_indices,
-            const std::vector<bool>& valid_flag,
+            const std::vector<std::uint8_t>& valid_flag,
             int& valid_count) const;
 
         int m_MaxIterations;

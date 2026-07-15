@@ -365,7 +365,8 @@ namespace relocation {
     bool location::SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                                   Eigen::Matrix3d& R, Eigen::Vector3d& T,
                                   double& out_match_error, int& out_valid_count,
-                                  int max_iterations, float voxel_leaf_size)
+                                  int max_iterations, float voxel_leaf_size,
+                                  int correspondence_k)
     {
         m_last_source_point_count = 0;
         m_last_target_point_count = 0;
@@ -394,12 +395,40 @@ namespace relocation {
                 }
             }
         }
-        m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
-            std::chrono::steady_clock::now() - crop_start).count();
-        if (target_map->empty()) return false;
+        if (target_map->empty()) {
+            m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - crop_start).count();
+            return false;
+        }
         if (target_covariances.size() != target_map->size()) {
             target_covariances.clear();
         }
+        if (voxel_leaf_size <= gicp_voxel_leaf_size &&
+            target_map->size() >
+            static_cast<std::size_t>(loc_gicp_max_target_points)) {
+            pcl::PointCloud<pcl::PointXYZ> limited_target;
+            limited_target.reserve(loc_gicp_max_target_points);
+            std::vector<Eigen::Matrix3f> limited_covariances;
+            if (!target_covariances.empty()) {
+                limited_covariances.reserve(loc_gicp_max_target_points);
+            }
+            const double stride = static_cast<double>(target_map->size()) /
+                                  static_cast<double>(loc_gicp_max_target_points);
+            for (int i = 0; i < loc_gicp_max_target_points; ++i) {
+                const std::size_t index = std::min(
+                    static_cast<std::size_t>(i * stride), target_map->size() - 1);
+                limited_target.push_back((*target_map)[index]);
+                if (!target_covariances.empty()) {
+                    limited_covariances.push_back(target_covariances[index]);
+                }
+            }
+            target_map->swap(limited_target);
+            if (!target_covariances.empty()) {
+                target_covariances.swap(limited_covariances);
+            }
+        }
+        m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - crop_start).count();
         Eigen::Matrix4f init_tf = Eigen::Matrix4f::Identity();
         init_tf.block<3,3>(0,0) = R.cast<float>();
         init_tf.block<3,1>(0,3) = T.cast<float>();
@@ -408,6 +437,7 @@ namespace relocation {
         GICP gicp;
         gicp.SetMaxIterations(max_iterations);
         gicp.SetVoxelLeafSize(voxel_leaf_size);
+        gicp.SetCorrespondenceK(correspondence_k);
         const bool init_ok = target_covariances.empty()
                                  ? gicp.Init(source_aligned, target_map)
                                  : gicp.InitWithTargetCovariances(source_aligned, target_map, target_covariances);

@@ -32,6 +32,7 @@ namespace relocation {
     constexpr float loc_icp_crop_z_min = 0.2f;
     constexpr float loc_icp_crop_z_max = 2.5f;
     constexpr float loc_icp_crop_xy = 20.0f;
+    constexpr int loc_gicp_max_target_points = 100000;
 
     struct HistNode {
         float x, y, yaw;
@@ -84,7 +85,8 @@ namespace relocation {
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
                             Eigen::Matrix3d& R, Eigen::Vector3d& T,
                             double& out_match_error, int& out_valid_count,
-                            int max_iterations, float voxel_leaf_size);
+                            int max_iterations, float voxel_leaf_size,
+                            int correspondence_k = gicp_correspondence_k);
         bool SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud);
         int GetLastSourcePointCount() const { return m_last_source_point_count; }
         int GetLastTargetPointCount() const { return m_last_target_point_count; }

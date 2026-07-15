@@ -58,6 +58,7 @@ constexpr double reloc_max_rough_score_ratio_for_gicp = 1.35;
 constexpr double reloc_early_accept_gicp_error = 0.25;
 constexpr int reloc_candidate_gicp_max_iterations = 6;
 constexpr float reloc_candidate_gicp_voxel_leaf_size = 0.5f;
+constexpr int reloc_candidate_gicp_correspondence_k = 7;
 constexpr double reloc_same_solution_translation = 0.5;
 constexpr double reloc_same_solution_yaw_deg = 5.0;
 constexpr double reloc_slow_gicp_threshold_ms = 500.0;
@@ -658,7 +659,8 @@ private:
                                                    cloud_body_filtered, R_prec, T_prec,
                                                    gicp_error, valid_count,
                                                    reloc_candidate_gicp_max_iterations,
-                                                   reloc_candidate_gicp_voxel_leaf_size);
+                                                   reloc_candidate_gicp_voxel_leaf_size,
+                                                   reloc_candidate_gicp_correspondence_k);
                     if (!gicp_ok) {
                         continue;
                     }

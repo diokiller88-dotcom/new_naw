@@ -7,6 +7,7 @@
 #include <iostream>
 #include <limits>
 #include <omp.h>
+#include <omp.h>
 
 namespace relocation {
 
@@ -339,13 +340,20 @@ namespace relocation {
         KDTree tree;
         tree.Build(cloud);
         const int k = std::max(3, std::min(m_CovarianceK, static_cast<int>(cloud.size())));
+        const int thread_count = std::max(
+            1, std::min(gicp_max_parallel_threads, omp_get_max_threads()));
 
-        #pragma omp parallel for
-        for (int i = 0; i < static_cast<int>(cloud.size()); i++) {
+        #pragma omp parallel num_threads(thread_count)
+        {
             std::vector<int> indices;
             std::vector<double> dists;
-            tree.SearchKNearest(cloud[i], k, indices, dists);
-            covariances[i] = ComputeCovariance(cloud, indices);
+            indices.reserve(k);
+            dists.reserve(k);
+            #pragma omp for
+            for (int i = 0; i < static_cast<int>(cloud.size()); i++) {
+                tree.SearchKNearest(cloud[i], k, indices, dists);
+                covariances[i] = ComputeCovariance(cloud, indices);
+            }
         }
         return covariances;
     }
@@ -386,7 +394,9 @@ namespace relocation {
             m_SourcePC.resize(m_SourceOriginalPC.size());
         }
 
-        #pragma omp parallel for
+        const int thread_count = std::max(
+            1, std::min(gicp_max_parallel_threads, omp_get_max_threads()));
+        #pragma omp parallel for num_threads(thread_count)
         for (int i = 0; i < static_cast<int>(m_SourceOriginalPC.size()); i++) {
             m_SourcePC[i] = R * m_SourceOriginalPC[i] + T;
         }
@@ -396,7 +406,7 @@ namespace relocation {
         const Eigen::Matrix3f& R,
         const Eigen::Vector3f& T,
         const std::vector<int>& nn_indices,
-        const std::vector<bool>& valid_flag,
+        const std::vector<std::uint8_t>& valid_flag,
         int& valid_count) const {
         valid_count = 0;
         if (m_SourceOriginalPC.empty() || m_TargetPC.empty() ||
@@ -448,13 +458,15 @@ namespace relocation {
         std::vector<int> nn_indices(N, -1);
         std::vector<float> dists(N, 0.0f);
         std::vector<float> correspondence_metrics(N, std::numeric_limits<float>::max());
-        std::vector<bool> valid_flag(N, false);
+        std::vector<std::uint8_t> valid_flag(N, 0);
         AndersonAcceleration6 aa(gicp_aa_history_size);
         bool aa_initialized = false;
+        const int thread_count = std::max(
+            1, std::min(gicp_max_parallel_threads, omp_get_max_threads()));
 
         for (int iter = 0; iter < m_MaxIterations; iter++) {
             m_LastIterations = iter + 1;
-            #pragma omp parallel for
+            #pragma omp parallel for num_threads(thread_count)
             for (int i = 0; i < N; i++) {
                 const Eigen::Matrix3f source_cov_map =
                     m_RotatedMatrix * m_SourceCov[i] * m_RotatedMatrix.transpose();

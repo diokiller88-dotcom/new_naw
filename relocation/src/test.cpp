@@ -57,6 +57,7 @@ constexpr double test_max_rough_score_ratio_for_gicp = 1.35;
 constexpr double test_early_accept_gicp_error = 0.25;
 constexpr int test_candidate_gicp_max_iterations = 6;
 constexpr float test_candidate_gicp_voxel_leaf_size = 0.5f;
+constexpr int test_candidate_gicp_correspondence_k = 7;
 constexpr double test_same_solution_translation = 0.5;
 constexpr double test_same_solution_yaw_deg = 5.0;
 
@@ -514,7 +515,8 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
                                        query_cloud, R_gicp, T_gicp,
                                        gicp_error, valid_count,
                                        test_candidate_gicp_max_iterations,
-                                       test_candidate_gicp_voxel_leaf_size);
+                                       test_candidate_gicp_voxel_leaf_size,
+                                       test_candidate_gicp_correspondence_k);
         if (!gicp_ok) {
             continue;
         }
@@ -911,6 +913,8 @@ int main(int argc, char** argv) {
             size_t success_count = 0;
             size_t accurate_count = 0;
             double total_position_error = 0.0;
+            double total_pipeline_time = 0.0;
+            double total_gicp_time = 0.0;
             double max_pipeline_time = 0.0;
             double max_gicp_time = 0.0;
             double max_position_error = 0.0;
@@ -951,6 +955,8 @@ int main(int argc, char** argv) {
                 if (!last_pipeline_success) continue;
                 success_count++;
                 total_position_error += last_position_error_m;
+                total_pipeline_time += last_pipeline_time_ms;
+                total_gicp_time += last_gicp_time_ms;
                 if (last_position_error_m <= 0.5) {
                     accurate_count++;
                 }
@@ -976,6 +982,15 @@ int main(int argc, char** argv) {
                          ? 0.0
                          : total_position_error / static_cast<double>(success_count))
                  << "m"
+                 << " MeanTotal:"
+                 << (success_count == 0
+                         ? 0.0
+                         : total_pipeline_time / static_cast<double>(success_count))
+                 << "ms MeanGICP:"
+                 << (success_count == 0
+                         ? 0.0
+                         : total_gicp_time / static_cast<double>(success_count))
+                 << "ms"
                  << " Mode:"
                  << (ambiguous_benchmark_mode ? "midpoint" : "history")
                  << " MaxTotal:" << max_pipeline_time

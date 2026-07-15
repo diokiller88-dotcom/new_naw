@@ -102,6 +102,9 @@ install(FILES Readme.md SCAN_CONTEXT_PLUS_PLUS.md
 
 if(BUILD_TESTING)
   enable_testing()
+  add_executable(kd_tree_test src/kd_tree_test.cpp)
+  target_link_libraries(kd_tree_test relocation_core)
+  add_test(NAME kd_tree_exact_search COMMAND kd_tree_test)
   add_test(NAME scan_context_standalone COMMAND scan_context_test)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
@@ -109,4 +112,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_export_libraries(relocation_core)
 ament_package()

@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <queue>
 #include <memory>
 #include <cmath>
 #include <limits>
@@ -22,10 +21,11 @@ namespace relocation {
     class Distance4Node {
     public:
         const KDNode* Node;
-        double Distance;
-        Distance4Node(const KDNode* node_, const double& dist_) : Node(node_), Distance(dist_) {}
+        double SquaredDistance;
+        Distance4Node(const KDNode* node_, const double& squared_dist_)
+            : Node(node_), SquaredDistance(squared_dist_) {}
         bool operator<(const Distance4Node& other_) const {
-            return Distance < other_.Distance; 
+            return SquaredDistance < other_.SquaredDistance;
         }
     };
 
@@ -52,10 +52,13 @@ namespace relocation {
     protected:
         void Reset();
         std::unique_ptr<KDNode> Insert(const std::vector<int>& idx_);
-        void SearchKNearestRecursive(const Eigen::Vector3f& point_, const KDNode* node_, int k, std::priority_queue<Distance4Node>& result_);
+        void SearchKNearestHeapRecursive(const Eigen::Vector3f& point_,
+                                         const KDNode* node_, int k,
+                                         std::vector<Distance4Node>& result_);
         
-        inline double CalculateDistance(const Eigen::Vector3f& p1, const Eigen::Vector3f& p2) const {
-            return (p1.cast<double>() - p2.cast<double>()).norm();
+        inline double CalculateSquaredDistance(const Eigen::Vector3f& p1,
+                                               const Eigen::Vector3f& p2) const {
+            return (p1.cast<double>() - p2.cast<double>()).squaredNorm();
         }
 
     private:
