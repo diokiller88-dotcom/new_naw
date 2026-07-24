@@ -1,7 +1,9 @@
 #include "relocation/scan_context.hpp"
 #include <pcl/filters/voxel_grid.h>
 #include <algorithm>
+#include <array>
 #include <cstdint>
+#include <cstring>
 #include <cmath>
 #include <filesystem>
 #include <fstream>
@@ -17,8 +19,10 @@ namespace {
 constexpr float kPi = 3.14159265358979323846f;
 constexpr float kTwoPi = 2.0f * kPi;
 constexpr float kNormEpsilon = 1e-6f;
-constexpr char kDatabaseMagic[8] = {'S', 'C', 'D', 'B', '0', '0', '1', '\0'};
-constexpr std::uint32_t kDatabaseVersion = 1;
+constexpr char kDatabaseMagic[8] = {'S', 'C', 'D', 'B', '0', '0', '2', '\0'};
+constexpr std::uint32_t kDatabaseVersion = 2;
+constexpr std::uint64_t kFnvOffsetBasis = 14695981039346656037ULL;
+constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
 
 template<typename T>
 bool WriteBinary(std::ostream& stream, const T& value) {
@@ -52,6 +56,19 @@ bool DescriptorConfigMatches(const ScanContextConfig& lhs, const ScanContextConf
            NearlyEqual(lhs.voxel_leaf_size, rhs.voxel_leaf_size) &&
            lhs.enable_augmentation == rhs.enable_augmentation &&
            NearlyEqual(lhs.polar_lateral_augmentation, rhs.polar_lateral_augmentation);
+}
+
+void HashBytes(std::uint64_t& hash, const void* data, std::size_t size) {
+    const auto* bytes = static_cast<const unsigned char*>(data);
+    for (std::size_t i = 0; i < size; ++i) {
+        hash ^= static_cast<std::uint64_t>(bytes[i]);
+        hash *= kFnvPrime;
+    }
+}
+
+template<typename T>
+void HashValue(std::uint64_t& hash, const T& value) {
+    HashBytes(hash, &value, sizeof(T));
 }
 
 int WrapIndex(int index, int size) {
@@ -89,6 +106,70 @@ std::string MakeScanContextDatabasePath(const std::string& iris_database_path) {
     const std::filesystem::path iris_path(iris_database_path);
     const std::string stem = iris_path.stem().empty() ? "history_db" : iris_path.stem().string();
     return (iris_path.parent_path() / (stem + "_sc.bin")).string();
+}
+
+bool ScanContextDatabaseIdentity::IsValid() const {
+    return iris_database_size > 0 && map_point_count > 0;
+}
+
+bool ScanContextDatabaseIdentity::operator==(
+    const ScanContextDatabaseIdentity& other) const {
+    return iris_database_size == other.iris_database_size &&
+           iris_database_hash == other.iris_database_hash &&
+           map_point_count == other.map_point_count &&
+           map_hash == other.map_hash;
+}
+
+bool ComputeScanContextDatabaseIdentity(
+    const std::string& iris_database_path,
+    const pcl::PointCloud<pcl::PointXYZ>::ConstPtr& global_map,
+    ScanContextDatabaseIdentity& identity) {
+    identity = ScanContextDatabaseIdentity{};
+    if (iris_database_path.empty() || !global_map || global_map->empty()) {
+        return false;
+    }
+
+    std::ifstream iris_database(iris_database_path, std::ios::binary);
+    if (!iris_database.is_open()) {
+        return false;
+    }
+
+    std::uint64_t iris_hash = kFnvOffsetBasis;
+    std::uint64_t iris_size = 0;
+    std::array<char, 64 * 1024> buffer{};
+    while (iris_database) {
+        iris_database.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize bytes_read = iris_database.gcount();
+        if (bytes_read > 0) {
+            HashBytes(iris_hash, buffer.data(), static_cast<std::size_t>(bytes_read));
+            iris_size += static_cast<std::uint64_t>(bytes_read);
+        }
+    }
+    if (!iris_database.eof() || iris_size == 0) {
+        return false;
+    }
+
+    std::uint64_t map_hash = kFnvOffsetBasis;
+    const std::uint64_t point_count = static_cast<std::uint64_t>(global_map->size());
+    HashValue(map_hash, point_count);
+    for (const auto& point : global_map->points) {
+        std::uint32_t x_bits = 0;
+        std::uint32_t y_bits = 0;
+        std::uint32_t z_bits = 0;
+        static_assert(sizeof(x_bits) == sizeof(point.x), "Unexpected float size");
+        std::memcpy(&x_bits, &point.x, sizeof(x_bits));
+        std::memcpy(&y_bits, &point.y, sizeof(y_bits));
+        std::memcpy(&z_bits, &point.z, sizeof(z_bits));
+        HashValue(map_hash, x_bits);
+        HashValue(map_hash, y_bits);
+        HashValue(map_hash, z_bits);
+    }
+
+    identity.iris_database_size = iris_size;
+    identity.iris_database_hash = iris_hash;
+    identity.map_point_count = point_count;
+    identity.map_hash = map_hash;
+    return identity.IsValid();
 }
 
 struct ScanContextPlusPlus::KeyIndexNode {
@@ -267,8 +348,10 @@ ScanContextDescriptor ScanContextPlusPlus::MakeDescriptorAtRoot(
             }
             const float angle = std::atan2(local_y, local_x) + kPi;
             row = static_cast<int>((radius - m_Config.min_radius) * radius_scale);
-            column = static_cast<int>(std::floor(
-                                          angle / kTwoPi * static_cast<float>(m_Config.columns) + 0.5f));
+            column = WrapIndex(
+                static_cast<int>(std::floor(
+                    angle / kTwoPi * static_cast<float>(m_Config.columns) + 0.5f)),
+                m_Config.columns);
         } else {
             if (local_x < m_Config.min_x || local_x >= m_Config.max_x ||
                 local_y < m_Config.min_y || local_y >= m_Config.max_y) {
@@ -486,6 +569,10 @@ bool ScanContextPlusPlus::SaveDatabase(const std::string& filename) const {
         !WriteBinary(output, m_Config.distance_threshold) ||
         !WriteBinary(output, augmentation) ||
         !WriteBinary(output, m_Config.polar_lateral_augmentation) ||
+        !WriteBinary(output, m_DatabaseIdentity.iris_database_size) ||
+        !WriteBinary(output, m_DatabaseIdentity.iris_database_hash) ||
+        !WriteBinary(output, m_DatabaseIdentity.map_point_count) ||
+        !WriteBinary(output, m_DatabaseIdentity.map_hash) ||
         !WriteBinary(output, descriptor_count)) {
         return false;
     }
@@ -534,6 +621,7 @@ bool ScanContextPlusPlus::LoadDatabase(const std::string& filename) {
     std::int32_t alignment_radius = 0;
     std::uint8_t augmentation = 0;
     std::uint64_t descriptor_count = 0;
+    ScanContextDatabaseIdentity file_identity;
     ScanContextConfig file_config;
     if (!ReadBinary(input, version) ||
         !ReadBinary(input, type) ||
@@ -554,6 +642,10 @@ bool ScanContextPlusPlus::LoadDatabase(const std::string& filename) {
         !ReadBinary(input, file_config.distance_threshold) ||
         !ReadBinary(input, augmentation) ||
         !ReadBinary(input, file_config.polar_lateral_augmentation) ||
+        !ReadBinary(input, file_identity.iris_database_size) ||
+        !ReadBinary(input, file_identity.iris_database_hash) ||
+        !ReadBinary(input, file_identity.map_point_count) ||
+        !ReadBinary(input, file_identity.map_hash) ||
         !ReadBinary(input, descriptor_count)) {
         return false;
     }
@@ -571,6 +663,7 @@ bool ScanContextPlusPlus::LoadDatabase(const std::string& filename) {
     }
 
     Clear();
+    m_DatabaseIdentity = file_identity;
     try {
         for (std::uint64_t i = 0; i < descriptor_count; ++i) {
             std::int32_t place_id = -1;
@@ -614,6 +707,19 @@ bool ScanContextPlusPlus::LoadDatabase(const std::string& filename) {
         return false;
     }
     BuildIndex();
+    return true;
+}
+
+bool ScanContextPlusPlus::LoadDatabase(
+    const std::string& filename,
+    const ScanContextDatabaseIdentity& expected_identity) {
+    if (!expected_identity.IsValid() || !LoadDatabase(filename)) {
+        return false;
+    }
+    if (m_DatabaseIdentity != expected_identity) {
+        Clear();
+        return false;
+    }
     return true;
 }
 
@@ -901,6 +1007,7 @@ void ScanContextPlusPlus::Clear() {
     m_PlaceToDescriptors.clear();
     m_IndexRoot.reset();
     m_IndexDirty = true;
+    m_DatabaseIdentity = ScanContextDatabaseIdentity{};
 }
 
 std::size_t ScanContextPlusPlus::PlaceCount() const {

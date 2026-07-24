@@ -26,6 +26,8 @@ namespace relocation {
     constexpr double loc_fusion_iris_weight = 0.60;
     constexpr double loc_fusion_sc_weight = 0.35;
     constexpr double loc_fusion_yaw_weight = 0.05;
+    constexpr double loc_fusion_sc_rejection_cost =
+        loc_fusion_sc_weight + loc_fusion_yaw_weight;
     constexpr double loc_fusion_yaw_mean_limit_deg = 10.0;
     constexpr double loc_fusion_yaw_consistency_limit_deg = 30.0;
     
@@ -99,12 +101,13 @@ namespace relocation {
         bool IsScanContextEnabled() const { return m_scan_context != nullptr; }
 
     private:
-        bool LoadDatabase(const std::string& filename);
         struct GicpSourceCacheEntry {
             float voxel_leaf_size = 0.0f;
             pcl::PointCloud<pcl::PointXYZ>::ConstPtr input;
             GICPPreparedSource::ConstPtr prepared;
         };
+
+        bool LoadDatabase(const std::string& filename);
         GICPPreparedSource::ConstPtr GetPreparedGicpSource(
             const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
             float voxel_leaf_size);

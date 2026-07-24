@@ -91,9 +91,12 @@ auto cc = relocation::ScanContextConfig::PaperCartesian();
 ```
 
 The full relocation test stores SC++ descriptors in `history_db_sc.bin`. The
-sidecar is versioned and validated against the descriptor configuration. If it
-is absent, `location` falls back to IRIS-only retrieval; the interactive test
-generates or refreshes it automatically from the current history database.
+sidecar is versioned and stores the IRIS database content fingerprint, map
+point-cloud fingerprint, file size, and point count. `location` enables fusion
+only when all identity fields, the descriptor configuration, and the contiguous
+place-ID set match. A missing, legacy, or mismatched sidecar falls back to
+IRIS-only retrieval; the interactive test regenerates it automatically from the
+current history database and map.
 
 ## Test
 
@@ -105,7 +108,8 @@ ros2 run relocation scan_context_test
 
 The standalone test covers polar rotation invariance, yaw estimation, A-PC
 generation, Cartesian double-flip matching, Top-K/direct-place comparison,
-database serialization, indexing, and clearing.
+angular seam wrapping, database identity validation, serialization, indexing,
+and clearing.
 
 The complete IRIS/SC++/GICP pipeline can also run without a display:
 

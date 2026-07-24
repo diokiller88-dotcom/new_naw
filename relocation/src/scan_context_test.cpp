@@ -1,4 +1,5 @@
 #include "relocation/scan_context.hpp"
+#include "relocation/iris.hpp"
 #include <Eigen/Geometry>
 #include <cmath>
 #include <filesystem>
@@ -181,12 +182,47 @@ void TestIrisCompatibleConfig() {
             "IRIS-compatible CC bounds are incorrect");
 }
 
+void TestAngularSeamWrapping() {
+    auto config = relocation::ScanContextConfig::IrisPolar();
+    config.enable_augmentation = false;
+    relocation::ScanContextPlusPlus scan_context(config);
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr above(new pcl::PointCloud<pcl::PointXYZ>());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr below(new pcl::PointCloud<pcl::PointXYZ>());
+    above->push_back(pcl::PointXYZ(-5.0f, 1e-5f, 1.0f));
+    below->push_back(pcl::PointXYZ(-5.0f, -1e-5f, 1.0f));
+
+    const auto above_sc = scan_context.MakeDescriptor(above);
+    const auto below_sc = scan_context.MakeDescriptor(below);
+    Require(above_sc.matrix.col(0).maxCoeff() > 0.0f &&
+                below_sc.matrix.col(0).maxCoeff() > 0.0f,
+            "SC++ angular seam did not wrap to column zero");
+    Require(above_sc.matrix.col(config.columns - 1).maxCoeff() == 0.0f &&
+                below_sc.matrix.col(config.columns - 1).maxCoeff() == 0.0f,
+            "SC++ angular seam leaked into the last column");
+
+    const cv::Mat1b above_iris = relocation::iris::GetIris(*above);
+    const cv::Mat1b below_iris = relocation::iris::GetIris(*below);
+    Require(cv::countNonZero(above_iris.col(0)) == 1 &&
+                cv::countNonZero(below_iris.col(0)) == 1,
+            "IRIS angular seam did not wrap to column zero");
+    Require(cv::countNonZero(above_iris.col(relocation::iris_cols - 1)) == 0 &&
+                cv::countNonZero(below_iris.col(relocation::iris_cols - 1)) == 0,
+            "IRIS angular seam leaked into the last column");
+}
+
 void TestDatabaseRoundTrip() {
     auto config = relocation::ScanContextConfig::PaperPolar();
     config.voxel_leaf_size = 0.0f;
     config.candidate_count = 2;
     config.distance_threshold = 0.01f;
     relocation::ScanContextPlusPlus source(config);
+    relocation::ScanContextDatabaseIdentity identity;
+    identity.iris_database_size = 123;
+    identity.iris_database_hash = 456;
+    identity.map_point_count = 789;
+    identity.map_hash = 101112;
+    source.SetDatabaseIdentity(identity);
     source.AddPlace(MakePolarScene(false), 1);
     source.AddPlace(MakePolarScene(true), 2);
 
@@ -194,11 +230,19 @@ void TestDatabaseRoundTrip() {
     Require(source.SaveDatabase(path.string()), "SC++ database save failed");
 
     relocation::ScanContextPlusPlus restored(config);
-    Require(restored.LoadDatabase(path.string()), "SC++ database load failed");
+    Require(restored.LoadDatabase(path.string(), identity), "SC++ database load failed");
+    Require(restored.GetDatabaseIdentity() == identity,
+            "SC++ database identity was not preserved");
     Require(restored.PlaceCount() == 2, "SC++ restored place count is incorrect");
     Require(restored.DescriptorCount() == 6, "SC++ restored descriptor count is incorrect");
     const auto match = restored.Query(MakePolarScene(false));
     Require(match.matched && match.place_id == 1, "SC++ restored database query failed");
+
+    auto wrong_identity = identity;
+    wrong_identity.map_hash++;
+    relocation::ScanContextPlusPlus mismatched(config);
+    Require(!mismatched.LoadDatabase(path.string(), wrong_identity),
+            "SC++ database accepted a mismatched IRIS/map identity");
     std::filesystem::remove(path);
 }
 
@@ -210,6 +254,7 @@ int main() {
         TestCartesianDoubleFlip();
         TestIndexMaintenance();
         TestIrisCompatibleConfig();
+        TestAngularSeamWrapping();
         TestDatabaseRoundTrip();
     } catch (const std::exception& exception) {
         std::cerr << "SC++ test failed: " << exception.what() << '\n';

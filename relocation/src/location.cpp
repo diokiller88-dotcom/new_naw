@@ -31,6 +31,23 @@ namespace relocation {
                                   second_weight * std::cos(second_rad);
             return NormalizeAngleDeg(std::atan2(sine, cosine) * 180.0 / M_PI);
         }
+
+        bool HasMatchingScanContextPlaceIds(
+            const ScanContextPlusPlus& scan_context,
+            std::size_t expected_place_count) {
+            if (scan_context.PlaceCount() != expected_place_count) {
+                return false;
+            }
+            std::vector<bool> seen(expected_place_count, false);
+            for (const auto& descriptor : scan_context.Descriptors()) {
+                if (descriptor.place_id < 0 ||
+                    descriptor.place_id >= static_cast<int>(expected_place_count)) {
+                    return false;
+                }
+                seen[static_cast<std::size_t>(descriptor.place_id)] = true;
+            }
+            return std::all_of(seen.begin(), seen.end(), [](bool value) { return value; });
+        }
     }
 
     bool location::LoadDatabase(const std::string& filename) {
@@ -96,15 +113,20 @@ namespace relocation {
 
         auto scan_context = std::make_unique<ScanContextPlusPlus>(ScanContextConfig::IrisPolar());
         const std::string sc_database_path = MakeScanContextDatabasePath(db_path);
-        if (scan_context->LoadDatabase(sc_database_path) &&
-            scan_context->PlaceCount() == m_history_db.size()) {
+        ScanContextDatabaseIdentity expected_identity;
+        const bool identity_ready = ComputeScanContextDatabaseIdentity(
+            db_path, m_global_map, expected_identity);
+        if (identity_ready &&
+            scan_context->LoadDatabase(sc_database_path, expected_identity) &&
+            HasMatchingScanContextPlaceIds(*scan_context, m_history_db.size())) {
             m_scan_context = std::move(scan_context);
             std::cout << "[location::Init] SC++ database loaded: "
                       << sc_database_path << ", places=" << m_scan_context->PlaceCount()
                       << ", descriptors=" << m_scan_context->DescriptorCount() << std::endl;
         } else {
             m_scan_context.reset();
-            std::cerr << "[location::Init] SC++ database unavailable or incompatible: "
+            std::cerr << "[location::Init] SC++ database unavailable, incompatible, or not "
+                         "paired with the current IRIS database and map: "
                       << sc_database_path << ". Falling back to IRIS-only retrieval." << std::endl;
         }
 
@@ -229,7 +251,7 @@ namespace relocation {
         }
 
         const double pre_yaw_deg = pre_yaw * 180.0 / M_PI;
-        bool has_valid_sc_match = false;
+        bool has_fusion_candidate = false;
         for (int idx : candidate_indices) {
             const auto& history = m_history_db[idx];
             int bias = 0;
@@ -258,7 +280,6 @@ namespace relocation {
 
                     if (sc_match.matched) {
                         candidate.sc_matched = true;
-                        has_valid_sc_match = true;
                         candidate.sc_lateral_shift = sc_match.relative_lateral_m;
                         candidate.sc_variant = sc_match.variant;
                         candidate.sc_yaw_deg = NormalizeAngleDeg(
@@ -267,9 +288,11 @@ namespace relocation {
                             candidate.iris_yaw_deg, candidate.sc_yaw_deg);
                     }
 
-                    if (candidate.sc_matched &&
+                    candidate.fusion_active = candidate.sc_matched &&
                         candidate.descriptor_yaw_diff_deg <=
-                            loc_fusion_yaw_consistency_limit_deg) {
+                            loc_fusion_yaw_consistency_limit_deg;
+                    if (candidate.fusion_active) {
+                        has_fusion_candidate = true;
                         const double history_yaw_rad = history.yaw * M_PI / 180.0;
                         candidate.x -= std::sin(history_yaw_rad) * candidate.sc_lateral_shift;
                         candidate.y += std::cos(history_yaw_rad) * candidate.sc_lateral_shift;
@@ -281,14 +304,13 @@ namespace relocation {
 
         if (candidates.empty()) return false;
 
-        if (has_valid_sc_match) {
+        if (has_fusion_candidate) {
             std::vector<std::size_t> iris_order(candidates.size());
             std::vector<std::size_t> sc_order;
             sc_order.reserve(candidates.size());
             for (std::size_t i = 0; i < candidates.size(); ++i) {
                 iris_order[i] = i;
-                candidates[i].fusion_active = true;
-                if (candidates[i].sc_matched) {
+                if (candidates[i].fusion_active) {
                     sc_order.push_back(i);
                 }
             }
@@ -309,12 +331,14 @@ namespace relocation {
             }
 
             const double rank_denominator = std::max(1.0, static_cast<double>(candidates.size() - 1));
+            const double sc_rank_denominator =
+                std::max(1.0, static_cast<double>(sc_order.size() - 1));
             for (std::size_t i = 0; i < candidates.size(); ++i) {
                 auto& candidate = candidates[i];
                 const double iris_rank_cost = static_cast<double>(iris_rank[i]) / rank_denominator;
-                if (candidate.sc_matched) {
+                if (candidate.fusion_active) {
                     const double sc_rank_cost =
-                        static_cast<double>(sc_rank[i]) / rank_denominator;
+                        static_cast<double>(sc_rank[i]) / sc_rank_denominator;
                     const double yaw_penalty = std::min(
                         candidate.descriptor_yaw_diff_deg /
                             loc_fusion_yaw_consistency_limit_deg,
@@ -338,9 +362,12 @@ namespace relocation {
                         candidate.yaw_deg = candidate.iris_yaw_deg;
                     }
                 } else {
-                    // SC++ rejected this place. Keep its IRIS rank on the same
-                    // [base, base + 1] scale without using the rejected SC score.
-                    candidate.rough_score = loc_fusion_base_score + iris_rank_cost;
+                    // A missing, rejected, or yaw-inconsistent SC++ result pays the
+                    // complete SC+yaw cost. It can still survive through a strong
+                    // IRIS rank, but no longer receives a fusion-quality score.
+                    candidate.rough_score = loc_fusion_base_score +
+                                            loc_fusion_sc_rejection_cost +
+                                            loc_fusion_iris_weight * iris_rank_cost;
                     candidate.yaw_deg = candidate.iris_yaw_deg;
                 }
                 candidate.dist_to_prior = std::hypot(

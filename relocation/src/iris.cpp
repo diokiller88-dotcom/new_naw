@@ -107,7 +107,8 @@ namespace relocation {
             
             float yaw = (std::atan2(p.y, p.x) * 180.0f / M_PI) + 180.0f;
             int Q_dis = std::min(std::max(static_cast<int>(std::floor(dis / dis_resolution)), 0), iris_rows - 1);
-            int Q_yaw = std::min(std::max(static_cast<int>(std::floor(yaw + 0.5f)), 0), iris_cols - 1);
+            int Q_yaw = static_cast<int>(std::floor(yaw + 0.5f)) % iris_cols;
+            if (Q_yaw < 0) Q_yaw += iris_cols;
             int Q_h   = std::min(std::max(static_cast<int>(std::floor((p.z - min_height) / height_resolution)), 0), 7);
             IrisMap.at<uint8_t>(Q_dis, Q_yaw) |= (1 << Q_h);
         }

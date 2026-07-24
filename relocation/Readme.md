@@ -69,6 +69,8 @@ ros2 run relocation relocation_node
 粗定位使用 IRIS Top-80 与 SC++ Top-20 候选并集和双描述子融合排序，
 再沿用原有 GICP 候选验证。完整测试会自动生成 `history_db_sc.bin`，使用说明见
 [`SCAN_CONTEXT_PLUS_PLUS.md`](SCAN_CONTEXT_PLUS_PLUS.md)。
+SC++ sidecar 会绑定当前 IRIS 数据库和地图点云的内容指纹；任一来源不匹配时
+不会参与融合，测试工具会重建，运行节点则安全回退为 IRIS-only。
 
 ### 运行模式
 

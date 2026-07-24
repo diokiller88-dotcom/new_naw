@@ -3,6 +3,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -11,6 +12,24 @@
 namespace relocation {
 
 std::string MakeScanContextDatabasePath(const std::string& iris_database_path);
+
+struct ScanContextDatabaseIdentity {
+    std::uint64_t iris_database_size = 0;
+    std::uint64_t iris_database_hash = 0;
+    std::uint64_t map_point_count = 0;
+    std::uint64_t map_hash = 0;
+
+    bool IsValid() const;
+    bool operator==(const ScanContextDatabaseIdentity& other) const;
+    bool operator!=(const ScanContextDatabaseIdentity& other) const {
+        return !(*this == other);
+    }
+};
+
+bool ComputeScanContextDatabaseIdentity(
+    const std::string& iris_database_path,
+    const pcl::PointCloud<pcl::PointXYZ>::ConstPtr& global_map,
+    ScanContextDatabaseIdentity& identity);
 
 enum class ScanContextType {
     Polar,
@@ -105,6 +124,16 @@ public:
     void Clear();
     bool SaveDatabase(const std::string& filename) const;
     bool LoadDatabase(const std::string& filename);
+    bool LoadDatabase(
+        const std::string& filename,
+        const ScanContextDatabaseIdentity& expected_identity);
+
+    void SetDatabaseIdentity(const ScanContextDatabaseIdentity& identity) {
+        m_DatabaseIdentity = identity;
+    }
+    const ScanContextDatabaseIdentity& GetDatabaseIdentity() const {
+        return m_DatabaseIdentity;
+    }
 
     ScanContextMatch Query(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr& cloud);
     ScanContextMatch QueryDescriptor(const ScanContextDescriptor& query);
@@ -172,6 +201,7 @@ private:
     std::unordered_map<int, std::vector<int>> m_PlaceToDescriptors;
     std::unique_ptr<KeyIndexNode> m_IndexRoot;
     bool m_IndexDirty = true;
+    ScanContextDatabaseIdentity m_DatabaseIdentity;
 };
 
 } // namespace relocation

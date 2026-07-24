@@ -178,7 +178,7 @@ bool HasEnoughFusionDescriptorSeparation(
     const vector<RoughPoseCandidate>& candidates,
     double min_gap,
     double min_ratio) {
-    if (candidates.empty() || !candidates.front().sc_matched) return false;
+    if (candidates.empty() || !candidates.front().fusion_active) return false;
 
     const auto& best = candidates.front();
     double second_iris_score = numeric_limits<double>::max();
@@ -360,6 +360,12 @@ const char* ScanContextVariantName(ScanContextVariant variant) {
 bool EnsureScanContextDatabase(const string& iris_database_path, const vector<HistNode>& db) {
     if (db.empty()) return false;
     const string sc_database_path = MakeScanContextDatabasePath(iris_database_path);
+    ScanContextDatabaseIdentity expected_identity;
+    if (!ComputeScanContextDatabaseIdentity(
+            iris_database_path, global_map_cloud, expected_identity)) {
+        cerr << "[SC++数据库] 无法计算 IRIS/地图对应性指纹。" << endl;
+        return false;
+    }
     std::error_code time_error;
     const bool files_exist = std::filesystem::exists(iris_database_path) &&
                              std::filesystem::exists(sc_database_path);
@@ -375,7 +381,8 @@ bool EnsureScanContextDatabase(const string& iris_database_path, const vector<Hi
                                     sc_write_time >= iris_write_time;
     if (!sc_database_dirty && sidecar_is_current) {
         ScanContextPlusPlus existing(ScanContextConfig::IrisPolar());
-        if (existing.LoadDatabase(sc_database_path) && existing.PlaceCount() == db.size()) {
+        if (existing.LoadDatabase(sc_database_path, expected_identity) &&
+            existing.PlaceCount() == db.size()) {
             cout << "[SC++数据库] 使用已有文件: " << sc_database_path
                  << ", Places: " << existing.PlaceCount()
                  << ", Descriptors: " << existing.DescriptorCount() << endl;
@@ -385,6 +392,7 @@ bool EnsureScanContextDatabase(const string& iris_database_path, const vector<Hi
 
     const auto start = chrono::steady_clock::now();
     ScanContextPlusPlus scan_context(ScanContextConfig::IrisPolar());
+    scan_context.SetDatabaseIdentity(expected_identity);
     for (size_t i = 0; i < db.size(); ++i) {
         auto local_cloud = ExtractLocalCloud(db[i].x, db[i].y, db[i].yaw);
         if (!local_cloud || local_cloud->empty()) {
@@ -561,7 +569,10 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     auto t_fine_end = chrono::steady_clock::now();
     double fine_time = chrono::duration_cast<chrono::milliseconds>(t_fine_end - t_fine_start).count();
 
-    cv::Mat temp = display_img.clone();
+    cv::Mat temp = global_map_img_base.clone();
+    for (const auto& node : history_db) {
+        cv::circle(temp, world2pixel(node.x, node.y), 3, cv::Scalar(255, 0, 0), -1);
+    }
     for (const auto& candidate : rough_candidates) {
         cv::Scalar color(0, 165, 255);
         if (candidate.iris_retrieved && candidate.sc_retrieved) {
@@ -574,7 +585,7 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
     }
     draw_arrow(temp, gt_x, gt_y, gt_yaw, cv::Scalar(0, 0, 255));
     cv::putText(temp,
-                "Red: GT | Orange: IRIS | Cyan: SC++ | Magenta: both",
+                "Red: GT | Orange: IRIS | Cyan: SC++ | Magenta: both | Green: GICP",
                 cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.7,
                 cv::Scalar(50, 50, 50), 2);
 
@@ -719,10 +730,8 @@ void RunRelocationPipeline(float gt_x, float gt_y, float gt_yaw) {
 
     draw_arrow(temp, fine_x, fine_y, fine_yaw, cv::Scalar(0, 200, 0));         
     
-    string info1 = "Red: GT | Orange: IRIS | Cyan: SC++ | Magenta: both | Green: GICP";
     string info2 = "Fusion: " + to_string((int)coarse_time) + "ms, GICP: " + to_string((int)(fine_time + final_gicp_time)) + "ms, GicpTried: " + to_string((int)attempted_gicp_count) + ", GicpOK: " + to_string((int)gicp_results.size());
     string info3 = string("XICP: coarse ") + (best.xicp_triggered ? "ON" : "OFF") + ", final " + (final_xicp_triggered ? "ON" : "OFF");
-    cv::putText(temp, info1, cv::Point(20, 30), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info2, cv::Point(20, 70), cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(50, 50, 50), 2);
     cv::putText(temp, info3, cv::Point(20, 110), cv::FONT_HERSHEY_SIMPLEX, 0.8,
                 final_xicp_triggered || best.xicp_triggered ? cv::Scalar(0, 0, 200) : cv::Scalar(50, 50, 50), 2);

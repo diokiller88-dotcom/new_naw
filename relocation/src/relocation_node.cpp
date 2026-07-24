@@ -130,7 +130,7 @@ bool HasEnoughFusionDescriptorSeparation(
     double min_gap,
     double min_ratio)
 {
-    if (candidates.empty() || !candidates.front().sc_matched) return false;
+    if (candidates.empty() || !candidates.front().fusion_active) return false;
 
     const auto& best = candidates.front();
     double second_iris_score = std::numeric_limits<double>::max();
