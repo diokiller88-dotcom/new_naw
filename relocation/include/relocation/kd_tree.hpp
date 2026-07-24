@@ -35,17 +35,17 @@ namespace relocation {
         ~KDTree() { Clear(); }
 
         bool Build(const std::vector<Eigen::Vector3f>& cloud_);
-        void SearchKNearest(const Eigen::Vector3f& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_);
-        int GetNearestIdx(const Eigen::Vector3f& point_);
+        void SearchKNearest(const Eigen::Vector3f& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) const;
+        int GetNearestIdx(const Eigen::Vector3f& point_) const;
         int GetBestIdxWithMetric(const Eigen::Vector3f& point_, int candidate_k,
                                  const std::function<double(int)>& metric_func,
                                  double max_euclidean_dist,
                                  double& best_metric,
-                                 double& best_euclidean_dist);
+                                 double& best_euclidean_dist) const;
 
         bool Build(const std::vector<Eigen::Vector3i>& cloud_);
-        void SearchKNearest(const Eigen::Vector3i& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_);
-        int GetNearestIdx(const Eigen::Vector3i& point_);
+        void SearchKNearest(const Eigen::Vector3i& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) const;
+        int GetNearestIdx(const Eigen::Vector3i& point_) const;
 
         void Clear();
 
@@ -54,7 +54,7 @@ namespace relocation {
         std::unique_ptr<KDNode> Insert(const std::vector<int>& idx_);
         void SearchKNearestHeapRecursive(const Eigen::Vector3f& point_,
                                          const KDNode* node_, int k,
-                                         std::vector<Distance4Node>& result_);
+                                         std::vector<Distance4Node>& result_) const;
         
         inline double CalculateSquaredDistance(const Eigen::Vector3f& p1,
                                                const Eigen::Vector3f& p2) const {

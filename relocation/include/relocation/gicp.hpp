@@ -6,6 +6,7 @@
 #include <Eigen/Eigenvalues>
 #include <cstdint>
 #include <limits>
+#include <memory>
 #include <vector>
 
 namespace relocation {
@@ -34,6 +35,24 @@ namespace relocation {
     constexpr int gicp_max_source_points = 7000;
     constexpr int gicp_max_parallel_threads = 24;
 
+    struct GICPPreparedSource {
+        using Ptr = std::shared_ptr<GICPPreparedSource>;
+        using ConstPtr = std::shared_ptr<const GICPPreparedSource>;
+
+        std::vector<Eigen::Vector3f> points;
+        std::vector<Eigen::Matrix3f> covariances;
+        float effective_voxel_leaf_size = 0.0f;
+    };
+
+    struct GICPPreparedTarget {
+        using Ptr = std::shared_ptr<GICPPreparedTarget>;
+        using ConstPtr = std::shared_ptr<const GICPPreparedTarget>;
+
+        std::vector<Eigen::Vector3f> points;
+        std::vector<Eigen::Matrix3f> covariances;
+        KDTree kdtree;
+    };
+
     class GICP {
     public:
         GICP()
@@ -57,11 +76,24 @@ namespace relocation {
         bool InitWithTargetCovariances(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
                                        const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
                                        const std::vector<Eigen::Matrix3f>& target_covariances);
+        GICPPreparedSource::Ptr PrepareSource(
+            const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_);
+        GICPPreparedTarget::Ptr PrepareTargetWithCovariances(
+            const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
+            const std::vector<Eigen::Matrix3f>& target_covariances);
+        bool InitPrepared(const GICPPreparedSource::ConstPtr& source,
+                          const GICPPreparedTarget::ConstPtr& target,
+                          const Eigen::Matrix3f& initial_R = Eigen::Matrix3f::Identity(),
+                          const Eigen::Vector3f& initial_T = Eigen::Vector3f::Zero());
         bool Solve(Eigen::Matrix3d& R_result_, Eigen::Vector3d& T_result_);
         float GetLastError() const { return m_LastError; }
         int GetLastValidCount() const { return m_LastValidCount; }
-        int GetSourcePointCount() const { return static_cast<int>(m_SourcePC.size()); }
-        int GetTargetPointCount() const { return static_cast<int>(m_TargetPC.size()); }
+        int GetSourcePointCount() const {
+            return m_PreparedSource ? static_cast<int>(m_PreparedSource->points.size()) : 0;
+        }
+        int GetTargetPointCount() const {
+            return m_PreparedTarget ? static_cast<int>(m_PreparedTarget->points.size()) : 0;
+        }
         int GetLastIterations() const { return m_LastIterations; }
         double GetLastInitTimeMs() const { return m_LastInitTimeMs; }
         double GetLastSolveTimeMs() const { return m_LastSolveTimeMs; }
@@ -102,12 +134,9 @@ namespace relocation {
         float m_CovarianceRegularization;
         bool m_UseAA = gicp_use_aa;
 
-        std::vector<Eigen::Vector3f> m_SourceOriginalPC;
         std::vector<Eigen::Vector3f> m_SourcePC;
-        std::vector<Eigen::Vector3f> m_TargetPC;
-        std::vector<Eigen::Matrix3f> m_SourceCov;
-        std::vector<Eigen::Matrix3f> m_TargetCov;
-        KDTree m_TargetKDTree;
+        GICPPreparedSource::ConstPtr m_PreparedSource;
+        GICPPreparedTarget::ConstPtr m_PreparedTarget;
 
         Eigen::Matrix3f m_RotatedMatrix;
         Eigen::Vector3f m_TransVector;

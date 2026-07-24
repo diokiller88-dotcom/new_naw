@@ -31,8 +31,6 @@ namespace relocation {
     
     constexpr float loc_icp_crop_z_min = 0.2f;
     constexpr float loc_icp_crop_z_max = 2.5f;
-    constexpr float loc_icp_crop_xy = 20.0f;
-    constexpr int loc_gicp_max_target_points = 100000;
 
     struct HistNode {
         float x, y, yaw;
@@ -102,9 +100,18 @@ namespace relocation {
 
     private:
         bool LoadDatabase(const std::string& filename);
+        struct GicpSourceCacheEntry {
+            float voxel_leaf_size = 0.0f;
+            pcl::PointCloud<pcl::PointXYZ>::ConstPtr input;
+            GICPPreparedSource::ConstPtr prepared;
+        };
+        GICPPreparedSource::ConstPtr GetPreparedGicpSource(
+            const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
+            float voxel_leaf_size);
 
         pcl::PointCloud<pcl::PointXYZ>::Ptr m_global_map;
-        std::vector<Eigen::Matrix3f> m_global_map_covariances;
+        GICPPreparedTarget::ConstPtr m_gicp_target;
+        std::vector<GicpSourceCacheEntry> m_gicp_source_cache;
         std::vector<HistNode> m_history_db;
         std::unique_ptr<ann_kdtree> m_iris_tree;
         std::unique_ptr<ScanContextPlusPlus> m_scan_context;

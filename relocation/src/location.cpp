@@ -6,7 +6,6 @@
 #include <chrono>
 #include <unordered_map>
 #include <unordered_set>
-#include <pcl/common/transforms.h>
 
 namespace relocation {
 
@@ -109,18 +108,38 @@ namespace relocation {
                       << sc_database_path << ". Falling back to IRIS-only retrieval." << std::endl;
         }
 
-        std::vector<Eigen::Vector3f> map_points;
-        map_points.reserve(m_global_map->size());
+        pcl::PointCloud<pcl::PointXYZ>::Ptr registration_target(
+            new pcl::PointCloud<pcl::PointXYZ>());
+        registration_target->reserve(m_global_map->size());
         for (const auto& pt : m_global_map->points) {
+            if (pt.z >= loc_icp_crop_z_min && pt.z <= loc_icp_crop_z_max) {
+                registration_target->push_back(pt);
+            }
+        }
+        if (registration_target->empty()) {
+            std::cerr << "[location::Init] No map points remain after GICP height filtering"
+                      << std::endl;
+            return false;
+        }
+
+        std::vector<Eigen::Vector3f> map_points;
+        map_points.reserve(registration_target->size());
+        for (const auto& pt : registration_target->points) {
             map_points.emplace_back(pt.x, pt.y, pt.z);
         }
         GICP covariance_builder;
-        m_global_map_covariances = covariance_builder.EstimateCovariances(map_points);
-        if (m_global_map_covariances.size() != m_global_map->size()) {
+        auto target_covariances = covariance_builder.EstimateCovariances(map_points);
+        if (target_covariances.size() != registration_target->size()) {
             std::cerr << "[location::Init] Global map covariance precompute failed" << std::endl;
-            m_global_map_covariances.clear();
             return false;
         }
+        m_gicp_target = covariance_builder.PrepareTargetWithCovariances(
+            registration_target, target_covariances);
+        if (!m_gicp_target) {
+            std::cerr << "[location::Init] Global GICP target preparation failed" << std::endl;
+            return false;
+        }
+        m_gicp_source_cache.clear();
         return true;
     }
 
@@ -346,6 +365,38 @@ namespace relocation {
         return !candidates.empty();
     }
 
+    GICPPreparedSource::ConstPtr location::GetPreparedGicpSource(
+        const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud,
+        float voxel_leaf_size) {
+        if (!local_cloud || local_cloud->empty()) return nullptr;
+
+        auto cache_iter = std::find_if(
+            m_gicp_source_cache.begin(), m_gicp_source_cache.end(),
+            [&](const GicpSourceCacheEntry& entry) {
+                return std::abs(entry.voxel_leaf_size - voxel_leaf_size) < 1e-6f;
+            });
+
+        if (cache_iter != m_gicp_source_cache.end() &&
+            cache_iter->input.get() == local_cloud.get() &&
+            cache_iter->prepared) {
+            return cache_iter->prepared;
+        }
+
+        GICP source_builder;
+        source_builder.SetVoxelLeafSize(voxel_leaf_size);
+        auto prepared = source_builder.PrepareSource(local_cloud);
+        if (!prepared) return nullptr;
+
+        if (cache_iter == m_gicp_source_cache.end()) {
+            m_gicp_source_cache.push_back(
+                GicpSourceCacheEntry{voxel_leaf_size, local_cloud, prepared});
+        } else {
+            cache_iter->input = local_cloud;
+            cache_iter->prepared = prepared;
+        }
+        return prepared;
+    }
+
     bool location::SetPrecisePose(const pcl::PointCloud<pcl::PointXYZ>::Ptr& local_cloud, 
                                   Eigen::Matrix3d& R, Eigen::Vector3d& T) 
     {
@@ -376,74 +427,28 @@ namespace relocation {
         m_last_gicp_solve_time_ms = 0.0;
         m_last_gicp_effective_voxel_leaf_size = 0.0f;
         m_last_xicp_triggered = false;
-        if (!local_cloud || local_cloud->empty() || !m_global_map) return false;
+        if (!local_cloud || local_cloud->empty() || !m_gicp_target) return false;
         out_match_error = std::numeric_limits<double>::max();
         out_valid_count = 0;
-        double coarse_x = T.x();
-        double coarse_y = T.y();
-        pcl::PointCloud<pcl::PointXYZ>::Ptr target_map(new pcl::PointCloud<pcl::PointXYZ>);
-        std::vector<Eigen::Matrix3f> target_covariances;
-        target_covariances.reserve(m_global_map->size());
-        const auto crop_start = std::chrono::steady_clock::now();
-        for (size_t i = 0; i < m_global_map->points.size(); ++i) {
-            const auto& pt = m_global_map->points[i];
-            if (pt.z < loc_icp_crop_z_min || pt.z > loc_icp_crop_z_max) continue;
-            if (std::abs(pt.x - coarse_x) < loc_icp_crop_xy && std::abs(pt.y - coarse_y) < loc_icp_crop_xy) {
-                target_map->push_back(pt);
-                if (i < m_global_map_covariances.size()) {
-                    target_covariances.push_back(m_global_map_covariances[i]);
-                }
-            }
-        }
-        if (target_map->empty()) {
-            m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
-                std::chrono::steady_clock::now() - crop_start).count();
+
+        const auto init_start = std::chrono::steady_clock::now();
+        auto prepared_source = GetPreparedGicpSource(local_cloud, voxel_leaf_size);
+        if (!prepared_source) {
+            m_last_gicp_init_time_ms = std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - init_start).count();
             return false;
         }
-        if (target_covariances.size() != target_map->size()) {
-            target_covariances.clear();
-        }
-        if (voxel_leaf_size <= gicp_voxel_leaf_size &&
-            target_map->size() >
-            static_cast<std::size_t>(loc_gicp_max_target_points)) {
-            pcl::PointCloud<pcl::PointXYZ> limited_target;
-            limited_target.reserve(loc_gicp_max_target_points);
-            std::vector<Eigen::Matrix3f> limited_covariances;
-            if (!target_covariances.empty()) {
-                limited_covariances.reserve(loc_gicp_max_target_points);
-            }
-            const double stride = static_cast<double>(target_map->size()) /
-                                  static_cast<double>(loc_gicp_max_target_points);
-            for (int i = 0; i < loc_gicp_max_target_points; ++i) {
-                const std::size_t index = std::min(
-                    static_cast<std::size_t>(i * stride), target_map->size() - 1);
-                limited_target.push_back((*target_map)[index]);
-                if (!target_covariances.empty()) {
-                    limited_covariances.push_back(target_covariances[index]);
-                }
-            }
-            target_map->swap(limited_target);
-            if (!target_covariances.empty()) {
-                target_covariances.swap(limited_covariances);
-            }
-        }
-        m_last_gicp_crop_time_ms = std::chrono::duration<double, std::milli>(
-            std::chrono::steady_clock::now() - crop_start).count();
-        Eigen::Matrix4f init_tf = Eigen::Matrix4f::Identity();
-        init_tf.block<3,3>(0,0) = R.cast<float>();
-        init_tf.block<3,1>(0,3) = T.cast<float>();
-        pcl::PointCloud<pcl::PointXYZ>::Ptr source_aligned(new pcl::PointCloud<pcl::PointXYZ>);
-        pcl::transformPointCloud(*local_cloud, *source_aligned, init_tf);
+
         GICP gicp;
         gicp.SetMaxIterations(max_iterations);
         gicp.SetVoxelLeafSize(voxel_leaf_size);
         gicp.SetCorrespondenceK(correspondence_k);
-        const bool init_ok = target_covariances.empty()
-                                 ? gicp.Init(source_aligned, target_map)
-                                 : gicp.InitWithTargetCovariances(source_aligned, target_map, target_covariances);
+        const bool init_ok = gicp.InitPrepared(
+            prepared_source, m_gicp_target, R.cast<float>(), T.cast<float>());
+        m_last_gicp_init_time_ms = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - init_start).count();
         m_last_source_point_count = gicp.GetSourcePointCount();
         m_last_target_point_count = gicp.GetTargetPointCount();
-        m_last_gicp_init_time_ms = gicp.GetLastInitTimeMs();
         m_last_gicp_effective_voxel_leaf_size =
             gicp.GetLastEffectiveVoxelLeafSize();
         if (init_ok) {
@@ -453,8 +458,8 @@ namespace relocation {
             m_last_gicp_iterations = gicp.GetLastIterations();
             m_last_gicp_solve_time_ms = gicp.GetLastSolveTimeMs();
             if (solve_ok) {
-                R = R_gicp * R;
-                T = R_gicp * T + T_gicp;
+                R = R_gicp;
+                T = T_gicp;
                 out_match_error = gicp.GetLastError();
                 out_valid_count = gicp.GetLastValidCount();
                 m_last_xicp_triggered = gicp.WasLastXicpTriggered();

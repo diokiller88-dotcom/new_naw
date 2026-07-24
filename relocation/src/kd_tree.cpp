@@ -13,12 +13,12 @@ namespace relocation {
         return Build(float_cloud);
     }
 
-    void KDTree::SearchKNearest(const Eigen::Vector3i& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) {
+    void KDTree::SearchKNearest(const Eigen::Vector3i& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) const {
         Eigen::Vector3f pt = point_.cast<float>();
         SearchKNearest(pt, k, result_idx_, result_dist_);
     }
 
-    int KDTree::GetNearestIdx(const Eigen::Vector3i& point_) {
+    int KDTree::GetNearestIdx(const Eigen::Vector3i& point_) const {
         Eigen::Vector3f pt = point_.cast<float>();
         return GetNearestIdx(pt);
     }
@@ -99,7 +99,7 @@ namespace relocation {
 
     void KDTree::SearchKNearestHeapRecursive(
         const Eigen::Vector3f& point_, const KDNode* node_, int k,
-        std::vector<Distance4Node>& result_) {
+        std::vector<Distance4Node>& result_) const {
         if (!node_) return;
 
         if (node_->CloudIdx != -1 && !node_->Left && !node_->Right) {
@@ -136,7 +136,7 @@ namespace relocation {
         }
     }
 
-    void KDTree::SearchKNearest(const Eigen::Vector3f& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) {
+    void KDTree::SearchKNearest(const Eigen::Vector3f& point_, int k, std::vector<int>& result_idx_, std::vector<double>& result_dist_) const {
         result_idx_.clear();
         result_dist_.clear();
         if (k <= 0 || !m_Root) return;
@@ -157,7 +157,7 @@ namespace relocation {
         }
     }
 
-    int KDTree::GetNearestIdx(const Eigen::Vector3f& point_) {
+    int KDTree::GetNearestIdx(const Eigen::Vector3f& point_) const {
         std::vector<int> idx;
         std::vector<double> dist;
         SearchKNearest(point_, 1, idx, dist);
@@ -168,7 +168,7 @@ namespace relocation {
                                      const std::function<double(int)>& metric_func,
                                      double max_euclidean_dist,
                                      double& best_metric,
-                                     double& best_euclidean_dist) {
+                                     double& best_euclidean_dist) const {
         best_metric = std::numeric_limits<double>::max();
         best_euclidean_dist = std::numeric_limits<double>::max();
         if (candidate_k <= 0 || !metric_func) return -1;

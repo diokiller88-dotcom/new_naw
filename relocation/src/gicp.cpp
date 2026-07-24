@@ -7,7 +7,6 @@
 #include <iostream>
 #include <limits>
 #include <omp.h>
-#include <omp.h>
 
 namespace relocation {
 
@@ -241,49 +240,29 @@ namespace relocation {
         m_LastInitTimeMs = 0.0;
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
 
-        pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
         pcl::PointCloud<pcl::PointXYZ>::Ptr processed_target(new pcl::PointCloud<pcl::PointXYZ>());
-
         if (m_VoxelLeafSize > 0.0f) {
-            m_LastEffectiveVoxelLeafSize = FilterSourceCloud(
-                sourcePC_, m_VoxelLeafSize, *processed_source);
             pcl::VoxelGrid<pcl::PointXYZ> filter;
             filter.setLeafSize(m_VoxelLeafSize, m_VoxelLeafSize, m_VoxelLeafSize);
             filter.setInputCloud(targetPC_);
             filter.filter(*processed_target);
         } else {
-            processed_source = sourcePC_;
             processed_target = targetPC_;
-            m_LastEffectiveVoxelLeafSize = 0.0f;
         }
 
-        if (processed_source->empty() || processed_target->empty()) return false;
-
-        m_SourcePC.resize(processed_source->size());
-        for (size_t i = 0; i < processed_source->size(); i++) {
-            m_SourcePC[i] = processed_source->points[i].getVector3fMap();
-        }
-        m_SourceOriginalPC = m_SourcePC;
-
-        m_TargetPC.resize(processed_target->size());
+        if (processed_target->empty()) return false;
+        std::vector<Eigen::Vector3f> target_points(processed_target->size());
         for (size_t i = 0; i < processed_target->size(); i++) {
-            m_TargetPC[i] = processed_target->points[i].getVector3fMap();
+            target_points[i] = processed_target->points[i].getVector3fMap();
         }
 
-        m_SourceCov = EstimateCovariances(m_SourcePC);
-        m_TargetCov = EstimateCovariances(m_TargetPC);
-        m_TargetKDTree.Build(m_TargetPC);
-
-        m_RotatedMatrix = Eigen::Matrix3f::Identity();
-        m_TransVector = Eigen::Vector3f::Zero();
-        m_LastError = std::numeric_limits<float>::max();
-        m_LastValidCount = 0;
-        m_LastIterations = 0;
-        m_LastSolveTimeMs = 0.0;
-        m_LastXicpTriggered = false;
+        auto source = PrepareSource(sourcePC_);
+        const auto target_covariances = EstimateCovariances(target_points);
+        auto target = PrepareTargetWithCovariances(processed_target, target_covariances);
+        const bool initialized = InitPrepared(source, target);
         m_LastInitTimeMs = std::chrono::duration<double, std::milli>(
             std::chrono::steady_clock::now() - init_start).count();
-        return true;
+        return initialized;
     }
 
     bool GICP::InitWithTargetCovariances(const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_,
@@ -294,35 +273,75 @@ namespace relocation {
         if (!sourcePC_ || !targetPC_ || sourcePC_->empty() || targetPC_->empty()) return false;
         if (targetPC_->size() != target_covariances.size()) return false;
 
-        pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
+        auto source = PrepareSource(sourcePC_);
+        auto target = PrepareTargetWithCovariances(targetPC_, target_covariances);
+        const bool initialized = InitPrepared(source, target);
+        m_LastInitTimeMs = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - init_start).count();
+        return initialized;
+    }
 
+    GICPPreparedSource::Ptr GICP::PrepareSource(
+        const pcl::PointCloud<pcl::PointXYZ>::Ptr& sourcePC_) {
+        if (!sourcePC_ || sourcePC_->empty()) return nullptr;
+
+        pcl::PointCloud<pcl::PointXYZ>::Ptr processed_source(new pcl::PointCloud<pcl::PointXYZ>());
+        float effective_voxel_leaf_size = 0.0f;
         if (m_VoxelLeafSize > 0.0f) {
-            m_LastEffectiveVoxelLeafSize = FilterSourceCloud(
+            effective_voxel_leaf_size = FilterSourceCloud(
                 sourcePC_, m_VoxelLeafSize, *processed_source);
         } else {
             processed_source = sourcePC_;
-            m_LastEffectiveVoxelLeafSize = 0.0f;
         }
 
-        if (processed_source->empty()) return false;
-
-        m_SourcePC.resize(processed_source->size());
+        if (processed_source->empty()) return nullptr;
+        auto prepared = std::make_shared<GICPPreparedSource>();
+        prepared->points.resize(processed_source->size());
         for (size_t i = 0; i < processed_source->size(); i++) {
-            m_SourcePC[i] = processed_source->points[i].getVector3fMap();
+            prepared->points[i] = processed_source->points[i].getVector3fMap();
         }
-        m_SourceOriginalPC = m_SourcePC;
+        prepared->covariances = EstimateCovariances(prepared->points);
+        prepared->effective_voxel_leaf_size = effective_voxel_leaf_size;
+        return prepared;
+    }
 
-        m_TargetPC.resize(targetPC_->size());
+    GICPPreparedTarget::Ptr GICP::PrepareTargetWithCovariances(
+        const pcl::PointCloud<pcl::PointXYZ>::Ptr& targetPC_,
+        const std::vector<Eigen::Matrix3f>& target_covariances) {
+        if (!targetPC_ || targetPC_->empty() ||
+            targetPC_->size() != target_covariances.size()) {
+            return nullptr;
+        }
+
+        auto prepared = std::make_shared<GICPPreparedTarget>();
+        prepared->points.resize(targetPC_->size());
         for (size_t i = 0; i < targetPC_->size(); i++) {
-            m_TargetPC[i] = targetPC_->points[i].getVector3fMap();
+            prepared->points[i] = targetPC_->points[i].getVector3fMap();
+        }
+        prepared->covariances = target_covariances;
+        if (!prepared->kdtree.Build(prepared->points)) return nullptr;
+        return prepared;
+    }
+
+    bool GICP::InitPrepared(const GICPPreparedSource::ConstPtr& source,
+                            const GICPPreparedTarget::ConstPtr& target,
+                            const Eigen::Matrix3f& initial_R,
+                            const Eigen::Vector3f& initial_T) {
+        const auto init_start = std::chrono::steady_clock::now();
+        m_LastInitTimeMs = 0.0;
+        if (!source || !target || source->points.empty() || target->points.empty() ||
+            source->points.size() != source->covariances.size() ||
+            target->points.size() != target->covariances.size()) {
+            return false;
         }
 
-        m_SourceCov = EstimateCovariances(m_SourcePC);
-        m_TargetCov = target_covariances;
-        m_TargetKDTree.Build(m_TargetPC);
-
-        m_RotatedMatrix = Eigen::Matrix3f::Identity();
-        m_TransVector = Eigen::Vector3f::Zero();
+        m_PreparedSource = source;
+        m_SourcePC.resize(m_PreparedSource->points.size());
+        m_PreparedTarget = target;
+        m_LastEffectiveVoxelLeafSize = source->effective_voxel_leaf_size;
+        m_RotatedMatrix = initial_R;
+        m_TransVector = initial_T;
+        UpdateTransformedSource(m_RotatedMatrix, m_TransVector);
         m_LastError = std::numeric_limits<float>::max();
         m_LastValidCount = 0;
         m_LastIterations = 0;
@@ -390,15 +409,16 @@ namespace relocation {
     }
 
     void GICP::UpdateTransformedSource(const Eigen::Matrix3f& R, const Eigen::Vector3f& T) {
-        if (m_SourcePC.size() != m_SourceOriginalPC.size()) {
-            m_SourcePC.resize(m_SourceOriginalPC.size());
+        const auto& source_points = m_PreparedSource->points;
+        if (m_SourcePC.size() != source_points.size()) {
+            m_SourcePC.resize(source_points.size());
         }
 
         const int thread_count = std::max(
             1, std::min(gicp_max_parallel_threads, omp_get_max_threads()));
         #pragma omp parallel for num_threads(thread_count)
-        for (int i = 0; i < static_cast<int>(m_SourceOriginalPC.size()); i++) {
-            m_SourcePC[i] = R * m_SourceOriginalPC[i] + T;
+        for (int i = 0; i < static_cast<int>(source_points.size()); i++) {
+            m_SourcePC[i] = R * source_points[i] + T;
         }
     }
 
@@ -409,20 +429,23 @@ namespace relocation {
         const std::vector<std::uint8_t>& valid_flag,
         int& valid_count) const {
         valid_count = 0;
-        if (m_SourceOriginalPC.empty() || m_TargetPC.empty() ||
-            nn_indices.size() != m_SourceOriginalPC.size() ||
-            valid_flag.size() != m_SourceOriginalPC.size()) {
+        if (!m_PreparedSource || m_PreparedSource->points.empty() || !m_PreparedTarget ||
+            m_PreparedTarget->points.empty() ||
+            nn_indices.size() != m_PreparedSource->points.size() ||
+            valid_flag.size() != m_PreparedSource->points.size()) {
             return std::numeric_limits<float>::max();
         }
+        const auto& source_points = m_PreparedSource->points;
+        const auto& target_points = m_PreparedTarget->points;
 
         float euclidean_error = 0.0f;
-        for (size_t i = 0; i < m_SourceOriginalPC.size(); ++i) {
+        for (size_t i = 0; i < source_points.size(); ++i) {
             if (!valid_flag[i]) continue;
             const int nn_idx = nn_indices[i];
-            if (nn_idx < 0 || nn_idx >= static_cast<int>(m_TargetPC.size())) continue;
+            if (nn_idx < 0 || nn_idx >= static_cast<int>(target_points.size())) continue;
 
-            const Eigen::Vector3f source_pt = R * m_SourceOriginalPC[i] + T;
-            const float dist = (source_pt - m_TargetPC[nn_idx]).norm();
+            const Eigen::Vector3f source_pt = R * source_points[i] + T;
+            const float dist = (source_pt - target_points[nn_idx]).norm();
             if (!std::isfinite(dist) || dist > m_MaxCorrespondenceDistance) {
                 continue;
             }
@@ -445,10 +468,15 @@ namespace relocation {
                 std::chrono::steady_clock::now() - solve_start).count();
         };
         const int N = static_cast<int>(m_SourcePC.size());
-        if (N == 0 || m_TargetPC.empty()) {
+        if (N == 0 || !m_PreparedSource || !m_PreparedTarget ||
+            m_PreparedTarget->points.empty()) {
             record_solve_time();
             return false;
         }
+        const auto& source_covariances = m_PreparedSource->covariances;
+        const auto& target_points = m_PreparedTarget->points;
+        const auto& target_covariances = m_PreparedTarget->covariances;
+        auto& target_kdtree = m_PreparedTarget->kdtree;
 
         float prev_objective_error = std::numeric_limits<float>::max();
         float final_error = std::numeric_limits<float>::max();
@@ -469,15 +497,15 @@ namespace relocation {
             #pragma omp parallel for num_threads(thread_count)
             for (int i = 0; i < N; i++) {
                 const Eigen::Matrix3f source_cov_map =
-                    m_RotatedMatrix * m_SourceCov[i] * m_RotatedMatrix.transpose();
+                    m_RotatedMatrix * source_covariances[i] * m_RotatedMatrix.transpose();
                 double best_metric = std::numeric_limits<double>::max();
                 double best_euclidean_dist = std::numeric_limits<double>::max();
-                int nn_idx = m_TargetKDTree.GetBestIdxWithMetric(
+                int nn_idx = target_kdtree.GetBestIdxWithMetric(
                     m_SourcePC[i],
                     std::max(1, m_CorrespondenceK),
                     [&](int target_idx) {
-                        const Eigen::Vector3f residual = m_SourcePC[i] - m_TargetPC[target_idx];
-                        Eigen::Matrix3f cov = m_TargetCov[target_idx] + source_cov_map;
+                        const Eigen::Vector3f residual = m_SourcePC[i] - target_points[target_idx];
+                        Eigen::Matrix3f cov = target_covariances[target_idx] + source_cov_map;
                         cov += m_CovarianceRegularization * Eigen::Matrix3f::Identity();
                         Eigen::Matrix3f info = cov.inverse();
                         return static_cast<double>(residual.dot(info * residual));
@@ -509,9 +537,9 @@ namespace relocation {
                 if (!valid_flag[i]) continue;
 
                 const int nn_idx = nn_indices[i];
-                const Eigen::Vector3f residual = m_SourcePC[i] - m_TargetPC[nn_idx];
-                Eigen::Matrix3f cov = m_TargetCov[nn_idx] +
-                    m_RotatedMatrix * m_SourceCov[i] * m_RotatedMatrix.transpose();
+                const Eigen::Vector3f residual = m_SourcePC[i] - target_points[nn_idx];
+                Eigen::Matrix3f cov = target_covariances[nn_idx] +
+                    m_RotatedMatrix * source_covariances[i] * m_RotatedMatrix.transpose();
                 cov += m_CovarianceRegularization * Eigen::Matrix3f::Identity();
                 Eigen::Matrix3f info = cov.inverse();
 
